@@ -2,6 +2,7 @@ import gsap from 'gsap'
 import { useLayoutEffect, useRef } from 'react'
 import { Barcode, GoldButton, PlaneIcon, Split, useExit } from '../components/ui'
 import { event, eventDay, guestName, photoUrl } from '../lib/invite'
+import { sfx } from '../lib/audio'
 import { useTilt } from '../lib/motion'
 
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
@@ -19,7 +20,9 @@ export function Ticket({ onBoard }: { onBoard: () => void }) {
         .from('.flash', { opacity: 1, duration: 0.9, ease: 'power2.out' }, 0)
         .fromTo('.flipper', { rotateY: -180, scale: 0.55, y: 60 }, { rotateY: 0, scale: 1, y: 0, duration: 1.3, ease: 'power3.out' }, 0)
         .from('.reveal', { opacity: 0, y: 10, stagger: 0.08, duration: 0.4 }, 1.0)
-        .from('.pname .ch', { opacity: 0, stagger: 0.06, duration: 0.01 }, 1.4)
+        .call(() => sfx('whoosh'), [], 0)
+        .from('.pname .ch', { opacity: 0, stagger: { each: 0.06, onStart: () => sfx('tick') }, duration: 0.01 }, 1.4)
+        .call(() => sfx('stamp'), [], 2.53)
         .fromTo('.stamp', { scale: 2.4, opacity: 0, rotate: 8 }, { scale: 1, opacity: 1, rotate: -12, duration: 0.35, ease: 'power4.in' }, 2.2)
         .to('.flipper', { x: 4, duration: 0.05, repeat: 5, yoyo: true }, 2.55)
         .from('.next', { autoAlpha: 0, y: 20, duration: 0.5 }, 2.8)
@@ -28,6 +31,7 @@ export function Ticket({ onBoard }: { onBoard: () => void }) {
   }, [])
 
   const board = () => {
+    sfx('whoosh')
     gsap.to('.flipper', { x: '-60vw', rotateZ: -8, scale: 0.7, duration: 0.7, ease: 'power3.in' })
     exit(onBoard, { delay: 0.25, y: 0 })
   }

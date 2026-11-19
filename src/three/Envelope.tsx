@@ -2,6 +2,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import gsap from 'gsap'
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
+import { sfx } from '../lib/audio'
 import { pointer } from '../lib/motion'
 import { letterTexture, paperTexture, pocketTexture, sealTexture } from './textures'
 
@@ -74,6 +75,7 @@ export function Envelope({ name, open, onTap, onOpened }: Props) {
   useLayoutEffect(() => {
     const r = root.current!
     gsap.fromTo(r.position, { y: -4 }, { y: 0, duration: 1.4, ease: 'power3.out' })
+    sfx('slide')
     gsap.fromTo(r.rotation, { z: 0.6, x: 0.9 }, { z: 0, x: 0, duration: 1.6, ease: 'power3.out' })
   }, [])
 
@@ -83,7 +85,11 @@ export function Envelope({ name, open, onTap, onOpened }: Props) {
     opening.current = true
     const startZ = camera.position.z
     const tl = gsap.timeline({ onComplete: onOpened })
-    tl.to(seal.current!.scale, { x: 1.3, y: 1.3, z: 1.3, duration: 0.15, ease: 'power2.out' }, 0)
+    tl.call(() => sfx('crack'), [], 0.12)
+      .call(() => sfx('paper'), [], 0.45)
+      .call(() => sfx('slide'), [], 1.2)
+      .call(() => sfx('whoosh'), [], 1.85)
+      .to(seal.current!.scale, { x: 1.3, y: 1.3, z: 1.3, duration: 0.15, ease: 'power2.out' }, 0)
       .to(flash.current!, { intensity: 14, duration: 0.15 }, 0)
       .to(flash.current!, { intensity: 0, duration: 0.6 }, 0.15)
       .to(seal.current!.scale, { x: 0, y: 0, z: 0, duration: 0.35, ease: 'back.in(2)' }, 0.15)

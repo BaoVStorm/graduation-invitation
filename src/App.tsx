@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback, useMemo, useState } from 'react'
+import { SoundToggle } from './components/SoundToggle'
 import { guestName } from './lib/invite'
 import { hasWebGL, prefersReducedMotion } from './lib/motion'
 import { Celebrate } from './scenes/Celebrate'
@@ -77,11 +78,14 @@ export default function App() {
               />
             ))}
           </ol>
-          {canSkip && (
-            <button type="button" onClick={() => go('info')} className="pointer-events-auto text-xs tracking-[0.2em] text-white/60 uppercase hover:text-white">
-              Bỏ qua ›
-            </button>
-          )}
+          <div className="flex items-center gap-4">
+            {canSkip && (
+              <button type="button" onClick={() => go('info')} className="pointer-events-auto text-xs tracking-[0.2em] text-white/60 uppercase hover:text-white">
+                Bỏ qua ›
+              </button>
+            )}
+            <SoundToggle />
+          </div>
         </nav>
       )}
     </main>

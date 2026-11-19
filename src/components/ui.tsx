@@ -1,5 +1,6 @@
 import gsap from 'gsap'
 import { useCallback, type ReactNode, type RefObject } from 'react'
+import { sfx } from '../lib/audio'
 import { chars } from '../lib/motion'
 
 /** Tách chữ thành <span class="ch"> theo từng ký tự, không bẻ dòng giữa một từ */
@@ -34,7 +35,14 @@ export function useExit(ref: RefObject<HTMLElement | null>) {
 
 export function GoldButton({ children, onClick, className = '' }: { children: ReactNode; onClick: () => void; className?: string }) {
   return (
-    <button type="button" onClick={onClick} className={`btn-gold ${className}`}>
+    <button
+      type="button"
+      onClick={() => {
+        sfx('tap')
+        onClick()
+      }}
+      className={`btn-gold ${className}`}
+    >
       {children}
     </button>
   )

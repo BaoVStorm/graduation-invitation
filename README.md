@@ -10,7 +10,7 @@ https://baovstorm.github.io/graduation-invitation/           →  bản mời ch
 
 ## Concept
 
-Trang mở đầu bằng một phong bì 3D. Khi bẻ sáp niêm phong, **vé máy bay "Graduation Air" (Sinh viên → Tân khoa)** in tên khách sẽ trượt ra. Cuộn xuống là **bìa tạp chí "GRADUATE."**, cảnh tung mũ có confetti, rồi đến thông tin sự kiện, nút thêm vào lịch và chỉ đường.
+Trang mở đầu bằng một phong bì 3D. Khi bẻ sáp niêm phong, **vé máy bay "Graduation Air" (Sinh viên → Tân khoa)** in tên khách sẽ trượt ra. Cuộn xuống là **bìa tạp chí "GRADUATE."**, cảnh tung mũ có confetti, rồi đến thông tin sự kiện, nút thêm vào lịch và chỉ đường. Có nhạc nền hộp nhạc và hiệu ứng âm thanh cho từng cảnh, tất cả tổng hợp bằng Web Audio, kèm nút bật/tắt.
 
 ## Trạng thái
 

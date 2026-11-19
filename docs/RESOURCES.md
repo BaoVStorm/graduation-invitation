@@ -79,6 +79,21 @@ Các nguồn được chia theo nhóm. ⭐ là nguồn **dự định dùng tr�
 - Pixabay Music: nhạc nền miễn phí. https://pixabay.com/music
 - Freesound: tiếng giấy, tiếng bẻ sáp, pháo giấy (lưu ý license). https://freesound.org
 
+## 6b. Nguồn nhạc nền (nếu muốn thay nhạc tổng hợp)
+
+Đã kiểm tra tháng 11/2026. **FreePD đã đóng cửa vĩnh viễn** nên không dùng được nữa.
+
+| Nguồn | License | Ghi chú |
+|---|---|---|
+| ⭐ [Pixabay Music](https://pixabay.com/music/) | Pixabay Content License: dùng thương mại, **không cần ghi nguồn** | Tìm "graduation", "inspiring piano", "music box". Cần đăng nhập để tải. |
+| [Incompetech (Kevin MacLeod)](https://incompetech.com/music/royalty-free/) | CC BY 4.0: **phải ghi nguồn** | Tải trực tiếp được. Hợp mood: "Heartwarming", "Wholesome", "Touching Moments". |
+| [Free Music Archive](https://freemusicarchive.org) | Tuỳ từng bài (CC0 / CC BY / CC BY-NC) | Kiểm tra license của từng bài |
+| [Musopen](https://musopen.org) | Phần lớn là public domain | Bản thu nhạc cổ điển (Satie *Gymnopédie*, Debussy *Clair de Lune*) |
+| [Kenney Interface Sounds](https://kenney.nl/assets/interface-sounds) | CC0 | 100 tiếng UI, dùng khi muốn thay hiệu ứng tổng hợp |
+| [Mixkit SFX](https://mixkit.co/free-sound-effects/) | Mixkit License | Đọc kỹ điều khoản trước khi dùng |
+
+Cách thay: chép file vào `public/audio/`, đặt `"music": "audio/<file>.mp3"` trong `src/config/event.json`. Nên dùng file khoảng 1–2 phút, nén mp3 128kbps (khoảng 1–2 MB), có điểm lặp mượt.
+
 ## 7. Deploy & kiểm thử
 
 - GitHub Pages + Actions (mặc định của dự án). https://docs.github.com/pages

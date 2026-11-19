@@ -138,6 +138,26 @@ Màn hình tĩnh, rõ ràng, cuộn được. Đây là phần khách sẽ mở 
 5. **Liên hệ** (chỉ có trên trang khách): **Gọi** và **Zalo**
 6. **Chân trang:** *"Sự có mặt của bạn là món quà ý nghĩa nhất."* và nút **"↺ Xem lại từ đầu"**
 
+## Âm thanh
+
+Toàn bộ âm thanh được **tạo bằng Web Audio API** trong `src/lib/audio.ts`, không dùng file nên không vướng bản quyền và không tốn dung lượng tải.
+
+- **Nhạc nền:** giai điệu hộp nhạc tự soạn trên vòng hoà âm C – G – Am – F ở 76 BPM, có lớp đệm dây mềm và tiếng vang. Nhạc nhỏ dần lên trong 4 giây và lặp lại sau mỗi 8 ô nhịp.
+- **Bắt đầu** khi khách chạm "Mở thư", vì trình duyệt chặn âm thanh trước lần chạm đầu tiên. **Nút loa** ở góc phải dùng để bật/tắt, lựa chọn được ghi nhớ cho lần mở sau. Nhạc tự dừng khi khách chuyển sang tab khác.
+- **Muốn dùng nhạc thật:** chép file vào `public/audio/` và đặt `"music": "audio/ten-file.mp3"` trong `src/config/event.json`. Nhạc tổng hợp sẽ được thay bằng file đó.
+
+| Cảnh | Hiệu ứng (thời điểm) |
+|---|---|
+| Chạm "Mở thư" | `whoosh` |
+| Phong bì bay vào | `slide` |
+| Mở thư | `crack` sáp vỡ (0.12s), `paper` lật nắp (0.45s), `slide` vé trượt ra (1.2s), `whoosh` camera lao tới (1.85s) |
+| Vé | `whoosh` khi lật, `tick` theo từng ký tự tên, `stamp` khi đóng dấu (2.53s) |
+| Lên máy bay / chuyến bay | `whoosh`, `plane` (0.1s), `chime` khi hiện "Tương lai" (1.9s) |
+| Tạp chí | `drop` khi chạm xuống (0.95s), `chime` lúc masthead rơi, `pop` khi sticker bật ra (2.0s) |
+| Thư ngỏ | `paper` khi lật bìa, `scribble` khi ký tên (2.4s) |
+| Tung mũ | `whoosh` và 2 đợt `confetti` (0.15s, 1.25s) |
+| Mọi nút vàng | `tap` |
+
 ## Trường hợp đặc biệt
 
 | Tình huống | Xử lý |

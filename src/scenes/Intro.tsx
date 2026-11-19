@@ -2,6 +2,7 @@ import gsap from 'gsap'
 import { useLayoutEffect, useRef } from 'react'
 import { GoldButton, Split, useExit } from '../components/ui'
 import { guestName } from '../lib/invite'
+import { audio, sfx } from '../lib/audio'
 import { requestMotionPermission } from '../lib/motion'
 
 /** Cảnh 1: lời dẫn → tên khách → nút Mở thư */
@@ -26,6 +27,8 @@ export function Intro({ onOpen }: { onOpen: () => void }) {
 
   const open = () => {
     void requestMotionPermission()
+    audio.start()
+    sfx('whoosh')
     exit(onOpen, { scale: 1.08, filter: 'blur(8px)' })
   }
 

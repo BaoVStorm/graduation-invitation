@@ -2,6 +2,7 @@ import gsap from 'gsap'
 import { useLayoutEffect, useRef } from 'react'
 import { GoldButton, Split, useExit } from '../components/ui'
 import { dateLabel, event, guestName, guestPronoun, guestSelf, hostName, invite, photoUrl } from '../lib/invite'
+import { sfx } from '../lib/audio'
 import { useTilt } from '../lib/motion'
 
 /** Cảnh 6 (bìa tạp chí) + cảnh 7 (thư ngỏ) dùng chung một cuốn tạp chí */
@@ -16,6 +17,9 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
       gsap
         .timeline()
         .fromTo('.mag', { rotateX: 70, y: '-70svh', opacity: 0 }, { rotateX: 0, y: 0, opacity: 1, duration: 1.1, ease: 'back.out(1.2)' })
+        .call(() => sfx('drop'), [], 0.95)
+        .call(() => sfx('chime'), [], 1.0)
+        .call(() => sfx('pop'), [], 2.0)
         .from('.mast .ch', { y: -60, opacity: 0, rotateX: -90, stagger: 0.06, duration: 0.5, ease: 'back.out(2)' }, 0.8)
         .from('.cl-l > *', { x: -30, opacity: 0, stagger: 0.1, duration: 0.5 }, 1.4)
         .from('.cl-r > *', { x: 30, opacity: 0, stagger: 0.1, duration: 0.5 }, 1.4)
@@ -33,6 +37,8 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
     const ctx = gsap.context(() => {
       gsap
         .timeline()
+        .call(() => sfx('paper'), [], 0.1)
+        .call(() => sfx('scribble'), [], 2.4)
         .to('.cover', { rotateY: -118, duration: 1.2, ease: 'power2.inOut' }, 0)
         .to('.cover', { opacity: 0, duration: 0.35 }, 0.9)
         .fromTo('.page-shade', { opacity: 0.6 }, { opacity: 0, duration: 1.2 }, 0)

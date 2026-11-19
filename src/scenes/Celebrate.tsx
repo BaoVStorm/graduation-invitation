@@ -1,6 +1,7 @@
 import gsap from 'gsap'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { GoldButton, Split, useExit } from '../components/ui'
+import { sfx } from '../lib/audio'
 import { dateLabel, event, eventStart, guestName } from '../lib/invite'
 
 function remaining() {
@@ -33,11 +34,16 @@ export function Celebrate({ onNext }: { onNext: () => void }) {
   const [t, setT] = useState(remaining)
 
   useEffect(() => {
+    sfx('whoosh')
+    const burst1 = setTimeout(() => sfx('confetti'), 150)
+    const burst2 = setTimeout(() => sfx('confetti'), 1250)
     const id = setInterval(() => setT(remaining()), 1000)
     const auto = setTimeout(() => exit(onNext), 7000)
     return () => {
       clearInterval(id)
       clearTimeout(auto)
+      clearTimeout(burst1)
+      clearTimeout(burst2)
     }
   }, [exit, onNext])
 

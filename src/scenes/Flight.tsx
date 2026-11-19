@@ -1,6 +1,7 @@
 import gsap from 'gsap'
 import { useLayoutEffect, useRef } from 'react'
 import { PlaneIcon } from '../components/ui'
+import { sfx } from '../lib/audio'
 
 const CLOUDS = Array.from({ length: 12 }, (_, i) => ({
   top: (i * 37) % 90,
@@ -47,6 +48,8 @@ export function Flight({ onArrive }: { onArrive: () => void }) {
           },
           0.2,
         )
+        .call(() => sfx('plane'), [], 0.1)
+        .call(() => sfx('chime'), [], 1.9)
         .from('.from', { autoAlpha: 0, y: 10, duration: 0.4 }, 0)
         .from('.to', { autoAlpha: 0, y: 10, duration: 0.4 }, 1.8)
         .to('.going', { autoAlpha: 0, duration: 0.3 }, 1.6)
