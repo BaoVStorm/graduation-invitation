@@ -1,6 +1,7 @@
 import gsap from 'gsap'
 import { useCallback, type ReactNode, type RefObject } from 'react'
 import { sfx } from '../lib/audio'
+import { invite } from '../lib/invite'
 import { chars } from '../lib/motion'
 
 /** Tách chữ thành <span class="ch"> theo từng ký tự, không bẻ dòng giữa một từ */
@@ -66,5 +67,35 @@ export function Barcode({ seed, className = '' }: { seed: string; className?: st
 export const PlaneIcon = ({ className = '' }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
     <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" />
+  </svg>
+)
+
+/** Tên người nhận: xưng hô viết tay + tên serif ánh vàng */
+export function GuestName({ stack = false, className = '' }: { stack?: boolean; className?: string }) {
+  const g = invite.guest
+  return (
+    <span className={`inline-flex ${stack ? 'flex-col items-center gap-1' : 'flex-wrap items-baseline justify-center gap-x-[0.3em]'} ${className}`}>
+      {g?.honorific && (
+        <span className={`guest-hon ${stack ? 'text-[0.5em]' : 'text-[0.62em]'}`}>
+          <Split text={g.honorific} />
+        </span>
+      )}
+      <span className="guest-name">
+        <Split text={g ? g.name : 'Bạn'} />
+      </span>
+    </span>
+  )
+}
+
+export const EnvelopeIcon = ({ className = '' }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <rect x="3" y="5.5" width="18" height="13" rx="2" />
+    <path d="m3.5 7 8.5 6 8.5-6" />
+  </svg>
+)
+
+export const CapIcon = ({ className = '' }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
+    <path d="M12 3 1 8.5 12 14l9-4.5V16h2V8.5L12 3zm-6.5 9.3V16c0 1.9 2.9 3.5 6.5 3.5s6.5-1.6 6.5-3.5v-3.7L12 15.6l-6.5-3.3z" />
   </svg>
 )

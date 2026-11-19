@@ -1,7 +1,8 @@
 import gsap from 'gsap'
 import { useLayoutEffect, useRef } from 'react'
-import { GoldButton, Split, useExit } from '../components/ui'
-import { dateLabel, event, guestName, guestPronoun, guestSelf, hostName, invite, photoUrl } from '../lib/invite'
+import { Cover } from '../components/Cover'
+import { CapIcon, GoldButton, useExit } from '../components/ui'
+import { dateLabel, event, guestName, guestPronoun, guestSelf, hostName, invite } from '../lib/invite'
 import { sfx } from '../lib/audio'
 import { useTilt } from '../lib/motion'
 
@@ -81,56 +82,15 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
             </div>
 
             {/* bìa tạp chí */}
-            <div className="cover">
-              <div className="m-photo">
-                <img src={photoUrl} alt="Ảnh bìa tân khoa" />
-                <div className="m-shade" />
-              </div>
-              <div className="m-issue z1">
-                <span>Số đặc biệt</span>
-                <span>Tháng {dateLabel.slice(3, 5)} · {event.classOf}</span>
-                <span>Giá: Vô giá</span>
-              </div>
-              <h2 className="mast z2">
-                <Split text="GRADUATE" />
-                <span className="text-gold">.</span>
-              </h2>
-              <div className="cl-l z3">
-                <span className="m-tag">ĐỘC QUYỀN</span>
-                <p className="m-big">4 năm<br />thanh xuân</p>
-                <p className="m-small">Hành trình từ tân sinh viên đến tân khoa</p>
-                <p className="m-big m-big2">Sống sót qua<br />đồ án &amp; deadline</p>
-                <p className="m-small">Bí kíp debug lúc 3 giờ sáng</p>
-              </div>
-              <div className="cl-r z3">
-                <p className="m-script">Class of</p>
-                <svg className="m-year" viewBox="0 0 300 120">
-                  <text className="year" x="300" y="100" textAnchor="end">
-                    {event.classOf}
-                  </text>
-                </svg>
-                <p className="m-small">
-                  {event.venue.name}
-                  <br />
-                  {event.venue.short}
-                </p>
-              </div>
-              <div className="sticker z4">
-                <i>CHÍNH THỨC</i>
-                <b>RA</b>
-                <i>TRƯỜNG!</i>
-              </div>
-              <div className="m-bottom z3">
-                <span className="m-tag">THƯ MỜI LỄ TỐT NGHIỆP</span>
-                <p className="m-head">
-                  Ngày ấy <em>đã đến</em> —<br />và mình muốn có bạn.
-                </p>
-                <p className="m-invite">
-                  <span>Trân trọng kính mời</span> <b>{guestName}</b>
-                </p>
-              </div>
-              <div className="cover-back" />
-            </div>
+            <Cover>
+              <span className="m-tag">THƯ MỜI LỄ TỐT NGHIỆP</span>
+              <p className="m-head">
+                Ngày ấy <em>đã đến</em> —<br />và mình muốn có bạn.
+              </p>
+              <p className="m-invite">
+                <span>Trân trọng kính mời</span> <b className="gold-text">{guestName}</b>
+              </p>
+            </Cover>
           </div>
         </div>
       </div>
@@ -141,7 +101,7 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
         </GoldButton>
       ) : (
         <GoldButton onClick={() => exit(onDone, { scale: 0.9 })} className="l-next">
-          🎓 Tung mũ ăn mừng
+          <CapIcon className="size-5" /> Tung mũ ăn mừng
         </GoldButton>
       )}
     </div>

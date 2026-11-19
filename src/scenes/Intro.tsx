@@ -1,7 +1,6 @@
 import gsap from 'gsap'
 import { useLayoutEffect, useRef } from 'react'
-import { GoldButton, Split, useExit } from '../components/ui'
-import { guestName } from '../lib/invite'
+import { EnvelopeIcon, GuestName, Split, useExit } from '../components/ui'
 import { audio, sfx } from '../lib/audio'
 import { requestMotionPermission } from '../lib/motion'
 
@@ -28,6 +27,7 @@ export function Intro({ onOpen }: { onOpen: () => void }) {
   const open = () => {
     void requestMotionPermission()
     audio.start()
+    sfx('tap')
     sfx('whoosh')
     exit(onOpen, { scale: 1.08, filter: 'blur(8px)' })
   }
@@ -47,13 +47,20 @@ export function Intro({ onOpen }: { onOpen: () => void }) {
           <p className="for text-xs font-semibold tracking-[0.42em] text-white/70 uppercase">Một lá thư dành riêng cho</p>
           <div className="relative mt-4">
             <div className="glow absolute inset-0 -z-10 rounded-full bg-gold/25 blur-3xl" />
-            <h1 className="who font-display text-5xl leading-[1.15] font-black text-gold [perspective:600px] sm:text-6xl">
-              <Split text={guestName} />
+            <h1 className="who text-6xl [perspective:600px] sm:text-7xl">
+              <GuestName stack />
             </h1>
           </div>
-          <GoldButton onClick={open} className="cta pulse mt-10">
-            ✉&nbsp; Mở thư
-          </GoldButton>
+          <button type="button" onClick={open} className="cta cta-open mt-10">
+            <span className="cta-seal">
+              <EnvelopeIcon className="size-5" />
+            </span>
+            <span className="cta-text">
+              <b className="gold-text">Mở thư</b>
+              <small>Chạm để mở</small>
+            </span>
+            <span className="cta-shine" />
+          </button>
         </div>
       </div>
     </div>

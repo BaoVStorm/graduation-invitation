@@ -65,8 +65,12 @@ export function payloadFor(secrets, guest) {
 export function metaFor(guest, event) {
   const who = guest ? [guest.honorific, guest.name].filter(Boolean).join(' ') : null
   return {
-    title: who ? `Thư mời tốt nghiệp · Gửi ${who}` : `Thư mời ${event.title} ${event.classOf}`,
-    description: `${event.weekday}, ${formatDate(event.date)} · ${event.venue.name} – ${event.venue.short}`,
+    title: who
+      ? `Thư mời tốt nghiệp · Gửi ${who}`
+      : `${event.host?.name ? `${event.host.name} đã` : 'Chính thức'} tốt nghiệp! 🎓 Class of ${event.classOf}`,
+    description: who
+      ? `${event.weekday}, ${formatDate(event.date)} · ${event.venue.name} – ${event.venue.short}`
+      : `${event.venue.name} – ${event.venue.short} · Lễ tốt nghiệp ${formatDate(event.date)}`,
   }
 }
 

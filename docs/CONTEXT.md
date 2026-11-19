@@ -36,7 +36,7 @@ Bản ảnh tĩnh trước đó (nằm trong thư mục `thu-moi-tot-nghiep/` �
 ## 4. Kiến trúc kỹ thuật (quyết định)
 
 - **Stack:** Vite + React + TypeScript, React Three Fiber + drei (3D), GSAP (timeline và scroll), Motion (micro-interaction UI), Tailwind CSS.
-- **Routing theo mã:** `/:code`. Mã không tồn tại thì hiện bản mời chung ("Bạn thân mến"), không báo lỗi.
+- **Routing theo path:** `/:code` là thư mời của khách đó. Trang chính `/` và path không tồn tại là **trang thông báo tốt nghiệp**: không tên người nhận, không lời mời, không số điện thoại (chốt 20/11/2026).
 - **Dữ liệu tách khỏi code:**
   - `src/config/event.json`: thông tin sự kiện và tên chủ nhân, dùng chung.
   - `data/guests.json`: danh sách khách `{ code, honorific, name, self?, message? }`.

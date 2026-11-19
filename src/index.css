@@ -13,6 +13,7 @@
   --font-display: "Playfair Display", Georgia, serif;
   --font-condensed: "Oswald", "Arial Narrow", sans-serif;
   --font-script: "Great Vibes", cursive;
+  --font-name: "Cormorant Garamond", "Playfair Display", Georgia, serif;
 }
 
 html,
@@ -270,7 +271,7 @@ body {
   margin-top: 0.5cqw;
   min-height: 11cqw;
   border-bottom: 0.5cqw solid #13235e;
-  font: 900 7.4cqw/1.3 "Playfair Display", serif;
+  font: 700 9cqw/1.2 var(--font-name);
   color: #13235e;
   display: flex;
   align-items: flex-end;
@@ -632,7 +633,7 @@ body {
   color: #ffd23f;
 }
 .m-invite b {
-  font: 900 5.4cqw/1.2 "Playfair Display", serif;
+  font: 700 6.6cqw/1.15 var(--font-name);
 }
 
 /* ---------- đồng hồ đếm ngược ---------- */
@@ -723,4 +724,139 @@ body {
 }
 .vol-range:focus-visible {
   box-shadow: 0 0 0 3px rgba(255, 207, 51, 0.4);
+}
+
+/* ---------- tên người nhận: serif thanh lịch, ánh vàng kim loại ---------- */
+.guest-name {
+  font-family: var(--font-name);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.12;
+  filter: drop-shadow(0 2px 18px rgba(255, 207, 51, 0.35));
+}
+.guest-name .ch {
+  /* nới hộp chữ để nền vàng phủ cả phần dấu và chân chữ (g, y, ọ) */
+  padding: 0.12em 0 0.18em;
+  margin: -0.12em 0 -0.18em;
+}
+.guest-name .ch,
+.gold-text {
+  background: linear-gradient(180deg, #fff6d2 0%, #ffe08a 32%, #e7b23e 62%, #b8841f 78%, #ffe9a6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.guest-hon {
+  font-family: var(--font-script);
+  color: #f3dc9a;
+  line-height: 1;
+}
+
+/* ---------- nút "Mở thư" ---------- */
+.cta-open {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.55rem 1.7rem 0.55rem 0.55rem;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(26, 46, 118, 0.95), rgba(11, 21, 66, 0.95)) padding-box,
+    linear-gradient(135deg, #fff1b8, #ffcf33 35%, #a8761a 60%, #ffe9a0) border-box;
+  box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.7), 0 0 0 0 rgba(255, 207, 51, 0.45);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+  animation: cta-glow 2.2s ease-in-out infinite;
+}
+.cta-open:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+.cta-open:active {
+  transform: scale(0.97);
+}
+.cta-seal {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #e2474b, #a3161d 62%, #6e0b10);
+  box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.35), inset 0 2px 3px rgba(255, 255, 255, 0.25), 0 4px 10px rgba(0, 0, 0, 0.4);
+  color: #ffd979;
+}
+.cta-seal::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 217, 121, 0.55);
+}
+.cta-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.1;
+}
+.cta-text b {
+  font-family: var(--font-name);
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.cta-text small {
+  margin-top: 0.15rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+.cta-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 240, 190, 0.35) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: shine 3.2s ease-in-out infinite 1s;
+}
+@keyframes shine {
+  0%,
+  55% {
+    transform: translateX(-120%);
+  }
+  85%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+@keyframes cta-glow {
+  0%,
+  100% {
+    box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.7), 0 0 0 0 rgba(255, 207, 51, 0.4);
+  }
+  50% {
+    box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.7), 0 0 0 12px rgba(255, 207, 51, 0);
+  }
+}
+/* nút vàng cũng có ánh sáng lướt qua */
+.btn-gold {
+  position: relative;
+  overflow: hidden;
+}
+.btn-gold::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: shine 3.6s ease-in-out infinite 1.5s;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cta-open,
+  .cta-shine,
+  .btn-gold::after {
+    animation: none;
+  }
 }

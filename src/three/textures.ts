@@ -69,7 +69,7 @@ export function pocketTexture(name: string) {
   ctx.textAlign = 'center'
   ctx.textBaseline = 'alphabetic'
   // "Gửi" viết tay + tên khách trên cùng một dòng, nằm dưới con dấu
-  const px = fitText(ctx, name, (p) => `900 ${p}px "Playfair Display"`, W * 0.66, 120)
+  const px = fitText(ctx, name, (p) => `700 ${p}px "Cormorant Garamond"`, W * 0.66, 140)
   const nameW = ctx.measureText(name).width
   ctx.font = `${Math.round(px * 0.9)}px "Great Vibes"`
   const hiW = ctx.measureText('Gửi ').width
@@ -78,7 +78,7 @@ export function pocketTexture(name: string) {
   ctx.fillStyle = '#b8892f'
   ctx.fillText('Gửi ', x0, H * 0.83)
   ctx.fillStyle = '#13235e'
-  ctx.font = `900 ${px}px "Playfair Display"`
+  ctx.font = `700 ${px}px "Cormorant Garamond"`
   ctx.fillText(name, x0 + hiW, H * 0.83)
   // dòng nhỏ
   ctx.textAlign = 'center'

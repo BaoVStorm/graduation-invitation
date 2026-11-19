@@ -4,6 +4,8 @@ import { PlaneIcon } from '../components/ui'
 import { guestName, invite, photoUrl } from '../lib/invite'
 
 const FONTS = [
+  '700 64px "Cormorant Garamond"',
+  'italic 600 64px "Cormorant Garamond"',
   '900 64px "Playfair Display"',
   '700 64px "Playfair Display"',
   'italic 700 32px "Playfair Display"',
@@ -63,7 +65,7 @@ export function Loading({ onDone, extra }: { onDone: () => void; extra: Promise<
         </div>
       </div>
       <p className="text-sm tracking-wide text-white/70">
-        {invite.guest ? `Đang in vé mời cho ${guestName}…` : 'Đang chuẩn bị thư mời…'}
+        {invite.guest ? `Đang in vé mời cho ${guestName}…` : 'Đang mở số đặc biệt…'}
       </p>
     </div>
   )

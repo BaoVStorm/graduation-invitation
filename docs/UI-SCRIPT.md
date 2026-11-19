@@ -2,6 +2,24 @@
 
 > Kịch bản này là "nguồn sự thật" cho trải nghiệm. Code ở `src/scenes/*` và `src/three/*` phải bám theo đúng thứ tự, thời lượng và cảm xúc mô tả ở đây. Khi muốn đổi trải nghiệm, sửa file này trước rồi mới sửa code.
 
+## Hai loại trang
+
+| Đường dẫn | Trải nghiệm |
+|---|---|
+| `/<path khách>` (ví dụ `/thanhvinh`) | **Luồng thư mời 10 cảnh** bên dưới, cá nhân hoá theo tên khách |
+| `/` (trang chính) và path không tồn tại | **Thông báo tốt nghiệp:** không có tên người nhận, không có lời mời, không có số điện thoại |
+
+### Trang chính: thông báo tốt nghiệp
+
+| t | Sự kiện |
+|---|---|
+| 0.2s | Dòng nhỏ *"THÔNG BÁO TỐT NGHIỆP · CLASS OF 2026"* |
+| 0.1–1.2s | Bìa tạp chí GRADUATE. rơi xuống, các chữ masthead rơi từng ký tự, cover line trượt vào |
+| 2.0s | Sticker "CHÍNH THỨC RA TRƯỜNG!" bật ra |
+| 2.2s | **Mũ tốt nghiệp và pháo giấy 3D** |
+| 2.3s | Headline *"Chính thức tốt nghiệp — hành trình mới bắt đầu."* và ngày lễ |
+| 2.7s | Lời cảm ơn và nút **"🎉 Gửi lời chúc mừng"**. Bấm nút sẽ bắn thêm pháo giấy và bật nhạc. |
+
 ## Mạch cảm xúc
 
 ```
@@ -142,8 +160,9 @@ Màn hình tĩnh, rõ ràng, cuộn được. Đây là phần khách sẽ mở 
 
 Toàn bộ âm thanh được **tạo bằng Web Audio API** trong `src/lib/audio.ts`, không dùng file nên không vướng bản quyền và không tốn dung lượng tải.
 
-- **Nhạc nền:** giai điệu hộp nhạc tự soạn trên vòng hoà âm C – G – Am – F ở 76 BPM, có lớp đệm dây mềm và tiếng vang. Nhạc nhỏ dần lên trong 4 giây và lặp lại sau mỗi 8 ô nhịp.
-- **Bắt đầu** khi khách chạm "Mở thư", vì trình duyệt chặn âm thanh trước lần chạm đầu tiên. **Nút loa** ở góc phải dùng để bật/tắt, lựa chọn được ghi nhớ cho lần mở sau. Nhạc tự dừng khi khách chuyển sang tab khác.
+- **Nhạc nền:** bài *"Motivation"* của AtlasAudio (Pixabay, dùng miễn phí, không cần ghi nguồn), lưu ở `public/audio/motivation.mp3`. File đã được chuẩn hoá âm lượng về -16 LUFS, có đoạn nhỏ dần 3 giây ở cuối để lặp mượt, nén 128kbps (1.4 MB). Nếu file lỗi, trang tự chuyển sang giai điệu hộp nhạc tổng hợp (C – G – Am – F, 76 BPM).
+- **Bắt đầu** khi khách chạm "Mở thư" (hoặc "Gửi lời chúc mừng" ở trang chính), vì trình duyệt chặn âm thanh trước lần chạm đầu tiên. Nhạc tự dừng khi khách chuyển sang tab khác.
+- **Bảng âm thanh** (bấm nút loa ở góc phải): công tắc bật/tắt, thanh **Nhạc nền** (mặc định 70%) và thanh **Hiệu ứng** (mặc định 80%). Lựa chọn được ghi nhớ trên máy khách.
 - **Muốn dùng nhạc thật:** chép file vào `public/audio/` và đặt `"music": "audio/ten-file.mp3"` trong `src/config/event.json`. Nhạc tổng hợp sẽ được thay bằng file đó.
 
 | Cảnh | Hiệu ứng (thời điểm) |

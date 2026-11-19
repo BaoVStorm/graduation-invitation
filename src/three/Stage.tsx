@@ -7,12 +7,14 @@ import { GoldDust } from './GoldDust'
 type Props = {
   phase: Phase
   name: string
+  /** tăng lên mỗi lần muốn bắn pháo giấy ở trang chính */
+  burst: number
   onEnvelopeTap: () => void
   onEnvelopeOpened: () => void
 }
 
 /** Một Canvas WebGL cố định phía sau toàn bộ UI */
-export default function Stage({ phase, name, onEnvelopeTap, onEnvelopeOpened }: Props) {
+export default function Stage({ phase, name, burst, onEnvelopeTap, onEnvelopeOpened }: Props) {
   const showEnvelope = phase === 'envelope' || phase === 'opening'
   return (
     <Canvas
@@ -27,6 +29,7 @@ export default function Stage({ phase, name, onEnvelopeTap, onEnvelopeOpened }: 
       <GoldDust />
       {showEnvelope && <Envelope name={name} open={phase === 'opening'} onTap={onEnvelopeTap} onOpened={onEnvelopeOpened} />}
       {phase === 'celebrate' && <Celebration />}
+      {phase === 'announce' && burst > 0 && <Celebration key={burst} />}
     </Canvas>
   )
 }

@@ -1,7 +1,8 @@
 import { lazy, Suspense, useCallback, useMemo, useState } from 'react'
 import { SoundToggle } from './components/SoundToggle'
-import { guestName } from './lib/invite'
+import { guestName, invite } from './lib/invite'
 import { hasWebGL, prefersReducedMotion } from './lib/motion'
+import { Announcement } from './scenes/Announcement'
 import { Celebrate } from './scenes/Celebrate'
 import { EnvelopeHint } from './scenes/EnvelopeHint'
 import { Flight } from './scenes/Flight'
@@ -11,7 +12,7 @@ import { Loading } from './scenes/Loading'
 import { Magazine } from './scenes/Magazine'
 import { Ticket } from './scenes/Ticket'
 
-export type Phase = 'loading' | 'intro' | 'envelope' | 'opening' | 'ticket' | 'flight' | 'magazine' | 'letter' | 'celebrate' | 'info'
+export type Phase = 'loading' | 'announce' | 'intro' | 'envelope' | 'opening' | 'ticket' | 'flight' | 'magazine' | 'letter' | 'celebrate' | 'info'
 
 /** 7 chặng trên thanh tiến trình (xem docs/UI-SCRIPT.md) */
 const STEPS: { label: string; phases: Phase[] }[] = [
@@ -25,6 +26,8 @@ const STEPS: { label: string; phases: Phase[] }[] = [
 ]
 
 const webgl = hasWebGL()
+/** Có path khách → luồng thư mời 10 cảnh. Trang chính → chỉ thông báo tốt nghiệp. */
+const isGuest = !!invite.guest
 const loadStage = () => import('./three/Stage')
 const Stage = lazy(loadStage)
 
@@ -32,9 +35,11 @@ export default function App() {
   const [phase, setPhase] = useState<Phase>('loading')
   const [run, setRun] = useState(0) // tăng khi "Xem lại từ đầu" để remount các cảnh
   const go = useCallback((p: Phase) => setPhase(p), [])
+  const [burst, setBurst] = useState(0) // pháo giấy ở trang chính
   const extra = useMemo(() => (webgl ? [loadStage()] : []), [])
 
-  const afterLoading = useCallback(() => go(prefersReducedMotion() ? 'info' : 'intro'), [go])
+  const afterLoading = useCallback(() => go(!isGuest ? 'announce' : prefersReducedMotion() ? 'info' : 'intro'), [go])
+  const fireBurst = useCallback(() => setBurst((b) => b + 1), [])
   const afterIntro = useCallback(() => go(webgl ? 'envelope' : 'ticket'), [go])
   const openEnvelope = useCallback(() => setPhase((p) => (p === 'envelope' ? 'opening' : p)), [])
   const opened = useCallback(() => go('ticket'), [go])
@@ -44,18 +49,19 @@ export default function App() {
   }, [go])
 
   const stepIndex = STEPS.findIndex((s) => s.phases.includes(phase))
-  const canSkip = phase !== 'loading' && phase !== 'info'
+  const canSkip = isGuest && phase !== 'loading' && phase !== 'info'
 
   return (
     <main className="relative h-svh w-full overflow-hidden bg-[radial-gradient(ellipse_at_50%_-10%,#1f3591_0%,#0f1f5c_45%,#070e30_100%)] font-sans text-white">
       {webgl && (
         <Suspense fallback={null}>
-          <Stage phase={phase} name={guestName} onEnvelopeTap={openEnvelope} onEnvelopeOpened={opened} />
+          <Stage phase={phase} name={guestName} burst={burst} onEnvelopeTap={openEnvelope} onEnvelopeOpened={opened} />
         </Suspense>
       )}
 
       <div key={run} className="absolute inset-0 z-10">
         {phase === 'loading' && <Loading onDone={afterLoading} extra={extra} />}
+        {phase === 'announce' && <Announcement onBurst={fireBurst} />}
         {phase === 'intro' && <Intro onOpen={afterIntro} />}
         {(phase === 'envelope' || phase === 'opening') && <EnvelopeHint onTap={openEnvelope} hidden={phase === 'opening'} />}
         {phase === 'ticket' && <Ticket onBoard={() => go('flight')} />}
@@ -69,7 +75,7 @@ export default function App() {
 
       {phase !== 'loading' && (
         <nav className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-4 bg-gradient-to-b from-[#0a1440] to-transparent px-5 pt-[max(14px,env(safe-area-inset-top))] pb-6">
-          <ol className="flex gap-1.5" aria-label="Tiến trình">
+          <ol className={`flex gap-1.5 ${isGuest ? '' : 'invisible'}`} aria-label="Tiến trình">
             {STEPS.map((s, i) => (
               <li
                 key={s.label}

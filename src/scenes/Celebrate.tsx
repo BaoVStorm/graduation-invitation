@@ -1,8 +1,8 @@
 import gsap from 'gsap'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { GoldButton, Split, useExit } from '../components/ui'
+import { GoldButton, GuestName, useExit } from '../components/ui'
 import { sfx } from '../lib/audio'
-import { dateLabel, event, eventStart, guestName } from '../lib/invite'
+import { dateLabel, event, eventStart } from '../lib/invite'
 
 function remaining() {
   const ms = Math.max(0, eventStart().getTime() - Date.now())
@@ -61,8 +61,11 @@ export function Celebrate({ onNext }: { onNext: () => void }) {
 
   return (
     <div ref={root} className="scene pointer-events-none flex-col px-6 text-center">
-      <h2 className="c-title font-display text-5xl leading-[1.15] font-black text-gold drop-shadow-[0_4px_30px_rgba(255,207,51,.45)] sm:text-6xl">
-        <Split text={`Hẹn gặp ${guestName}!`} />
+      <h2 className="c-title flex flex-col items-center">
+        <span className="font-display text-2xl italic text-white/85">Hẹn gặp</span>
+        <span className="mt-1 text-6xl sm:text-7xl">
+          <GuestName />
+        </span>
       </h2>
       <p className="c-sub mt-3 text-white/80">
         tại {event.title} · {event.weekday}, {dateLabel}
