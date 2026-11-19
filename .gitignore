@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+
+# Dữ liệu khách thật, không commit lên repo public
+data/guests.json
+
+# Ảnh cá nhân gốc (chỉ commit khi chủ nhân đồng ý)
+private/
+
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
