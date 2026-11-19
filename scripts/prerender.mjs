@@ -12,7 +12,8 @@ const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
 const event = readEvent()
 const secrets = loadSecrets()
 
-const site = process.env.SITE_URL ? process.env.SITE_URL.replace(/\/?$/, '/') : ''
+// new URL() chuẩn hoá tên miền về chữ thường (BaoVStorm.github.io → baovstorm.github.io)
+const site = process.env.SITE_URL ? new URL(process.env.SITE_URL.replace(/\/?$/, '/')).href : ''
 const image = site ? `${site}images/og.jpg` : undefined
 
 function write(rel, html) {
