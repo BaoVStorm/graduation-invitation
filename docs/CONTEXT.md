@@ -44,11 +44,12 @@ Bản ảnh tĩnh trước đó (nằm trong thư mục `thu-moi-tot-nghiep/` �
 - **Hosting:** GitHub Pages qua GitHub Actions (mặc định). Vercel là phương án dự phòng.
 - **Hiệu năng:** tải 3D theo kiểu lazy, có fallback 2D khi thiết bị yếu hoặc bật `prefers-reduced-motion`. Mục tiêu LCP dưới 2.5s trên 4G, bundle 3D tối đa khoảng 300KB gzip, ảnh dạng WebP/AVIF.
 
-## 5. Quyền riêng tư (cần chủ nhân quyết định)
+## 5. Quyền riêng tư (đã chốt 19/11/2026)
 
-- Repo **public** nên mọi thứ commit vào đều công khai.
-- Hiện **chưa commit** ảnh thật, số điện thoại thật và danh sách khách thật.
-- Phương án đề xuất: giữ `data/guests.json` ngoài git (đã có trong `.gitignore`), rồi đưa vào CI qua **GitHub Actions secret** (`GUESTS_JSON`). Site build ra vẫn công khai (ai có link đều xem được), nhưng danh sách khách không nằm sẵn trong lịch sử repo.
+- Repo **public**. Chủ nhân **không cho** commit số điện thoại. **Cho phép** commit ảnh.
+- Mọi dữ liệu cá nhân lấy qua **GitHub Secrets**, đọc bằng env lúc build: `SECRET_PHONE`, `SECRET_HOST_NAME`, `SECRET_GUESTS_JSON`. Chủ nhân sẽ tự cấu hình giá trị sau.
+- Secret chỉ được nhúng vào HTML của đúng trang khách. Trang chung và 404 không có secret, bundle JS cũng không.
+- Chi tiết phân loại và cách cấu hình: [SECRETS.md](SECRETS.md). **Khi thêm loại dữ liệu cá nhân mới, phải thêm secret mới theo cùng quy tắc, không viết cứng vào code.**
 - Mã khách nên là chuỗi ngẫu nhiên 4–6 ký tự (không dùng tên thật làm path) để khó đoán.
 
 ## 6. Quy ước

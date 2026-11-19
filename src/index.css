@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #0f1f5c;
+  --color-navy-deep: #13235e;
+  --color-green: #1e9a52;
+  --color-gold: #ffcf33;
+  --color-gold-soft: #d9b45a;
+  --color-cream: #f6f2e9;
+
+  --font-sans: "Be Vietnam Pro", system-ui, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-condensed: "Oswald", "Arial Narrow", sans-serif;
+  --font-script: "Great Vibes", cursive;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}

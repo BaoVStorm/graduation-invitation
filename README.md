@@ -14,13 +14,14 @@ Trang mở đầu bằng một phong bì 3D. Khi bẻ sáp niêm phong, **vé m�
 
 ## Trạng thái
 
-🚧 **Giai đoạn 0: khởi tạo.** Repo hiện mới có tài liệu định hướng, phần code sẽ được thêm ở bước tiếp theo.
+🚧 **Giai đoạn 1: khung dữ liệu.** Đã có định tuyến theo mã, prerender từng trang khách, đọc dữ liệu cá nhân từ GitHub Secrets và workflow deploy lên GitHub Pages. Trải nghiệm 3D sẽ được thêm ở giai đoạn 2.
 
 | Tài liệu | Nội dung |
 |---|---|
 | [docs/CONTEXT.md](docs/CONTEXT.md) | Bối cảnh, thông tin sự kiện, quyết định kỹ thuật, quyền riêng tư |
 | [docs/DESIGN-BRIEF.md](docs/DESIGN-BRIEF.md) | Prompt thiết kế, storyboard từng cảnh, checklist chất lượng |
 | [docs/RESOURCES.md](docs/RESOURCES.md) | Thư viện, tài sản 3D, nguồn cảm hứng, công cụ |
+| [docs/SECRETS.md](docs/SECRETS.md) | Dữ liệu cá nhân, cách cấu hình GitHub Secrets |
 
 ## Stack dự kiến
 
@@ -28,6 +29,13 @@ Vite · React · TypeScript · React Three Fiber · drei · GSAP · Motion · Ta
 
 ## Thêm khách mời
 
-1. Copy `data/guests.example.json` thành `data/guests.json` (file này không được commit).
-2. Thêm khách theo dạng `{ "code": "abc1", "honorific": "Anh", "name": "Minh", "message": "..." }`.
-3. Build: mỗi mã sẽ được prerender thành một trang riêng, có ảnh preview khi gửi link.
+Danh sách khách, số điện thoại và tên người gửi **không nằm trong repo** mà được nạp từ GitHub Secrets (`SECRET_GUESTS_JSON`, `SECRET_PHONE`, `SECRET_HOST_NAME`). Xem hướng dẫn trong [docs/SECRETS.md](docs/SECRETS.md).
+
+## Chạy ở máy
+
+```bash
+npm install
+cp .env.example .env.local   # điền SECRET_* hoặc tạo data/guests.json
+npm run dev                  # mở http://localhost:5173/<code>
+npm run build                # dist/<code>/index.html cho từng khách
+```

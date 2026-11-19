@@ -1,0 +1,13 @@
+{
+  "title": "Lễ Tốt Nghiệp",
+  "classOf": 2026,
+  "date": "2026-11-27",
+  "weekday": "Thứ Sáu",
+  "time": null,
+  "venue": {
+    "name": "Trường Đại học Công nghệ Thông tin",
+    "short": "ĐHQG TP.HCM",
+    "mapsQuery": "Trường Đại học Công nghệ Thông tin - ĐHQG TP.HCM"
+  },
+  "photo": "images/graduate.webp"
+}
