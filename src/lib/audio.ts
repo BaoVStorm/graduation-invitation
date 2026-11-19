@@ -21,7 +21,11 @@ export type Sfx =
   | 'confetti'
   | 'scribble'
 
-const STORE_KEY = 'invite-sound'
+const STORE_KEY = 'invite-sound-v2'
+type Settings = { muted: boolean; music: number; sfx: number }
+const DEFAULTS: Settings = { muted: false, music: 0.7, sfx: 0.8 }
+/** Mức nền của nhạc trước thanh trượt: file nhạc thật thường đã được master to hơn nhạc tổng hợp */
+const MUSIC_BASE = { synth: 0.55, file: 0.4 }
 const midi = (n: number) => 440 * 2 ** ((n - 69) / 12)
 
 // Vòng hoà âm C – G – Am – F (76 BPM), giai điệu 8 ô nhịp tự soạn
@@ -50,13 +54,24 @@ class AudioEngine {
   private master!: GainNode
   private music!: GainNode
   private sfxBus!: GainNode
+  private musicVol!: GainNode
   private reverb!: ConvolverNode
   private noise!: AudioBuffer
   private step = 0
   private nextTime = 0
   private file: HTMLAudioElement | null = null
   private listeners = new Set<() => void>()
-  muted = readMuted()
+  private settings = readSettings()
+
+  get muted() {
+    return this.settings.muted
+  }
+  get musicVolume() {
+    return this.settings.music
+  }
+  get sfxVolume() {
+    return this.settings.sfx
+  }
 
   get started() {
     return !!this.ctx
@@ -93,12 +108,15 @@ class AudioEngine {
     wet.gain.value = 0.35
     this.reverb.connect(wet).connect(this.master)
 
+    // nhạc: music (fade-in) → musicVol (thanh trượt) → master
+    this.musicVol = ctx.createGain()
+    this.musicVol.gain.value = this.settings.music
+    this.musicVol.connect(this.master)
     this.music = ctx.createGain()
     this.music.gain.value = 0
-    this.music.connect(this.master)
-    this.music.connect(this.reverb)
+    this.music.connect(this.musicVol)
     this.sfxBus = ctx.createGain()
-    this.sfxBus.gain.value = 0.8
+    this.sfxBus.gain.value = this.settings.sfx
     this.sfxBus.connect(this.master)
     this.sfxBus.connect(this.reverb)
 
@@ -106,9 +124,6 @@ class AudioEngine {
     const d = this.noise.getChannelData(0)
     for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1
 
-    // nhạc nền nhỏ dần lên trong 4 giây
-    this.music.gain.setValueAtTime(0, ctx.currentTime)
-    this.music.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 4)
     if (event.music) this.playFile(event.music)
     else this.startScheduler()
 
@@ -125,28 +140,70 @@ class AudioEngine {
   }
 
   toggle() {
-    if (!this.ctx) this.start()
-    this.muted = !this.muted
+    this.setMuted(!this.settings.muted)
+  }
+
+  setMuted(muted: boolean) {
+    if (!this.ctx && !muted) this.start()
+    this.update({ muted })
+    if (this.ctx) this.master.gain.setTargetAtTime(muted ? 0 : 1, this.ctx.currentTime, 0.08)
+  }
+
+  /** 0..1 */
+  setMusicVolume(v: number) {
+    const music = clamp01(v)
+    this.update({ music, ...(music > 0 && this.settings.muted && { muted: false }) })
+    if (!this.ctx) return
+    this.musicVol.gain.setTargetAtTime(music, this.ctx.currentTime, 0.05)
+    if (!this.settings.muted) this.master.gain.setTargetAtTime(1, this.ctx.currentTime, 0.05)
+  }
+
+  /** 0..1 */
+  setSfxVolume(v: number) {
+    const sfx = clamp01(v)
+    this.update({ sfx })
+    if (this.ctx) this.sfxBus.gain.setTargetAtTime(sfx, this.ctx.currentTime, 0.05)
+  }
+
+  private update(patch: Partial<Settings>) {
+    this.settings = { ...this.settings, ...patch }
     try {
-      localStorage.setItem(STORE_KEY, this.muted ? 'off' : 'on')
+      localStorage.setItem(STORE_KEY, JSON.stringify(this.settings))
     } catch {
       /* chế độ ẩn danh: bỏ qua */
     }
-    if (this.ctx) this.master.gain.setTargetAtTime(this.muted ? 0 : 1, this.ctx.currentTime, 0.08)
     this.emit()
+  }
+
+  private fadeIn(level: number) {
+    const ctx = this.ctx!
+    this.music.gain.cancelScheduledValues(ctx.currentTime)
+    this.music.gain.setValueAtTime(0, ctx.currentTime)
+    this.music.gain.linearRampToValueAtTime(level, ctx.currentTime + 3)
   }
 
   // ---------------- nhạc nền ----------------
   private playFile(src: string) {
     const el = (this.file = new Audio(`${import.meta.env.BASE_URL}${src}`))
     el.loop = true
-    el.crossOrigin = 'anonymous'
+    el.preload = 'auto'
     this.ctx!.createMediaElementSource(el).connect(this.music)
-    void el.play().catch(() => this.startScheduler())
+    // file lỗi hoặc không tải được → quay về nhạc tổng hợp
+    const fallback = () => {
+      if (!this.file) return
+      this.file = null
+      el.pause()
+      this.startScheduler()
+    }
+    el.addEventListener('error', fallback, { once: true })
+    this.fadeIn(MUSIC_BASE.file)
+    void el.play().catch(fallback)
   }
 
   private startScheduler() {
     const ctx = this.ctx!
+    this.music.connect(this.reverb)
+    this.fadeIn(MUSIC_BASE.synth)
     this.nextTime = ctx.currentTime + 0.1
     const eighth = 60 / BPM / 2
     window.setInterval(() => {
@@ -275,7 +332,7 @@ class AudioEngine {
   }
 
   play(name: Sfx) {
-    if (!this.ctx || this.muted) return
+    if (!this.ctx || this.settings.muted || this.settings.sfx === 0) return
     switch (name) {
       case 'tap':
         return this.tone({ f: 900, f2: 620, dur: 0.08, gain: 0.12 })
@@ -321,11 +378,15 @@ class AudioEngine {
   }
 }
 
-function readMuted() {
+const clamp01 = (v: number) => Math.min(1, Math.max(0, Number.isFinite(v) ? v : 0))
+
+function readSettings(): Settings {
   try {
-    return localStorage.getItem(STORE_KEY) === 'off'
+    const raw = JSON.parse(localStorage.getItem(STORE_KEY) ?? 'null') as Partial<Settings> | null
+    if (!raw) return { ...DEFAULTS, muted: localStorage.getItem('invite-sound') === 'off' }
+    return { muted: !!raw.muted, music: clamp01(raw.music ?? DEFAULTS.music), sfx: clamp01(raw.sfx ?? DEFAULTS.sfx) }
   } catch {
-    return false
+    return { ...DEFAULTS }
   }
 }
 

@@ -677,3 +677,50 @@ body {
     animation: none;
   }
 }
+
+/* ---------- bảng âm thanh ---------- */
+.sound-panel {
+  background: linear-gradient(160deg, rgba(25, 42, 110, 0.92), rgba(10, 20, 64, 0.94));
+  border: 1px solid rgba(255, 207, 51, 0.3);
+  box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(14px);
+  animation: panel-in 0.18s ease-out;
+}
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+}
+.vol-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffcf33 var(--val), rgba(255, 255, 255, 0.18) var(--val));
+  outline: none;
+  cursor: pointer;
+}
+.vol-range:disabled {
+  cursor: not-allowed;
+}
+.vol-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #ffcf33;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+.vol-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #ffcf33;
+}
+.vol-range:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 207, 51, 0.4);
+}
