@@ -4,9 +4,11 @@ export type Guest = { honorific: string; name: string; message?: string; self?: 
 export type InviteData = {
   guest: Guest | null
   contact: { phone: string } | null
+  /** endpoint gửi lời chúc (từ SECRET_WISH_EMAIL) */
+  wish: { endpoint: string } | null
 }
 
-const EMPTY: InviteData = { guest: null, contact: null }
+const EMPTY: InviteData = { guest: null, contact: null, wish: null }
 
 /** Dữ liệu được prerender nhúng vào HTML của từng trang khách. */
 export function readInvite(): InviteData {
@@ -26,6 +28,7 @@ export const guestName = (invite.guest ? [invite.guest.honorific, invite.guest.n
 /** Cách gọi ngắn trong câu văn: "anh", "bạn", "cô"… */
 export const guestPronoun = (invite.guest?.honorific || 'bạn').toLowerCase()
 export const hostName: string | null = event.host?.name || null
+export const studentId: string | null = event.host?.studentId || null
 /** Cách chủ nhân tự xưng với khách này: "mình" (mặc định), "em", "con"… */
 export const guestSelf = invite.guest?.self || 'mình'
 

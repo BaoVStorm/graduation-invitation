@@ -34,17 +34,22 @@ export function useExit(ref: RefObject<HTMLElement | null>) {
   )
 }
 
-export function GoldButton({ children, onClick, className = '' }: { children: ReactNode; onClick: () => void; className?: string }) {
+type ButtonProps = { children: ReactNode; onClick?: () => void; className?: string; arrow?: boolean; ghost?: boolean; type?: 'button' | 'submit'; disabled?: boolean }
+
+/** Nút chính (giấy ngà, khung kép) hoặc nút phụ (ghost). `arrow` thêm mũi tên mảnh ở cuối. */
+export function GoldButton({ children, onClick, className = '', arrow = false, ghost = false, type = 'button', disabled }: ButtonProps) {
   return (
     <button
-      type="button"
+      type={type}
+      disabled={disabled}
       onClick={() => {
         sfx('tap')
-        onClick()
+        onClick?.()
       }}
-      className={`btn-gold ${className}`}
+      className={`${ghost ? 'btn-ghost' : 'btn-gold'} ${className}`}
     >
       {children}
+      {arrow && <span className="btn-arrow" aria-hidden />}
     </button>
   )
 }

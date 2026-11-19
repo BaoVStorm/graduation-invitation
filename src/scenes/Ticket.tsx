@@ -1,7 +1,7 @@
 import gsap from 'gsap'
 import { useLayoutEffect, useRef } from 'react'
 import { Barcode, GoldButton, PlaneIcon, Split, useExit } from '../components/ui'
-import { event, eventDay, guestName, photoUrl } from '../lib/invite'
+import { event, eventDay, guestName, hostName, photoUrl, studentId } from '../lib/invite'
 import { sfx } from '../lib/audio'
 import { useTilt } from '../lib/motion'
 
@@ -99,6 +99,15 @@ export function Ticket({ onBoard }: { onBoard: () => void }) {
                   <div className="t-lbl">GHẾ</div>
                   <div className="t-val text-green">VIP</div>
                 </div>
+                {hostName && (
+                  <div className="col-span-3">
+                    <div className="t-lbl">CHUYẾN BAY CỦA TÂN KHOA</div>
+                    <div className="t-venue">
+                      {hostName}
+                      {studentId && <span className="t-sid"> · MSSV {studentId}</span>}
+                    </div>
+                  </div>
+                )}
                 <div className="col-span-3">
                   <div className="t-lbl">CỔNG KHỞI HÀNH · ĐỊA ĐIỂM</div>
                   <div className="t-venue">
@@ -122,8 +131,8 @@ export function Ticket({ onBoard }: { onBoard: () => void }) {
         </div>
       </div>
       <div className="next flex flex-col items-center gap-3">
-        <GoldButton onClick={board}>
-          <PlaneIcon className="size-5" /> Lên máy bay
+        <GoldButton onClick={board} arrow>
+          <PlaneIcon /> Lên máy bay
         </GoldButton>
         <p className="text-xs text-white/50">Nghiêng điện thoại để thấy ánh hologram</p>
       </div>

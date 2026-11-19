@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { dateLabel, event, photoUrl } from '../lib/invite'
+import { dateLabel, event, hostName, photoUrl, studentId } from '../lib/invite'
 import { Split } from './ui'
 
 /** Bìa tạp chí GRADUATE. dùng chung; phần chữ phía dưới (children) đổi theo trang khách / trang chính */
@@ -43,6 +43,8 @@ export function Cover({ children }: { children: ReactNode }) {
             {event.classOf}
           </text>
         </svg>
+        {hostName && <p className="m-host">{hostName}</p>}
+        {studentId && <p className="m-small">MSSV {studentId}</p>}
         <p className="m-small">
           {event.venue.name}
           <br />

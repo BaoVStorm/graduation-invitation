@@ -51,15 +51,12 @@ export function Intro({ onOpen }: { onOpen: () => void }) {
               <GuestName stack />
             </h1>
           </div>
-          <button type="button" onClick={open} className="cta cta-open mt-10">
-            <span className="cta-seal">
-              <EnvelopeIcon className="size-5" />
+          <button type="button" onClick={open} className="cta seal-btn mt-10" aria-label="Mở thư">
+            <span className="seal-btn__wax">
+              <EnvelopeIcon />
             </span>
-            <span className="cta-text">
-              <b className="gold-text">Mở thư</b>
-              <small>Chạm để mở</small>
-            </span>
-            <span className="cta-shine" />
+            <span className="seal-btn__label">Mở thư</span>
+            <span className="seal-btn__hint">Chạm vào con dấu</span>
           </button>
         </div>
       </div>

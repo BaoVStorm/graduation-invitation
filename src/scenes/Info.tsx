@@ -1,13 +1,14 @@
 import gsap from 'gsap'
 import { useLayoutEffect, useRef, type ReactNode } from 'react'
+import { WishForm } from '../components/WishForm'
 import { downloadIcs, googleCalendarUrl } from '../lib/calendar'
 import { dateLabel, event, formatPhone, guestName, hostName, invite, mapsHref, photoUrl, telHref, zaloHref } from '../lib/invite'
 
-function Card({ icon, title, children }: { icon: string; title: string; children: ReactNode }) {
+function Card({ no, title, children }: { no: string; title: string; children: ReactNode }) {
   return (
     <section className="info-card">
-      <div className="flex items-center gap-2 text-xs font-semibold tracking-[0.3em] text-gold uppercase">
-        <span aria-hidden>{icon}</span>
+      <div className="flex items-baseline gap-3 border-b border-white/10 pb-3 font-condensed text-xs tracking-[0.28em] text-[#f4ead2]/70 uppercase">
+        <span className="text-gold">{no}</span>
         {title}
       </div>
       <div className="mt-3">{children}</div>
@@ -41,25 +42,25 @@ export function Info({ onReplay }: { onReplay: () => void }) {
         </header>
 
         <div className="mt-8 space-y-4">
-          <Card icon="🗓" title="Thời gian">
+          <Card no="01" title="Thời gian">
             <p className="font-display text-2xl font-bold">
               {event.weekday}, {dateLabel}
             </p>
             <p className="mt-1 text-white/70">{event.time ? `Bắt đầu lúc ${event.time}` : 'Giờ cụ thể sẽ báo sau'}</p>
           </Card>
 
-          <Card icon="📍" title="Địa điểm">
+          <Card no="02" title="Địa điểm">
             <p className="font-display text-xl leading-snug font-bold">
               {event.venue.name}
               <br />
               {event.venue.short}
             </p>
             <a href={mapsHref} target="_blank" rel="noreferrer" className="btn-ghost mt-4">
-              Mở Google Maps ↗
+              Mở Google Maps
             </a>
           </Card>
 
-          <Card icon="⏰" title="Lưu vào lịch">
+          <Card no="03" title="Lưu vào lịch">
             <div className="flex flex-wrap gap-2">
               <a href={googleCalendarUrl(details)} target="_blank" rel="noreferrer" className="btn-ghost">
                 Google Calendar
@@ -71,10 +72,10 @@ export function Info({ onReplay }: { onReplay: () => void }) {
           </Card>
 
           {invite.contact && (
-            <Card icon="📞" title="Liên hệ">
+            <Card no="04" title="Liên hệ">
               <p className="font-condensed text-2xl tracking-wide">{formatPhone(invite.contact.phone)}</p>
               <div className="mt-4 flex gap-2">
-                <a href={telHref(invite.contact.phone)} className="btn-gold !px-5 !py-2.5 text-sm">
+                <a href={telHref(invite.contact.phone)} className="btn-gold">
                   Gọi điện
                 </a>
                 <a href={zaloHref(invite.contact.phone)} target="_blank" rel="noreferrer" className="btn-ghost">
@@ -83,12 +84,18 @@ export function Info({ onReplay }: { onReplay: () => void }) {
               </div>
             </Card>
           )}
+
+          {invite.wish && (
+            <Card no={invite.contact ? '05' : '04'} title="Gửi lời chúc">
+              <WishForm defaultName={invite.guest?.name ?? ''} />
+            </Card>
+          )}
         </div>
 
         <footer className="i-foot mt-10 text-center">
           <p className="font-display text-xl italic text-white/85">“Sự có mặt của bạn là món quà ý nghĩa nhất.”</p>
           <button type="button" onClick={onReplay} className="mt-6 text-sm tracking-widest text-gold uppercase underline-offset-4 hover:underline">
-            ↺ Xem lại từ đầu
+            Xem lại từ đầu
           </button>
         </footer>
       </div>

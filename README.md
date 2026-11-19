@@ -12,6 +12,8 @@ https://baovstorm.github.io/graduation-invitation/           →  thông báo t�
 
 Trang mở đầu bằng một phong bì 3D. Khi bẻ sáp niêm phong, **vé máy bay "Graduation Air" (Sinh viên → Tân khoa)** in tên khách sẽ trượt ra. Cuộn xuống là **bìa tạp chí "GRADUATE."**, cảnh tung mũ có confetti, rồi đến thông tin sự kiện, nút thêm vào lịch và chỉ đường. Nhạc nền là bài "Motivation" (AtlasAudio, Pixabay). Hiệu ứng âm thanh cho từng cảnh được tổng hợp bằng Web Audio, có bảng chỉnh âm lượng.
 
+Khách có thể **gửi lời chúc** thẳng vào email tân khoa (email nằm trong GitHub Secret `SECRET_WISH_EMAIL`).
+
 Trang chính `/` không phải thư mời: đó là trang **thông báo tốt nghiệp**, có bìa tạp chí, pháo giấy 3D và lời cảm ơn, không hiện tên ai.
 
 ## Trạng thái

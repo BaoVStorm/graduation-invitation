@@ -8,7 +8,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-export const SECRET_KEYS = ['SECRET_PHONE']
+export const SECRET_KEYS = ['SECRET_PHONE', 'SECRET_WISH_EMAIL']
 
 const CODE_RE = /^[a-z0-9][a-z0-9-]{2,31}$/
 // Tên thư mục đã dùng trong dist/, không được làm mã khách
@@ -26,6 +26,7 @@ export function loadSecrets(env = process.env, root = process.cwd()) {
   const file = path.join(root, GUESTS_FILE)
   return {
     phone: clean(env.SECRET_PHONE),
+    wishEndpoint: wishEndpoint(clean(env.SECRET_WISH_EMAIL)),
     guests: fs.existsSync(file) ? parseGuests(fs.readFileSync(file, 'utf8')) : [],
   }
 }
@@ -55,11 +56,23 @@ export function parseGuests(raw) {
   })
 }
 
+/**
+ * SECRET_WISH_EMAIL nhận email (gửi qua FormSubmit) hoặc một URL endpoint đầy đủ
+ * (ví dụ alias ngẫu nhiên của FormSubmit, hoặc dịch vụ khác nhận JSON POST).
+ */
+function wishEndpoint(v) {
+  if (!v) return null
+  if (/^https?:\/\//.test(v)) return v
+  if (!/^[^\s@/]+@[^\s@/]+\.[^\s@/]+$/.test(v)) throw new Error('SECRET_WISH_EMAIL không phải email hoặc URL hợp lệ')
+  return `https://formsubmit.co/ajax/${v}`
+}
+
 /** Dữ liệu nhúng vào trang. Trang chung (guest = null) không chứa số điện thoại. */
 export function payloadFor(secrets, guest) {
-  if (!guest) return { guest: null, contact: null }
+  const wish = secrets.wishEndpoint ? { endpoint: secrets.wishEndpoint } : null
+  if (!guest) return { guest: null, contact: null, wish }
   const { code, ...info } = guest
-  return { guest: info, contact: secrets.phone ? { phone: secrets.phone } : null }
+  return { guest: info, contact: secrets.phone ? { phone: secrets.phone } : null, wish }
 }
 
 export function metaFor(guest, event) {

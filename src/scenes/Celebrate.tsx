@@ -80,8 +80,8 @@ export function Celebrate({ onNext }: { onNext: () => void }) {
           <Unit value={t.s} label="Giây" />
         </div>
       )}
-      <GoldButton onClick={() => exit(onNext)} className="c-next pointer-events-auto mt-10">
-        Xem thông tin buổi lễ ↓
+      <GoldButton onClick={() => exit(onNext)} className="c-next pointer-events-auto mt-10" arrow>
+        Thông tin buổi lễ
       </GoldButton>
     </div>
   )

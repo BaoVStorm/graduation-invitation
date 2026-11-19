@@ -41,5 +41,5 @@ for (const guest of secrets.guests) {
 // Chỉ in trạng thái, KHÔNG in giá trị secret ra log CI
 const flag = (v) => (v ? 'đã cấu hình' : 'CHƯA cấu hình')
 console.log(`[prerender] ${secrets.guests.length} trang khách + trang chung`)
-console.log(`[prerender] SECRET_PHONE: ${flag(secrets.phone)}`)
+console.log(`[prerender] SECRET_PHONE: ${flag(secrets.phone)} · SECRET_WISH_EMAIL: ${flag(secrets.wishEndpoint)}`)
 if (!site) console.log('[prerender] SITE_URL trống → bỏ qua og:url / og:image')

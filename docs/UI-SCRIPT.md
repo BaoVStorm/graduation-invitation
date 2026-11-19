@@ -18,7 +18,7 @@
 | 2.0s | Sticker "CHÍNH THỨC RA TRƯỜNG!" bật ra |
 | 2.2s | **Mũ tốt nghiệp và pháo giấy 3D** |
 | 2.3s | Headline *"Chính thức tốt nghiệp — hành trình mới bắt đầu."* và ngày lễ |
-| 2.7s | Lời cảm ơn và nút **"🎉 Gửi lời chúc mừng"**. Bấm nút sẽ bắn thêm pháo giấy và bật nhạc. |
+| 2.7s | Lời cảm ơn, tên + MSSV tân khoa, nút **"Gửi lời chúc"**. Bấm nút mở bảng trượt từ dưới lên (tên + lời chúc). Gửi xong thì bắn pháo giấy. |
 
 ## Mạch cảm xúc
 
@@ -154,7 +154,8 @@ Màn hình tĩnh, rõ ràng, cuộn được. Đây là phần khách sẽ mở 
 3. **Địa điểm:** tên trường và nút **Mở Google Maps**
 4. **Lưu vào lịch:** **Google Calendar** và **Tải file .ics** (Apple/Outlook)
 5. **Liên hệ** (chỉ có trên trang khách): **Gọi** và **Zalo**
-6. **Chân trang:** *"Sự có mặt của bạn là món quà ý nghĩa nhất."* và nút **"↺ Xem lại từ đầu"**
+6. **Gửi lời chúc:** form tên (điền sẵn tên khách) + lời chúc, gửi thẳng vào email tân khoa (`SECRET_WISH_EMAIL`)
+7. **Chân trang:** *"Sự có mặt của bạn là món quà ý nghĩa nhất."* và nút **"↺ Xem lại từ đầu"**
 
 ## Âm thanh
 

@@ -1,13 +1,14 @@
 # Dữ liệu cá nhân & GitHub Secrets
 
-Repo này **public**. Chỉ có **một** dữ liệu được giữ bí mật qua GitHub Secret: **số điện thoại**.
+Repo này **public**. Có **hai** dữ liệu được giữ bí mật qua GitHub Secret: **số điện thoại** và **email nhận lời chúc**.
 
 ## Phân loại dữ liệu (đã chốt 19/11/2026)
 
 | Dữ liệu | Lưu ở đâu | Lý do |
 |---|---|---|
 | Số điện thoại liên hệ | 🔒 **`SECRET_PHONE`** (GitHub Secret) | Chủ nhân không muốn số nằm trong repo |
-| Tên người gửi (tân khoa) | `src/config/event.json` → `host.name` | Chủ nhân đồng ý công khai |
+| Email nhận lời chúc | 🔒 **`SECRET_WISH_EMAIL`** (GitHub Secret) | Form "Gửi lời chúc" gửi thẳng vào hộp thư này |
+| Tên + MSSV tân khoa | `src/config/event.json` → `host` | Chủ nhân đồng ý công khai |
 | Danh sách khách (path, xưng hô, tên, lời nhắn) | `data/guests.json` (commit) | Chủ nhân tự điền bằng `npm run guests` |
 | Ảnh tốt nghiệp | `public/images/` | Chủ nhân đồng ý; ảnh đã xoá metadata EXIF |
 | Ngày, giờ, địa điểm | `src/config/event.json` | Thông tin công khai của sự kiện |
@@ -23,6 +24,28 @@ gh secret set SECRET_PHONE --repo BaoVStorm/graduation-invitation
 ```
 
 Sau đó vào **Actions → Deploy to GitHub Pages → Run workflow** để build lại.
+
+## Cấu hình `SECRET_WISH_EMAIL` (form gửi lời chúc)
+
+Form dùng dịch vụ miễn phí **[FormSubmit](https://formsubmit.co)**, không cần backend hay tài khoản.
+
+```bash
+gh secret set SECRET_WISH_EMAIL --repo BaoVStorm/graduation-invitation
+```
+
+Nhập email nhận lời chúc khi được hỏi, rồi chạy lại workflow deploy.
+
+**Kích hoạt (chỉ làm một lần):** lời chúc đầu tiên gửi qua form sẽ khiến FormSubmit gửi một email *"Confirm your email"* tới hộp thư nhận. Bấm **Activate Form** trong email đó. Từ lần sau, mọi lời chúc sẽ về thẳng hộp thư.
+
+**Giấu email kỹ hơn (khuyên dùng):** email nằm trong HTML của trang đã build, nên ai xem mã nguồn trang đều thấy được. Sau khi kích hoạt, FormSubmit cho một **chuỗi ngẫu nhiên** dùng thay cho email. Đặt lại secret bằng URL đó:
+
+```bash
+gh secret set SECRET_WISH_EMAIL --repo BaoVStorm/graduation-invitation --body "https://formsubmit.co/ajax/<chuoi-ngau-nhien>"
+```
+
+`SECRET_WISH_EMAIL` nhận **email** hoặc **URL endpoint đầy đủ**. URL nào nhận JSON POST và trả về `{"success": "true"}` đều dùng được. Chưa đặt secret thì form tự ẩn.
+
+Mỗi lời chúc gửi đi gồm: tên người gửi, lời chúc, trang gửi (trang chính hoặc path của khách). Form có ô bẫy spam (`_honey`).
 
 ## Cơ chế bảo vệ số điện thoại
 

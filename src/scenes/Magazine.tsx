@@ -2,7 +2,7 @@ import gsap from 'gsap'
 import { useLayoutEffect, useRef } from 'react'
 import { Cover } from '../components/Cover'
 import { CapIcon, GoldButton, useExit } from '../components/ui'
-import { dateLabel, event, guestName, guestPronoun, guestSelf, hostName, invite } from '../lib/invite'
+import { dateLabel, event, guestName, guestPronoun, guestSelf, hostName, invite, studentId } from '../lib/invite'
 import { sfx } from '../lib/audio'
 import { useTilt } from '../lib/motion'
 
@@ -78,6 +78,11 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
                     {hostName ?? 'Tân khoa 2026'}
                   </text>
                 </svg>
+                {studentId && (
+                  <p className="l-sid">
+                    Tân khoa · MSSV {studentId} · Class of {event.classOf}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -96,12 +101,12 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
       </div>
 
       {stage === 'magazine' ? (
-        <GoldButton onClick={onOpen} className="m-next">
-          Mở số đặc biệt →
+        <GoldButton onClick={onOpen} className="m-next" arrow>
+          Mở số đặc biệt
         </GoldButton>
       ) : (
         <GoldButton onClick={() => exit(onDone, { scale: 0.9 })} className="l-next">
-          <CapIcon className="size-5" /> Tung mũ ăn mừng
+          <CapIcon /> Tung mũ ăn mừng
         </GoldButton>
       )}
     </div>
