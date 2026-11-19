@@ -3,9 +3,9 @@
 Website thư mời tốt nghiệp 3D, **mỗi khách một đường dẫn riêng** nhưng dùng chung một source code. Chỉ cần đổi dữ liệu.
 
 ```
-https://baovstorm.github.io/graduation-invitation-3d/thanhvinh  →  "Gửi Bạn Thành Vinh"
-https://baovstorm.github.io/graduation-invitation-3d/ngocthinh  →  "Gửi Anh Ngọc Thịnh"
-https://baovstorm.github.io/graduation-invitation-3d/           →  bản mời chung
+https://baovstorm.github.io/graduation-invitation/thanhvinh  →  "Gửi Bạn Thành Vinh"
+https://baovstorm.github.io/graduation-invitation/ngocthinh  →  "Gửi Anh Ngọc Thịnh"
+https://baovstorm.github.io/graduation-invitation/           →  bản mời chung
 ```
 
 ## Concept

@@ -19,7 +19,7 @@ Repo này **public**. Chỉ có **một** dữ liệu được giữ bí mật q
 **GitHub → repo → Settings → Secrets and variables → Actions → New repository secret**, tên `SECRET_PHONE`. Hoặc chạy:
 
 ```bash
-gh secret set SECRET_PHONE --repo BaoVStorm/graduation-invitation-3d
+gh secret set SECRET_PHONE --repo BaoVStorm/graduation-invitation
 ```
 
 Sau đó vào **Actions → Deploy to GitHub Pages → Run workflow** để build lại.
@@ -38,8 +38,8 @@ Sau đó vào **Actions → Deploy to GitHub Pages → Run workflow** để buil
 Toàn bộ danh sách khách nằm trong **`data/guests.json`**, ngay trong source. Mỗi khách là **một path riêng**:
 
 ```
-https://baovstorm.github.io/graduation-invitation-3d/thanhvinh   →  "Gửi Bạn Thành Vinh"
-https://baovstorm.github.io/graduation-invitation-3d/ngocthinh   →  "Gửi Anh Ngọc Thịnh"
+https://baovstorm.github.io/graduation-invitation/thanhvinh   →  "Gửi Bạn Thành Vinh"
+https://baovstorm.github.io/graduation-invitation/ngocthinh   →  "Gửi Anh Ngọc Thịnh"
 ```
 
 Mở menu bằng lệnh:

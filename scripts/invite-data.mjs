@@ -106,7 +106,7 @@ export function renderPage(template, { payload, title, description, url, image }
     .replace('<!--app-data-->', `<script id="invite-data" type="application/json">${json}</script>`)
 }
 
-/** Lấy mã khách từ URL, ví dụ "/graduation-invitation-3d/a7k2/?x=1" → "a7k2" */
+/** Lấy mã khách từ URL, ví dụ "/graduation-invitation/a7k2/?x=1" → "a7k2" */
 export function codeFromUrl(url, base = '/') {
   let p = decodeURIComponent(String(url).split(/[?#]/)[0])
   if (base !== '/' && p.startsWith(base)) p = p.slice(base.length)

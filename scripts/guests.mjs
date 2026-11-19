@@ -11,7 +11,7 @@ import readline from 'node:readline'
 import { stdin, stdout } from 'node:process'
 import { GUESTS_FILE, parseGuests } from './invite-data.mjs'
 
-const SITE = (process.env.SITE_URL || 'https://baovstorm.github.io/graduation-invitation-3d/').replace(/\/?$/, '/')
+const SITE = (process.env.SITE_URL || 'https://baovstorm.github.io/graduation-invitation/').replace(/\/?$/, '/')
 const HONORIFICS = ['Bạn', 'Anh', 'Chị', 'Em', 'Thầy', 'Cô', 'Chú', 'Bác']
 const c = { gold: (s) => `\x1b[33m${s}\x1b[0m`, green: (s) => `\x1b[32m${s}\x1b[0m`, red: (s) => `\x1b[31m${s}\x1b[0m`, dim: (s) => `\x1b[2m${s}\x1b[0m`, bold: (s) => `\x1b[1m${s}\x1b[0m` }
 

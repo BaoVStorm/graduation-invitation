@@ -36,7 +36,7 @@ export function downloadIcs(details: string) {
   const ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//graduation-invitation-3d//VI',
+    'PRODID:-//graduation-invitation//VI',
     'BEGIN:VEVENT',
     `UID:graduation-${eventDay.year}@invite`,
     `DTSTAMP:${utcStamp(new Date())}`,
