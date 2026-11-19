@@ -8,11 +8,11 @@ Repo này **public**. Chỉ có **một** dữ liệu được giữ bí mật q
 |---|---|---|
 | Số điện thoại liên hệ | 🔒 **`SECRET_PHONE`** (GitHub Secret) | Chủ nhân không muốn số nằm trong repo |
 | Tên người gửi (tân khoa) | `src/config/event.json` → `host.name` | Chủ nhân đồng ý công khai |
-| Danh sách khách (mã, xưng hô, tên, lời nhắn) | `data/guests.json` (commit) | Chủ nhân tự cấu hình. Mỗi khách có mã ngẫu nhiên riêng. |
+| Danh sách khách (path, xưng hô, tên, lời nhắn) | `data/guests.json` (commit) | Chủ nhân tự điền bằng `npm run guests` |
 | Ảnh tốt nghiệp | `public/images/` | Chủ nhân đồng ý; ảnh đã xoá metadata EXIF |
 | Ngày, giờ, địa điểm | `src/config/event.json` | Thông tin công khai của sự kiện |
 
-> ⚠️ `data/guests.json` nằm trong repo public, nên ai mở repo trên GitHub cũng thấy các mã và tên khách. Mã ngẫu nhiên chỉ ngăn người **không xem repo** đoán ra đường dẫn. Nếu sau này muốn giấu cả danh sách khách, chuyển file này sang một secret theo cách giống `SECRET_PHONE`.
+> `data/guests.json` nằm trong repo public, nên ai mở repo trên GitHub cũng thấy path và tên khách. Nếu sau này muốn giấu danh sách khách, chuyển file này sang một secret theo cách giống `SECRET_PHONE`.
 
 ## Cấu hình `SECRET_PHONE`
 
@@ -33,31 +33,56 @@ Sau đó vào **Actions → Deploy to GitHub Pages → Run workflow** để buil
 
 > Ai có link của khách thì xem được số điện thoại trên trang đó. Đó là mục đích của nút Gọi/Zalo.
 
-## Thêm khách
+## Quản lý khách mời (chạy ở máy)
 
-```bash
-npm run guest:add -- "Anh" "Minh" "Lời nhắn riêng (không bắt buộc)"
+Toàn bộ danh sách khách nằm trong **`data/guests.json`**, ngay trong source. Mỗi khách là **một path riêng**:
+
+```
+https://baovstorm.github.io/graduation-invitation-3d/thanhvinh   →  "Gửi Bạn Thành Vinh"
+https://baovstorm.github.io/graduation-invitation-3d/ngocthinh   →  "Gửi Anh Ngọc Thịnh"
 ```
 
-Lệnh này tạo mã ngẫu nhiên 8 ký tự, ghi vào `data/guests.json` và in ra đường dẫn để gửi. Có thể sửa file trực tiếp:
+Mở menu bằng lệnh:
+
+```bash
+npm run guests
+```
+
+Menu có 4 việc: **thêm**, **sửa**, **xoá** và **xem danh sách**. Khi thêm, script hỏi lần lượt:
+
+| Câu hỏi | Ví dụ | Ghi chú |
+|---|---|---|
+| Tên khách | `Thành Vinh` | Bắt buộc |
+| Xưng hô | `Bạn` | Gợi ý: Bạn, Anh, Chị, Em, Thầy, Cô… Được ghép trước tên và dùng trong câu văn. |
+| Path | `thanhvinh` | Tự gợi ý từ tên (bỏ dấu, viết liền). Chỉ gồm `a-z 0-9 -`, dài 3–32 ký tự, không được trùng. |
+| Bạn tự xưng là | `mình` / `em` | Tự gợi ý "em" khi khách là Anh, Chị, Thầy, Cô |
+| Lời nhắn riêng | `Cảm ơn Vinh vì…` | Hiện trong trang thư ngỏ. Bỏ trống thì dùng câu mặc định. |
+
+Script hiện bản xem trước, hỏi xác nhận, ghi vào `data/guests.json` rồi in ra **link để gửi khách**. Để xem nhanh toàn bộ link:
+
+```bash
+npm run guests -- list
+```
+
+**Đưa lên trang:** commit và push. GitHub Actions tự build lại trong khoảng 1 phút.
+
+```bash
+git add data/guests.json && git commit -m "Cập nhật khách mời" && git push
+```
+
+> Path dễ đọc như `thanhvinh` thì người khác cũng dễ đoán. Đó là đánh đổi để link dễ nhớ. Nếu cần kín hơn, đặt path khó đoán (ví dụ `thanhvinh-k7m2`).
+
+Có thể sửa trực tiếp `data/guests.json`:
 
 ```json
 {
   "guests": [
-    { "code": "k7m2qx9p", "honorific": "Anh", "name": "Minh", "self": "em", "message": "Cảm ơn anh đã luôn chỉ dẫn em." }
+    { "code": "ngocthinh", "honorific": "Anh", "name": "Ngọc Thịnh", "self": "em", "message": "Cảm ơn anh…" }
   ]
 }
 ```
 
-| Trường | Bắt buộc | Ý nghĩa |
-|---|---|---|
-| `code` | ✅ | Đường dẫn `/<code>/`. 3–32 ký tự `a-z 0-9 -`. Không dùng `assets`, `images`, `index`, `404`. |
-| `name` | ✅ | Tên khách |
-| `honorific` | | Xưng hô: Anh, Chị, Bạn, Cô, Thầy… (ghép trước tên, và dùng trong câu văn) |
-| `self` | | Chủ nhân tự xưng với khách này: `mình` (mặc định), `em`, `con`… |
-| `message` | | Lời nhắn riêng, hiện trong trang thư ngỏ |
-
-Mã trùng hoặc sai định dạng sẽ làm build dừng và báo lỗi.
+`code` là path. `self` bỏ trống nghĩa là "mình". Path trùng hoặc sai định dạng sẽ làm build dừng và báo lỗi.
 
 ## Chạy ở máy
 
@@ -65,4 +90,4 @@ Mã trùng hoặc sai định dạng sẽ làm build dừng và báo lỗi.
 cp .env.example .env.local
 ```
 
-Điền `SECRET_PHONE` vào `.env.local`, chạy `npm run dev` rồi mở `http://localhost:5173/demo`.
+Điền `SECRET_PHONE` vào `.env.local`, chạy `npm run dev` rồi mở `http://localhost:5173/thanhvinh`.

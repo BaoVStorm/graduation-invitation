@@ -3,9 +3,9 @@
 Website thư mời tốt nghiệp 3D, **mỗi khách một đường dẫn riêng** nhưng dùng chung một source code. Chỉ cần đổi dữ liệu.
 
 ```
-https://<domain>/a7k2  →  "Gửi Anh Minh"
-https://<domain>/q9xm  →  "Gửi Bạn Lan"
-https://<domain>/      →  bản mời chung
+https://baovstorm.github.io/graduation-invitation-3d/thanhvinh  →  "Gửi Bạn Thành Vinh"
+https://baovstorm.github.io/graduation-invitation-3d/ngocthinh  →  "Gửi Anh Ngọc Thịnh"
+https://baovstorm.github.io/graduation-invitation-3d/           →  bản mời chung
 ```
 
 ## Concept
@@ -30,17 +30,19 @@ Vite · React · TypeScript · React Three Fiber · drei · GSAP · Motion · Ta
 
 ## Thêm khách mời
 
+Danh sách khách nằm trong `data/guests.json`. Mỗi khách là một path. Dùng script để điền:
+
 ```bash
-npm run guest:add -- "Anh" "Minh" "Lời nhắn riêng"
+npm run guests
 ```
 
-Lệnh này tạo mã ngẫu nhiên trong `data/guests.json` và in ra link để gửi. Số điện thoại lấy từ GitHub Secret `SECRET_PHONE`. Xem [docs/SECRETS.md](docs/SECRETS.md).
+Sau đó commit và push `data/guests.json`. Hướng dẫn chi tiết: [docs/SECRETS.md](docs/SECRETS.md#quản-lý-khách-mời-chạy-ở-máy).
 
 ## Chạy ở máy
 
 ```bash
 npm install
 cp .env.example .env.local   # điền SECRET_PHONE
-npm run dev                  # mở http://localhost:5173/demo
+npm run dev                  # mở http://localhost:5173/thanhvinh
 npm run build                # dist/<code>/index.html cho từng khách
 ```

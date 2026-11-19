@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
-    "guest:add": "node scripts/add-guest.mjs"
+    "guests": "node scripts/guests.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.8.2",

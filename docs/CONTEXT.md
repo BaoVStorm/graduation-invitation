@@ -49,7 +49,7 @@ Bản ảnh tĩnh trước đó (nằm trong thư mục `thu-moi-tot-nghiep/` �
 
 - Repo **public**. Chỉ **số điện thoại** là bí mật, lấy qua GitHub Secret **`SECRET_PHONE`**.
 - **Tên chủ nhân** công khai, nằm ở `src/config/event.json` → `host.name` (*chưa điền, chờ chủ nhân cung cấp*).
-- **Danh sách khách** công khai, nằm ở `data/guests.json` (commit). Mỗi khách có mã ngẫu nhiên (tạo bằng `npm run guest:add`). Chủ nhân chấp nhận việc mã hiển thị trong repo.
+- **Danh sách khách** là "DB trong source": `data/guests.json` (commit). Mỗi khách một path dễ đọc (ví dụ `thanhvinh`, `ngocthinh`). Chủ nhân tự điền bằng script chạy ở máy `npm run guests` (menu thêm, sửa, xoá, xem). Mẫu thử hiện có: thanhvinh, ngocthinh.
 - Số điện thoại chỉ được nhúng vào HTML của trang khách. Trang chung, trang 404 và bundle JS đều không có.
 - Chi tiết: [SECRETS.md](SECRETS.md). Khi có dữ liệu nào chủ nhân muốn giấu, thêm secret mới theo cùng cơ chế.
 
