@@ -38,19 +38,20 @@ Bản ảnh tĩnh trước đó (nằm trong thư mục `thu-moi-tot-nghiep/` �
 - **Stack:** Vite + React + TypeScript, React Three Fiber + drei (3D), GSAP (timeline và scroll), Motion (micro-interaction UI), Tailwind CSS.
 - **Routing theo mã:** `/:code`. Mã không tồn tại thì hiện bản mời chung ("Bạn thân mến"), không báo lỗi.
 - **Dữ liệu tách khỏi code:**
-  - `src/config/event.ts`: thông tin sự kiện dùng chung.
-  - `data/guests.json`: danh sách khách `{ code, name, honorific, message? }` (xem `data/guests.example.json`).
+  - `src/config/event.json`: thông tin sự kiện và tên chủ nhân, dùng chung.
+  - `data/guests.json`: danh sách khách `{ code, honorific, name, self?, message? }`.
+- **Kịch bản trải nghiệm:** [UI-SCRIPT.md](UI-SCRIPT.md), 10 cảnh, là nguồn sự thật cho `src/scenes/*` và `src/three/*`.
 - **Prerender từng khách lúc build:** script tạo `dist/<code>/index.html` với thẻ `<title>` và Open Graph riêng (ví dụ "Thư mời gửi Anh Minh"). Nhờ vậy link gửi qua Zalo/Messenger hiện preview đúng tên, và chạy được trên GitHub Pages mà không cần SPA fallback.
 - **Hosting:** GitHub Pages qua GitHub Actions (mặc định). Vercel là phương án dự phòng.
 - **Hiệu năng:** tải 3D theo kiểu lazy, có fallback 2D khi thiết bị yếu hoặc bật `prefers-reduced-motion`. Mục tiêu LCP dưới 2.5s trên 4G, bundle 3D tối đa khoảng 300KB gzip, ảnh dạng WebP/AVIF.
 
-## 5. Quyền riêng tư (đã chốt 19/11/2026)
+## 5. Quyền riêng tư (chốt lại 19/11/2026)
 
-- Repo **public**. Chủ nhân **không cho** commit số điện thoại. **Cho phép** commit ảnh.
-- Mọi dữ liệu cá nhân lấy qua **GitHub Secrets**, đọc bằng env lúc build: `SECRET_PHONE`, `SECRET_HOST_NAME`, `SECRET_GUESTS_JSON`. Chủ nhân sẽ tự cấu hình giá trị sau.
-- Secret chỉ được nhúng vào HTML của đúng trang khách. Trang chung và 404 không có secret, bundle JS cũng không.
-- Chi tiết phân loại và cách cấu hình: [SECRETS.md](SECRETS.md). **Khi thêm loại dữ liệu cá nhân mới, phải thêm secret mới theo cùng quy tắc, không viết cứng vào code.**
-- Mã khách nên là chuỗi ngẫu nhiên 4–6 ký tự (không dùng tên thật làm path) để khó đoán.
+- Repo **public**. Chỉ **số điện thoại** là bí mật, lấy qua GitHub Secret **`SECRET_PHONE`**.
+- **Tên chủ nhân** công khai, nằm ở `src/config/event.json` → `host.name` (*chưa điền, chờ chủ nhân cung cấp*).
+- **Danh sách khách** công khai, nằm ở `data/guests.json` (commit). Mỗi khách có mã ngẫu nhiên (tạo bằng `npm run guest:add`). Chủ nhân chấp nhận việc mã hiển thị trong repo.
+- Số điện thoại chỉ được nhúng vào HTML của trang khách. Trang chung, trang 404 và bundle JS đều không có.
+- Chi tiết: [SECRETS.md](SECRETS.md). Khi có dữ liệu nào chủ nhân muốn giấu, thêm secret mới theo cùng cơ chế.
 
 ## 6. Quy ước
 

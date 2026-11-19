@@ -28,5 +28,7 @@ export default defineConfig(({ mode }) => {
     plugins: [react(), tailwindcss(), inviteDevData(mode, base)],
     // Chặn mọi biến SECRET_* lọt vào import.meta.env phía client
     envPrefix: 'PUBLIC_',
+    // three.js (~250KB gzip) nằm trong chunk Stage, tải song song với màn Loading
+    build: { chunkSizeWarningLimit: 1000 },
   }
 })

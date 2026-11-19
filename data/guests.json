@@ -1,0 +1,5 @@
+{
+  "guests": [
+    { "code": "demo", "honorific": "Bạn", "name": "Khách mời", "message": "Đây là trang mẫu để xem trước toàn bộ trải nghiệm." }
+  ]
+}

@@ -1,6 +1,9 @@
 {
   "title": "Lễ Tốt Nghiệp",
   "classOf": 2026,
+  "host": {
+    "name": null
+  },
   "date": "2026-11-27",
   "weekday": "Thứ Sáu",
   "time": null,

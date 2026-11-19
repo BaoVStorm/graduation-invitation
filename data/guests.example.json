@@ -1,8 +1,0 @@
-{
-  "$comment": "Copy file này thành data/guests.json (đã được gitignore) rồi điền khách thật. Mỗi khách truy cập qua https://<domain>/<code>.",
-  "guests": [
-    { "code": "a7k2", "honorific": "Anh", "name": "Minh", "message": "Cảm ơn anh đã luôn chỉ dẫn em suốt những năm đại học." },
-    { "code": "q9xm", "honorific": "Bạn", "name": "Lan", "message": "Không có bà chắc tui không qua nổi môn Cấu trúc dữ liệu!" },
-    { "code": "z3pd", "honorific": "Cô", "name": "Hạnh" }
-  ]
-}

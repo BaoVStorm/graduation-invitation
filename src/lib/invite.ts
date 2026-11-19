@@ -1,13 +1,12 @@
 import event from '../config/event.json'
 
-export type Guest = { honorific: string; name: string; message?: string }
+export type Guest = { honorific: string; name: string; message?: string; self?: string }
 export type InviteData = {
   guest: Guest | null
-  host: { name: string } | null
   contact: { phone: string } | null
 }
 
-const EMPTY: InviteData = { guest: null, host: null, contact: null }
+const EMPTY: InviteData = { guest: null, contact: null }
 
 /** Dữ liệu được prerender nhúng vào HTML của từng trang khách. */
 export function readInvite(): InviteData {
@@ -20,7 +19,15 @@ export function readInvite(): InviteData {
   }
 }
 
-export const displayName = (g: Guest | null) => (g ? [g.honorific, g.name].filter(Boolean).join(' ') : 'Bạn')
+export const invite = readInvite()
+
+/** "Anh Minh" — dùng cho tiêu đề, phong bì, vé */
+export const guestName = (invite.guest ? [invite.guest.honorific, invite.guest.name].filter(Boolean).join(' ') : 'Bạn').normalize('NFC')
+/** Cách gọi ngắn trong câu văn: "anh", "bạn", "cô"… */
+export const guestPronoun = (invite.guest?.honorific || 'bạn').toLowerCase()
+export const hostName: string | null = event.host?.name || null
+/** Cách chủ nhân tự xưng với khách này: "mình" (mặc định), "em", "con"… */
+export const guestSelf = invite.guest?.self || 'mình'
 
 const digits = (phone: string) => phone.replace(/[^\d+]/g, '')
 export const telHref = (phone: string) => `tel:${digits(phone)}`
@@ -29,4 +36,16 @@ export const formatPhone = (phone: string) => digits(phone).replace(/^(\d{4})(\d
 
 export const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.venue.mapsQuery)}`
 export const asset = (p: string) => `${import.meta.env.BASE_URL}${p}`
+export const photoUrl = asset(event.photo)
+
+const [Y, M, D] = event.date.split('-').map(Number)
+export const eventDay = { year: Y, month: M, day: D }
+export const dateLabel = `${String(D).padStart(2, '0')}.${String(M).padStart(2, '0')}.${Y}`
+
+/** Thời điểm bắt đầu theo giờ Việt Nam (UTC+7). Chưa có giờ thì lấy 07:00. */
+export function eventStart(): Date {
+  const [h, m] = (event.time ?? '07:00').split(':').map(Number)
+  return new Date(Date.UTC(Y, M - 1, D, h - 7, m))
+}
+
 export { event }

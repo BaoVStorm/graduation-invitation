@@ -5,8 +5,9 @@
   --color-navy-deep: #13235e;
   --color-green: #1e9a52;
   --color-gold: #ffcf33;
-  --color-gold-soft: #d9b45a;
+  --color-gold-soft: #e2c27a;
   --color-cream: #f6f2e9;
+  --color-ink: #141a33;
 
   --font-sans: "Be Vietnam Pro", system-ui, sans-serif;
   --font-display: "Playfair Display", Georgia, serif;
@@ -14,6 +15,665 @@
   --font-script: "Great Vibes", cursive;
 }
 
-html {
+html,
+body {
+  height: 100%;
+  background: #0a1440;
   -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+/* ---------- khung cảnh ---------- */
+.scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- nút ---------- */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffe07a, #ffcf33 55%, #e8b21f);
+  color: #0f1f5c;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.95rem 1.9rem;
+  box-shadow: 0 10px 30px -8px rgba(255, 207, 51, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px -8px rgba(255, 207, 51, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+.btn-gold:active {
+  transform: scale(0.97);
+}
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 207, 51, 0.55);
+  color: #ffcf33;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.6rem 1.2rem;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+.btn-ghost:hover {
+  background: rgba(255, 207, 51, 0.1);
+}
+
+.pulse {
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 207, 51, 0.55), 0 10px 30px -8px rgba(255, 207, 51, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgba(255, 207, 51, 0), 0 10px 30px -8px rgba(255, 207, 51, 0.6);
+  }
+}
+.ring-pulse::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 999px;
+  border: 1px solid #ffcf33;
+  animation: ring 1.8s ease-out infinite;
+}
+@keyframes ring {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* ---------- nghiêng 3D dùng chung ---------- */
+.tilt {
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  will-change: transform;
+}
+.flipper,
+.mag {
+  transform-style: preserve-3d;
+}
+.face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* =========================================================
+   VÉ GRADUATION AIR — kích thước theo cqw (100cqw = bề ngang vé)
+   ========================================================= */
+.ticket {
+  container-type: inline-size;
+  position: relative;
+  width: min(88vw, 360px, 40svh);
+  background: #fff;
+  color: #141a33;
+  border-radius: 6cqw;
+  overflow: hidden;
+  box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.ticket.back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+}
+.t-head {
+  height: 14cqw;
+  background: #13235e;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6cqw;
+}
+.t-brand {
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+  font: 700 5.4cqw/1 Oswald, sans-serif;
+  letter-spacing: 0.06em;
+}
+.t-plane {
+  width: 5.6cqw;
+  height: 5.6cqw;
+  color: #ffcf33;
+}
+.t-kind {
+  text-align: right;
+  font-size: 2.1cqw;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.t-kind b {
+  color: #ffcf33;
+}
+.t-photo {
+  position: relative;
+  height: 64cqw;
+  overflow: hidden;
+  background: #8e9099;
+}
+.t-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 21%;
+}
+.t-seal {
+  position: absolute;
+  right: 4cqw;
+  top: 4cqw;
+  width: 21cqw;
+  height: 21cqw;
+  border-radius: 50%;
+  border: 0.6cqw solid #ffcf33;
+  color: #ffcf33;
+  background: rgba(19, 35, 94, 0.55);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(14deg);
+  font-family: Oswald, sans-serif;
+  line-height: 1.05;
+}
+.t-seal small {
+  font-size: 1.9cqw;
+  letter-spacing: 0.18em;
+}
+.t-seal b {
+  font-size: 6cqw;
+}
+.t-chip {
+  position: absolute;
+  left: 4cqw;
+  bottom: 3.5cqw;
+  background: #1e9a52;
+  color: #fff;
+  font-weight: 700;
+  font-size: 2.4cqw;
+  letter-spacing: 0.14em;
+  padding: 1.3cqw 3cqw;
+  border-radius: 10cqw;
+}
+.t-route {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4.5cqw 6.5cqw 0.5cqw;
+}
+.t-code {
+  font: 700 13.5cqw/1 Oswald, sans-serif;
+  color: #13235e;
+}
+.t-city {
+  font-size: 2.2cqw;
+  letter-spacing: 0.22em;
+  font-weight: 700;
+  color: #7a8099;
+  margin-top: 0.6cqw;
+}
+.t-path {
+  flex: 1;
+  margin: 0 4cqw;
+  position: relative;
+  height: 6cqw;
+}
+.t-path::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  border-top: 0.45cqw dashed #c5cbe0;
+}
+.t-path-plane {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7cqw;
+  height: 7cqw;
+  transform: translate(-50%, -50%) rotate(90deg);
+  color: #13235e;
+  background: #fff;
+  padding: 0 1cqw;
+}
+.t-lbl {
+  font-size: 1.95cqw;
+  letter-spacing: 0.24em;
+  font-weight: 700;
+  color: #7a8099;
+}
+.t-pax {
+  padding: 3cqw 6.5cqw 0;
+}
+.t-name {
+  margin-top: 0.5cqw;
+  min-height: 11cqw;
+  border-bottom: 0.5cqw solid #13235e;
+  font: 900 7.4cqw/1.3 "Playfair Display", serif;
+  color: #13235e;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 1cqw;
+}
+.caret {
+  display: inline-block;
+  width: 0.6cqw;
+  height: 7cqw;
+  background: #1e9a52;
+  margin-left: 1cqw;
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.t-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.7fr;
+  gap: 3cqw 3cqw;
+  padding: 4cqw 6.5cqw 0;
+}
+.t-val {
+  font: 500 5.2cqw/1.15 Oswald, sans-serif;
+  margin-top: 0.6cqw;
+}
+.t-venue {
+  font-weight: 700;
+  font-size: 3.4cqw;
+  line-height: 1.35;
+  margin-top: 0.6cqw;
+}
+.stamp {
+  position: absolute;
+  left: 4cqw;
+  top: 5cqw;
+  z-index: 2;
+  white-space: nowrap;
+  border: 0.7cqw solid #c62828;
+  color: #c62828;
+  font: 700 3.6cqw/1 Oswald, sans-serif;
+  letter-spacing: 0.08em;
+  padding: 1.6cqw 2.6cqw;
+  border-radius: 1.5cqw;
+  transform: rotate(-12deg);
+  background: rgba(255, 255, 255, 0.85);
+}
+.t-perf {
+  position: relative;
+  height: 9cqw;
+  margin-top: 3cqw;
+}
+.t-perf::before {
+  content: "";
+  position: absolute;
+  left: 6cqw;
+  right: 6cqw;
+  top: 50%;
+  border-top: 0.45cqw dashed #d3d7e6;
+}
+.t-perf i {
+  position: absolute;
+  top: 50%;
+  width: 8cqw;
+  height: 8cqw;
+  border-radius: 50%;
+  background: #0d1a4d;
+  transform: translateY(-50%);
+}
+.t-perf i:first-child {
+  left: -4cqw;
+}
+.t-perf i:last-child {
+  right: -4cqw;
+}
+.t-stub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4cqw;
+  padding: 0 6.5cqw 6cqw;
+}
+.t-msg {
+  font: italic 700 3.5cqw/1.35 "Playfair Display", serif;
+  color: #13235e;
+}
+.t-bc {
+  height: 12cqw;
+  flex-shrink: 0;
+}
+/* foil hologram chạy theo góc nghiêng */
+.foil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.35), transparent 45%),
+    linear-gradient(
+      115deg,
+      transparent 25%,
+      rgba(255, 80, 180, 0.22) 38%,
+      rgba(80, 220, 255, 0.24) 46%,
+      rgba(255, 240, 120, 0.24) 54%,
+      rgba(120, 255, 170, 0.2) 62%,
+      transparent 75%
+    );
+  background-size: 100% 100%, 260% 260%;
+  background-position: center, var(--mx, 50%) var(--my, 50%);
+  mix-blend-mode: soft-light;
+}
+
+/* =========================================================
+   TẠP CHÍ GRADUATE. — 100cqw = bề ngang bìa (tỉ lệ 2:3)
+   ========================================================= */
+.mag {
+  container-type: inline-size;
+  width: min(86vw, 380px, 46svh);
+  aspect-ratio: 2 / 3;
+}
+.page,
+.cover {
+  position: absolute;
+  inset: 0;
+  border-radius: 1.6cqw 3cqw 3cqw 1.6cqw;
+}
+.page {
+  background: #f6f1e4;
+  color: #1b2240;
+  box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  background-image: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.7), transparent 60%),
+    radial-gradient(ellipse at 90% 100%, rgba(170, 130, 60, 0.15), transparent 60%);
+}
+.page-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.5), transparent 40%);
+  pointer-events: none;
+}
+.letter {
+  position: relative;
+  padding: 10cqw 9cqw;
+  display: flex;
+  flex-direction: column;
+  gap: 4.4cqw;
+}
+.l-hi {
+  font: 11cqw/1.1 "Great Vibes", cursive;
+  color: #b8892f;
+}
+.l-msg {
+  font: italic 700 5cqw/1.4 "Playfair Display", serif;
+  color: #13235e;
+}
+.l-body {
+  font-size: 3.9cqw;
+  line-height: 1.65;
+  color: #3b4160;
+}
+.l-body b {
+  color: #13235e;
+}
+.sign {
+  width: 70%;
+  align-self: flex-end;
+  overflow: visible;
+}
+.sign text {
+  font: 64px "Great Vibes", cursive;
+  fill: #13235e;
+  stroke: #13235e;
+  stroke-width: 0.8;
+  stroke-dasharray: 900;
+}
+
+.cover {
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  color: #fff;
+}
+.cover > * {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.cover-back {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform: rotateY(180deg);
+  background: repeating-linear-gradient(45deg, #13235e 0 2cqw, #172b74 2cqw 4cqw);
+}
+.m-photo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  background: #8e9099;
+  box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.m-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
+}
+.m-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 16, 40, 0.35) 0%,
+    rgba(10, 16, 40, 0) 18%,
+    rgba(10, 16, 40, 0) 55%,
+    rgba(8, 12, 32, 0.85) 75%,
+    rgba(6, 9, 26, 0.97) 100%
+  );
+}
+.z1 {
+  transform: translateZ(15px);
+}
+.z2 {
+  transform: translateZ(30px);
+}
+.z3 {
+  transform: translateZ(50px);
+}
+.z4 {
+  transform: translateZ(80px);
+}
+.m-issue {
+  position: absolute;
+  top: 3cqw;
+  left: 4.5cqw;
+  right: 4.5cqw;
+  display: flex;
+  justify-content: space-between;
+  font-size: 2.1cqw;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.mast {
+  position: absolute;
+  top: 5cqw;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font: 900 16.2cqw/1 "Playfair Display", serif;
+  letter-spacing: -0.03em;
+  text-shadow: 0 0.6cqw 3cqw rgba(0, 0, 0, 0.25);
+}
+.cl-l,
+.cl-r {
+  position: absolute;
+  top: 27cqw;
+  width: 30cqw;
+  text-shadow: 0 0.3cqw 1.6cqw rgba(0, 0, 0, 0.5);
+}
+.cl-l {
+  left: 4.5cqw;
+}
+.cl-r {
+  right: 4.5cqw;
+  text-align: right;
+}
+.m-tag {
+  display: inline-block;
+  background: #ffd23f;
+  color: #0d1640;
+  font-weight: 800;
+  font-size: 2.1cqw;
+  letter-spacing: 0.2em;
+  padding: 0.6cqw 1.2cqw;
+  text-shadow: none;
+}
+.m-big {
+  font: 700 4.8cqw/1.14 Oswald, sans-serif;
+  text-transform: uppercase;
+  margin-top: 1.2cqw;
+}
+.m-big2 {
+  font-size: 3.6cqw;
+  margin-top: 3.5cqw;
+}
+.m-small {
+  font-size: 2.5cqw;
+  line-height: 1.4;
+  margin-top: 0.8cqw;
+}
+.m-script {
+  font: 5cqw/1 "Great Vibes", cursive;
+  color: #ffd23f;
+}
+.m-year {
+  width: 100%;
+  overflow: visible;
+}
+.m-year text {
+  font: italic 900 108px "Playfair Display", serif;
+  fill: transparent;
+  stroke: #fff;
+  stroke-width: 2.5;
+  stroke-dasharray: 600;
+}
+.sticker {
+  position: absolute;
+  top: 80cqw;
+  left: 5cqw;
+  width: 15cqw;
+  height: 15cqw;
+  border-radius: 50%;
+  background: #e63946;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 800;
+  line-height: 1.05;
+  rotate: -12deg;
+  box-shadow: 0 1cqw 3cqw rgba(0, 0, 0, 0.35);
+}
+.sticker b {
+  font: 700 4.6cqw/1 Oswald, sans-serif;
+}
+.sticker i {
+  font-style: normal;
+  font-size: 1.5cqw;
+  letter-spacing: 0.1em;
+}
+.m-bottom {
+  position: absolute;
+  left: 4.5cqw;
+  right: 4.5cqw;
+  bottom: 5cqw;
+}
+.m-head {
+  font: 900 7.4cqw/1.08 "Playfair Display", serif;
+  margin-top: 2cqw;
+}
+.m-head em {
+  color: #ffd23f;
+}
+.m-invite {
+  margin-top: 3cqw;
+  padding-top: 2.6cqw;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 2.4cqw;
+}
+.m-invite span {
+  font: 5cqw/1.2 "Great Vibes", cursive;
+  color: #ffd23f;
+}
+.m-invite b {
+  font: 900 5.4cqw/1.2 "Playfair Display", serif;
+}
+
+/* ---------- đồng hồ đếm ngược ---------- */
+.cd-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 4.6rem;
+  padding: 0.8rem 0 0.6rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 207, 51, 0.35);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+}
+.cd-num {
+  font: 700 2.2rem/1 Oswald, sans-serif;
+  color: #ffcf33;
+}
+.cd-lbl {
+  margin-top: 0.35rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ---------- thẻ thông tin ---------- */
+.info-card {
+  border-radius: 1.4rem;
+  padding: 1.25rem 1.35rem;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 207, 51, 0.22);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse,
+  .ring-pulse::after,
+  .caret {
+    animation: none;
+  }
 }

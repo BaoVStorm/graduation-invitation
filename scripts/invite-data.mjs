@@ -1,13 +1,14 @@
-// Nạp dữ liệu cá nhân từ biến môi trường (GitHub Secrets) và render vào HTML.
+// Nạp dữ liệu khách + secret và render vào HTML.
 // Dùng chung cho dev server (vite.config.ts) và bước prerender sau khi build.
 //
-// Quy tắc bảo mật: dữ liệu secret KHÔNG bao giờ được import vào bundle JS.
-// Nó chỉ được nhúng vào HTML của đúng trang khách có mã hợp lệ.
+// - Danh sách khách: data/guests.json (commit trong repo, chủ nhân tự cấu hình).
+// - Secret duy nhất: SECRET_PHONE (GitHub Secret). Không bao giờ vào bundle JS,
+//   chỉ được nhúng vào HTML của trang khách có mã hợp lệ.
 
 import fs from 'node:fs'
 import path from 'node:path'
 
-export const SECRET_KEYS = ['SECRET_PHONE', 'SECRET_HOST_NAME', 'SECRET_GUESTS_JSON']
+export const SECRET_KEYS = ['SECRET_PHONE']
 
 const CODE_RE = /^[a-z0-9][a-z0-9-]{2,31}$/
 // Tên thư mục đã dùng trong dist/, không được làm mã khách
@@ -15,20 +16,17 @@ const RESERVED = new Set(['assets', 'images', 'index', '404'])
 
 const clean = (v) => (typeof v === 'string' && v.trim() ? v.trim() : null)
 
+export const GUESTS_FILE = path.join('data', 'guests.json')
+
 export function readEvent(root = process.cwd()) {
   return JSON.parse(fs.readFileSync(path.join(root, 'src', 'config', 'event.json'), 'utf8'))
 }
 
 export function loadSecrets(env = process.env, root = process.cwd()) {
-  let raw = clean(env.SECRET_GUESTS_JSON)
-  if (!raw) {
-    const local = path.join(root, 'data', 'guests.json')
-    if (fs.existsSync(local)) raw = fs.readFileSync(local, 'utf8')
-  }
+  const file = path.join(root, GUESTS_FILE)
   return {
     phone: clean(env.SECRET_PHONE),
-    hostName: clean(env.SECRET_HOST_NAME),
-    guests: raw ? parseGuests(raw) : [],
+    guests: fs.existsSync(file) ? parseGuests(fs.readFileSync(file, 'utf8')) : [],
   }
 }
 
@@ -37,10 +35,10 @@ export function parseGuests(raw) {
   try {
     data = JSON.parse(raw)
   } catch (e) {
-    throw new Error(`SECRET_GUESTS_JSON không phải JSON hợp lệ: ${e.message}`)
+    throw new Error(`${GUESTS_FILE} không phải JSON hợp lệ: ${e.message}`)
   }
   const list = Array.isArray(data) ? data : data?.guests
-  if (!Array.isArray(list)) throw new Error('SECRET_GUESTS_JSON phải là mảng hoặc { "guests": [...] }')
+  if (!Array.isArray(list)) throw new Error(`${GUESTS_FILE} phải là mảng hoặc { "guests": [...] }`)
 
   const seen = new Set()
   return list.map((g, i) => {
@@ -52,19 +50,16 @@ export function parseGuests(raw) {
     const name = String(g?.name ?? '').trim()
     if (!name) throw new Error(`Khách "${code}": thiếu "name"`)
     const message = String(g?.message ?? '').trim()
-    return { code, name, honorific: String(g?.honorific ?? '').trim(), ...(message && { message }) }
+    const self = String(g?.self ?? '').trim()
+    return { code, name, honorific: String(g?.honorific ?? '').trim(), ...(message && { message }), ...(self && { self }) }
   })
 }
 
-/** Dữ liệu nhúng vào trang. Trang chung (guest = null) không chứa bất kỳ secret nào. */
+/** Dữ liệu nhúng vào trang. Trang chung (guest = null) không chứa số điện thoại. */
 export function payloadFor(secrets, guest) {
-  if (!guest) return { guest: null, host: null, contact: null }
+  if (!guest) return { guest: null, contact: null }
   const { code, ...info } = guest
-  return {
-    guest: info,
-    host: secrets.hostName ? { name: secrets.hostName } : null,
-    contact: secrets.phone ? { phone: secrets.phone } : null,
-  }
+  return { guest: info, contact: secrets.phone ? { phone: secrets.phone } : null }
 }
 
 export function metaFor(guest, event) {

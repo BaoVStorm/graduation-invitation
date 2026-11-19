@@ -34,8 +34,6 @@ jobs:
           SITE_URL: ${{ vars.SITE_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
           # Dữ liệu cá nhân: cấu hình tại Settings → Secrets and variables → Actions
           SECRET_PHONE: ${{ secrets.SECRET_PHONE }}
-          SECRET_HOST_NAME: ${{ secrets.SECRET_HOST_NAME }}
-          SECRET_GUESTS_JSON: ${{ secrets.SECRET_GUESTS_JSON }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

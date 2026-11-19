@@ -1,56 +1,63 @@
 # Dữ liệu cá nhân & GitHub Secrets
 
-Repo này **public**. Mọi dữ liệu cá nhân được đưa vào lúc build qua **GitHub Secrets** và không bao giờ được commit.
+Repo này **public**. Chỉ có **một** dữ liệu được giữ bí mật qua GitHub Secret: **số điện thoại**.
 
-## Phân loại dữ liệu
+## Phân loại dữ liệu (đã chốt 19/11/2026)
 
-| Dữ liệu | Cá nhân? | Lưu ở đâu | Ghi chú |
-|---|---|---|---|
-| Số điện thoại liên hệ | ✅ | **`SECRET_PHONE`** | Dùng cho nút Gọi và Zalo |
-| Tên người gửi (tân khoa) | ✅ | **`SECRET_HOST_NAME`** | Không bắt buộc; để trống thì trang dùng "mình" |
-| Danh sách khách: mã, xưng hô, tên, lời nhắn riêng | ✅ | **`SECRET_GUESTS_JSON`** | Tên và lời nhắn của người khác là dữ liệu của họ |
-| Ảnh tốt nghiệp | ⚠️ | `public/images/` (commit) | Chủ nhân đã đồng ý; ảnh đã xoá metadata EXIF |
-| Ngày, giờ, địa điểm, tên trường | ❌ | `src/config/event.json` | Thông tin công khai của sự kiện |
-| Link Zalo | (từ số điện thoại) | Tạo tự động từ `SECRET_PHONE` | Không cần secret riêng |
+| Dữ liệu | Lưu ở đâu | Lý do |
+|---|---|---|
+| Số điện thoại liên hệ | 🔒 **`SECRET_PHONE`** (GitHub Secret) | Chủ nhân không muốn số nằm trong repo |
+| Tên người gửi (tân khoa) | `src/config/event.json` → `host.name` | Chủ nhân đồng ý công khai |
+| Danh sách khách (mã, xưng hô, tên, lời nhắn) | `data/guests.json` (commit) | Chủ nhân tự cấu hình. Mỗi khách có mã ngẫu nhiên riêng. |
+| Ảnh tốt nghiệp | `public/images/` | Chủ nhân đồng ý; ảnh đã xoá metadata EXIF |
+| Ngày, giờ, địa điểm | `src/config/event.json` | Thông tin công khai của sự kiện |
 
-## Cấu hình (làm một lần)
+> ⚠️ `data/guests.json` nằm trong repo public, nên ai mở repo trên GitHub cũng thấy các mã và tên khách. Mã ngẫu nhiên chỉ ngăn người **không xem repo** đoán ra đường dẫn. Nếu sau này muốn giấu cả danh sách khách, chuyển file này sang một secret theo cách giống `SECRET_PHONE`.
 
-Vào **GitHub → repo → Settings → Secrets and variables → Actions → New repository secret**, hoặc dùng `gh`:
+## Cấu hình `SECRET_PHONE`
+
+**GitHub → repo → Settings → Secrets and variables → Actions → New repository secret**, tên `SECRET_PHONE`. Hoặc chạy:
 
 ```bash
 gh secret set SECRET_PHONE --repo BaoVStorm/graduation-invitation-3d
 ```
 
-```bash
-gh secret set SECRET_HOST_NAME --repo BaoVStorm/graduation-invitation-3d
-```
+Sau đó vào **Actions → Deploy to GitHub Pages → Run workflow** để build lại.
+
+## Cơ chế bảo vệ số điện thoại
+
+1. **Không vào bundle JS:** secret chỉ được đọc trong `scripts/` (Node, lúc build). Vite đặt `envPrefix: 'PUBLIC_'`, nên `SECRET_*` không lọt vào `import.meta.env`.
+2. **Chỉ trang khách mới có số:** số được nhúng vào `dist/<code>/index.html`. Trang chung `/` và trang `404` không có.
+3. **Không lập chỉ mục:** mọi trang đều có `noindex, nofollow`.
+4. **Log CI** chỉ in "đã cấu hình / chưa cấu hình".
+
+> Ai có link của khách thì xem được số điện thoại trên trang đó. Đó là mục đích của nút Gọi/Zalo.
+
+## Thêm khách
 
 ```bash
-gh secret set SECRET_GUESTS_JSON --repo BaoVStorm/graduation-invitation-3d < data/guests.json
+npm run guest:add -- "Anh" "Minh" "Lời nhắn riêng (không bắt buộc)"
 ```
 
-Hai lệnh đầu sẽ hỏi giá trị (nhập ẩn). Lệnh thứ ba lấy nội dung từ file `data/guests.json` ở máy (file này đã có trong `.gitignore`). Sau khi đổi secret, vào tab **Actions → Deploy to GitHub Pages → Run workflow** để build lại.
-
-### Định dạng `SECRET_GUESTS_JSON`
+Lệnh này tạo mã ngẫu nhiên 8 ký tự, ghi vào `data/guests.json` và in ra đường dẫn để gửi. Có thể sửa file trực tiếp:
 
 ```json
-[
-  { "code": "a7k2", "honorific": "Anh", "name": "Minh", "message": "Lời nhắn riêng (không bắt buộc)" },
-  { "code": "q9xm", "honorific": "Bạn", "name": "Lan" }
-]
+{
+  "guests": [
+    { "code": "k7m2qx9p", "honorific": "Anh", "name": "Minh", "self": "em", "message": "Cảm ơn anh đã luôn chỉ dẫn em." }
+  ]
+}
 ```
 
-- `code`: 3–32 ký tự `a-z`, `0-9`, `-`. Đây là đường dẫn của khách: `https://<site>/a7k2/`. Nên dùng mã ngẫu nhiên, không dùng tên thật.
-- Không được dùng các mã `assets`, `images`, `index`, `404`. Mã trùng hoặc sai định dạng sẽ làm build dừng và báo lỗi rõ ràng.
+| Trường | Bắt buộc | Ý nghĩa |
+|---|---|---|
+| `code` | ✅ | Đường dẫn `/<code>/`. 3–32 ký tự `a-z 0-9 -`. Không dùng `assets`, `images`, `index`, `404`. |
+| `name` | ✅ | Tên khách |
+| `honorific` | | Xưng hô: Anh, Chị, Bạn, Cô, Thầy… (ghép trước tên, và dùng trong câu văn) |
+| `self` | | Chủ nhân tự xưng với khách này: `mình` (mặc định), `em`, `con`… |
+| `message` | | Lời nhắn riêng, hiện trong trang thư ngỏ |
 
-## Cơ chế bảo vệ
-
-1. **Không vào bundle JS:** secret chỉ được đọc trong `scripts/` (Node, lúc build). Vite đặt `envPrefix: 'PUBLIC_'`, nên biến `SECRET_*` không thể lọt vào `import.meta.env`.
-2. **Chỉ trang khách mới có dữ liệu:** `dist/<code>/index.html` chứa tên và lời nhắn của **đúng khách đó**, kèm số điện thoại. Trang chung `/` và trang `404` **không chứa secret nào**. Không có file nào chứa toàn bộ danh sách khách.
-3. **Không lập chỉ mục:** mọi trang có `noindex, nofollow`, nên Google không liệt kê.
-4. **Log CI** chỉ in "đã cấu hình / chưa cấu hình", không in giá trị.
-
-> ⚠️ Giới hạn: ai có link của một khách thì xem được số điện thoại trên trang đó. Đây là bản chất của thư mời. Secret giúp dữ liệu **không nằm trong mã nguồn và lịch sử git**, chứ không giấu được khỏi người nhận link.
+Mã trùng hoặc sai định dạng sẽ làm build dừng và báo lỗi.
 
 ## Chạy ở máy
 
@@ -58,4 +65,4 @@ Hai lệnh đầu sẽ hỏi giá trị (nhập ẩn). Lệnh thứ ba lấy n�
 cp .env.example .env.local
 ```
 
-Điền giá trị vào `.env.local` (hoặc tạo `data/guests.json`), rồi chạy `npm run dev` và mở `http://localhost:5173/a7k2`.
+Điền `SECRET_PHONE` vào `.env.local`, chạy `npm run dev` rồi mở `http://localhost:5173/demo`.
