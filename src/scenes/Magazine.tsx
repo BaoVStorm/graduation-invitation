@@ -2,7 +2,7 @@ import gsap from 'gsap'
 import { useLayoutEffect, useRef } from 'react'
 import { Cover } from '../components/Cover'
 import { CameraIcon, CapIcon, GoldButton, useExit } from '../components/ui'
-import { dateLabel, event, guestName, guestPronoun, guestSelf, hostName, invite, memories, studentId, timeLabelLong } from '../lib/invite'
+import { asset, dateLabel, event, guestName, guestPronoun, guestSelf, hostName, invite, memories, studentId, timeLabelLong } from '../lib/invite'
 import { sfx } from '../lib/audio'
 import { useTilt } from '../lib/motion'
 
@@ -17,7 +17,9 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
     const ctx = gsap.context(() => {
       gsap
         .timeline()
-        .fromTo('.mag', { rotateX: 70, y: '-70svh', opacity: 0 }, { rotateX: 0, y: 0, opacity: 1, duration: 1.1, ease: 'back.out(1.2)' })
+        // nối tiếp ánh sáng cuối cảnh bay
+        .fromTo('.mflash', { opacity: 1 }, { opacity: 0, duration: 1.1, ease: 'power2.out' }, 0)
+        .fromTo('.mag', { rotateX: 70, y: '-70svh', opacity: 0 }, { rotateX: 0, y: 0, opacity: 1, duration: 1.1, ease: 'back.out(1.2)' }, 0.15)
         .call(() => sfx('drop'), [], 0.95)
         .call(() => sfx('chime'), [], 1.0)
         .call(() => sfx('pop'), [], 2.0)
@@ -44,6 +46,8 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
         .to('.cover', { opacity: 0, duration: 0.35 }, 0.9)
         .fromTo('.page-shade', { opacity: 0.6 }, { opacity: 0, duration: 1.2 }, 0)
         .from('.letter > *', { opacity: 0, y: 14, filter: 'blur(4px)', stagger: 0.35, duration: 0.6 }, 1.0)
+        // chữ ký hiện dần từ trái sang phải như đang ký
+        .fromTo('.sign-img', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.7, ease: 'power1.inOut' }, 2.4)
         .fromTo('.sign text', { strokeDashoffset: 900, fillOpacity: 0 }, { strokeDashoffset: 0, duration: 1.6, ease: 'power1.inOut' }, 2.4)
         .to('.sign text', { fillOpacity: 1, duration: 0.5 }, 3.6)
         .from('.l-next', { autoAlpha: 0, y: 16, duration: 0.5 }, 3.8)
@@ -82,6 +86,7 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
 
   return (
     <div ref={root} className="scene flex-col gap-5">
+      <div className="mflash pointer-events-none fixed inset-0 z-30 bg-[radial-gradient(circle_at_72%_26%,#fffaf0_0%,#ffe9b0_28%,#f3d07a_55%,#c9a24f_100%)] opacity-0" />
       <div className="[perspective:1600px]">
         <div ref={tilt} className="tilt">
           <div className="mag relative">
@@ -111,16 +116,21 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
                   </b>{' '}
                   tại {event.venue.name}.
                 </p>
-                <svg className="sign" viewBox="0 0 400 90" aria-label={hostName ?? 'Tân khoa'}>
-                  <text x="0" y="66">
-                    {hostName ?? 'Tân khoa 2026'}
-                  </text>
-                </svg>
-                {studentId && (
-                  <p className="l-sid">
-                    Tân khoa · MSSV {studentId} · Class of {event.classOf}
-                  </p>
+                {event.signature ? (
+                  <div className="sign-wrap">
+                    <img className="sign-img" src={asset(event.signature)} alt={`Chữ ký của ${hostName ?? 'tân khoa'}`} draggable={false} />
+                  </div>
+                ) : (
+                  <svg className="sign" viewBox="0 0 400 90" aria-label={hostName ?? 'Tân khoa'}>
+                    <text x="0" y="66">
+                      {hostName ?? 'Tân khoa 2026'}
+                    </text>
+                  </svg>
                 )}
+                <p className="l-sid">
+                  {hostName ?? 'Tân khoa'}
+                  {studentId && ` · MSSV ${studentId}`} · Class of {event.classOf}
+                </p>
               </div>
             </div>
 

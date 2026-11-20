@@ -16,5 +16,6 @@
   },
   "photo": "images/graduate.webp",
   "music": "audio/motivation.mp3",
-  "ogImage": "images/og-cover.jpg"
+  "ogImage": "images/og-cover.jpg",
+  "signature": "images/signature.png"
 }

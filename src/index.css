@@ -470,9 +470,21 @@ body {
 .l-body b {
   color: #13235e;
 }
+.sign-wrap {
+  align-self: flex-end;
+  width: calc(66% * var(--ls, 1));
+  margin: calc(-1cqw * var(--ls, 1)) -2cqw calc(-2cqw * var(--ls, 1)) 0;
+}
+.sign-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
 .l-sid {
   align-self: flex-end;
-  margin-top: -3cqw;
+  margin-top: -1cqw;
   font: 500 2.4cqw/1 Oswald, sans-serif;
   letter-spacing: 0.2em;
   text-transform: uppercase;

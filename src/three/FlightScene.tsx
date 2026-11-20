@@ -101,12 +101,13 @@ export function FlightScene() {
   const curve = useMemo(
     () =>
       new THREE.CatmullRomCurve3([
-        // từ sát camera phía dưới bên trái, lượn lên xa dần về phía ánh sáng
-        new THREE.Vector3(-W * 0.42, -1.3, 1.7),
-        new THREE.Vector3(-W * 0.05, -0.45, 0.4),
-        new THREE.Vector3(W * 0.22, 0.25, -1.6),
-        new THREE.Vector3(W * 0.4, 1.0, -6),
-      ]),
+        // vào từ bên trái (hướng SV → TK), bay ngang giữa màn hình, rồi nhẹ nhàng lượn trái, xa dần về ánh sáng bên phải
+        new THREE.Vector3(-W * 0.5 - 1.7, -0.75, 0.6),
+        new THREE.Vector3(-W * 0.2, -0.48, 0.6),
+        new THREE.Vector3(W * 0.14, -0.22, 0.4),
+        new THREE.Vector3(W * 0.32, 0.22, -1.6),
+        new THREE.Vector3(W * 0.3, 0.8, -6.5),
+      ], false, 'centripetal', 0.5),
     [W],
   )
   const tex = useMemo(() => ({ cloud: cloudTexture(), glow: glowTexture() }), [])
@@ -127,8 +128,16 @@ export function FlightScene() {
     })
   }, [W])
 
-  const q = useMemo(() => new THREE.Quaternion(), [])
-  const roll = useMemo(() => new THREE.Quaternion(), [])
+  const tmp = useMemo(
+    () => ({
+      q: new THREE.Quaternion(),
+      roll: new THREE.Quaternion(),
+      look: new THREE.Vector3(),
+      bank: 0,
+      yaw: null as number | null,
+    }),
+    [],
+  )
 
   useEffect(() => {
     const z = camera.position.z
@@ -140,22 +149,36 @@ export function FlightScene() {
 
   useFrame((state, rawDt) => {
     const dt = Math.min(rawDt, 1 / 30)
-    if (start.current === null) start.current = state.clock.elapsedTime
-    const t = Math.min(1, (state.clock.elapsedTime - start.current) / FLIGHT_SECONDS)
-    const e = 0.15 * t + 0.85 * smooth(t)
+    const first = start.current === null
+    if (first) start.current = state.clock.elapsedTime
+    const t = Math.min(1, (state.clock.elapsedTime - start.current!) / FLIGHT_SECONDS)
+    // tốc độ đều, chỉ êm ở hai đầu (không đứng yên lúc bắt đầu)
+    const e = 0.3 * t + 0.7 * (1 - Math.cos(Math.PI * t)) / 2
 
     const p = plane.current!
     const pos = curve.getPointAt(e)
     const tan = curve.getTangentAt(e)
     p.position.copy(pos)
-    q.setFromUnitVectors(X, tan)
-    roll.setFromAxisAngle(X, -0.45 + Math.sin(t * Math.PI) * 0.3) // nghiêng cánh khi lượn
-    p.quaternion.copy(q).multiply(roll)
 
-    // camera bám nhẹ theo máy bay
-    camera.position.x += (pos.x * 0.18 - camera.position.x) * 0.05
-    camera.position.y += (pos.y * 0.12 - camera.position.y) * 0.05
-    camera.lookAt(pos.x * 0.1, pos.y * 0.1, 0)
+    // nghiêng cánh theo tốc độ đổi hướng (rẽ trái → cánh trái hạ xuống)
+    const yaw = Math.atan2(-tan.z, tan.x)
+    const turn = tmp.yaw === null || dt === 0 ? 0 : (yaw - tmp.yaw) / dt
+    tmp.yaw = yaw
+    const targetBank = THREE.MathUtils.clamp(-turn * 0.9, -0.75, 0.75) - 0.08
+    tmp.bank += (targetBank - tmp.bank) * (1 - Math.exp(-dt * 3))
+
+    tmp.q.setFromUnitVectors(X, tan)
+    tmp.roll.setFromAxisAngle(X, tmp.bank)
+    tmp.q.multiply(tmp.roll)
+    if (first) p.quaternion.copy(tmp.q)
+    else p.quaternion.slerp(tmp.q, 1 - Math.exp(-dt * 6))
+
+    // camera bám theo thật êm
+    const k = 1 - Math.exp(-dt * 1.8)
+    camera.position.x += (pos.x * 0.16 - camera.position.x) * k
+    camera.position.y += (pos.y * 0.1 - camera.position.y) * k
+    tmp.look.lerp(new THREE.Vector3(pos.x * 0.12, pos.y * 0.08, 0), k)
+    camera.lookAt(tmp.look)
 
     clouds.forEach((c, i) => {
       const s = cloudRefs.current[i]
@@ -167,9 +190,9 @@ export function FlightScene() {
 
     // ánh sáng "Tương lai" sáng dần khi máy bay tới gần
     const g = glow.current!
-    g.material.opacity = 0.25 + smooth(t) * 0.75
-    const k = 3 + smooth(t) * 2.5
-    g.scale.set(k, k, 1)
+    g.material.opacity = 0.2 + smooth(t) * 0.8
+    const gs = 3 + smooth(t) * 2.5 + Math.max(0, t - 0.82) * 14 // bừng sáng ở cuối
+    g.scale.set(gs, gs, 1)
   })
 
   const end = curve.getPointAt(1)

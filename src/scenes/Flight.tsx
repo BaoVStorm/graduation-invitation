@@ -19,16 +19,19 @@ export function Flight({ onArrive }: { onArrive: () => void }) {
       gsap
         .timeline({ onComplete: onArrive })
         .call(() => sfx('plane'), [], 0.05)
-        .from('.tracker', { autoAlpha: 0, y: -16, duration: 0.6, ease: 'power2.out' }, 0)
+        .fromTo('.veil', { opacity: 1 }, { opacity: 0, duration: 0.9, ease: 'power2.out' }, 0)
+        .from('.tracker', { autoAlpha: 0, y: -16, duration: 0.7, ease: 'power2.out' }, 0.2)
         .fromTo('.trk-fill', { scaleX: 0 }, { scaleX: 1, duration: FLIGHT_SECONDS, ease: 'power1.inOut' }, 0)
         .fromTo('.trk-plane', { left: '0%' }, { left: '100%', duration: FLIGHT_SECONDS, ease: 'power1.inOut' }, 0)
-        .from('.going', { autoAlpha: 0, y: 12, duration: 0.6 }, 0.3)
-        .to('.going', { autoAlpha: 0, y: -10, duration: 0.4 }, 1.8)
-        .call(() => sfx('chime'), [], 2.0)
-        .from('.future', { autoAlpha: 0, scale: 0.85, filter: 'blur(8px)', duration: 0.8, ease: 'power3.out' }, 2.0)
-        .to('.trk-status', { color: '#3ddc84', duration: 0.3 }, FLIGHT_SECONDS - 0.2)
-        .set('.trk-status-text', { textContent: 'Đã hạ cánh' }, FLIGHT_SECONDS - 0.2)
-        .to(root.current, { autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, FLIGHT_SECONDS + 0.15)
+        .from('.going', { autoAlpha: 0, y: 12, duration: 0.7 }, 0.5)
+        .to('.going', { autoAlpha: 0, y: -10, duration: 0.5 }, 2.3)
+        .call(() => sfx('chime'), [], 2.6)
+        .from('.future', { autoAlpha: 0, scale: 0.85, filter: 'blur(8px)', duration: 0.9, ease: 'power3.out' }, 2.6)
+        .to('.trk-status', { color: '#3ddc84', duration: 0.3 }, FLIGHT_SECONDS - 0.4)
+        .set('.trk-status-text', { textContent: 'Đã hạ cánh' }, FLIGHT_SECONDS - 0.4)
+        // ánh sáng "Tương lai" bừng lên phủ màn hình, tạp chí hiện ra từ trong ánh sáng đó
+        .to(['.tracker', '.future'], { autoAlpha: 0, duration: 0.5 }, FLIGHT_SECONDS - 0.3)
+        .fromTo('.flare', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 3.2, duration: 0.85, ease: 'power2.in' }, FLIGHT_SECONDS - 0.5)
     }, root)
     return () => ctx.revert()
   }, [onArrive])
@@ -38,6 +41,8 @@ export function Flight({ onArrive }: { onArrive: () => void }) {
       ref={root}
       className="pointer-events-none absolute inset-0 flex flex-col items-center justify-between px-5 pt-[calc(max(14px,env(safe-area-inset-top))+44px)] pb-[12svh]"
     >
+      <div className="veil pointer-events-none fixed inset-0 bg-[#0a1440]" />
+      <div className="flare pointer-events-none fixed inset-0 z-30 origin-[72%_26%] bg-[radial-gradient(circle_at_72%_26%,#fffaf0_0%,#ffe9b0_22%,rgba(243,208,122,0.95)_42%,rgba(201,162,79,0)_72%)] opacity-0" />
       <div className="tracker w-full max-w-sm">
         <div className="flex items-end justify-between">
           <div>

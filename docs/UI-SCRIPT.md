@@ -108,10 +108,11 @@ Vé được làm theo mẫu PNG đã duyệt: header navy, ảnh tân khoa, tuy
 - Vé luôn **nghiêng 3D** theo tay hoặc con quay hồi chuyển. Lớp **foil hologram** cầu vồng chạy theo góc nghiêng.
 - Dòng gợi ý nhỏ: *"Nghiêng điện thoại để thấy ánh hologram"*.
 
-## Cảnh 5: Chuyến bay (tự chạy 3.3s)
+## Cảnh 5: Chuyến bay (tự chạy 4.2s)
 
 - **3D (`three/FlightScene.tsx`):** máy bay chở khách **Graduation Air** dựng bằng code (`three/Airplane.tsx`): thân trắng, bụng navy, viền vàng, 2 hàng cửa sổ, kính buồng lái, 2 động cơ viền vàng, đuôi navy có logo mũ tốt nghiệp, đèn hàng hải đỏ/xanh và đèn chớp trắng.
-- **Đường bay:** máy bay xuất hiện **sát camera ở góc dưới trái**, nghiêng cánh lượn lên rồi **xa dần** về phía một **quầng sáng vàng** ("Tương lai") ở góc trên phải. Camera bám nhẹ theo máy bay.
+- **Đường bay (cập nhật 20/11):** máy bay **vào từ bên trái** (đúng hướng SV → TK trên bảng theo dõi), **lướt ngang giữa màn hình** để thấy rõ dáng và màu sơn, rồi **lượn trái nhẹ nhàng** và xa dần về phía **quầng sáng vàng** ("Tương lai") bên phải. Độ nghiêng cánh tính theo tốc độ đổi hướng, hướng mũi được nội suy êm, camera bám theo chậm. Tốc độ đều, chỉ êm ở hai đầu.
+- **Chuyển cảnh:** cảnh bay hiện dần từ nền tối (0.9s). Lúc tới nơi, quầng sáng **bừng lên phủ màn hình** rồi tan dần, và bìa tạp chí hiện ra từ trong ánh sáng đó.
 - **Không khí:** mây đêm trôi qua theo nhiều lớp độ sâu, có vài đám mây sát ống kính tạo cảm giác tốc độ. Hai vệt khói từ động cơ nhạt dần sau 0.5s.
 - **DOM (`scenes/Flight.tsx`):** **bảng theo dõi chuyến bay** như màn hình trên máy bay: SV → TK, "GA 2026 · 27 NOV", thanh tiến trình có biểu tượng máy bay chạy theo, "Khởi hành 10:00 / Hạ cánh 12:00". Trạng thái "● Đang bay" đổi thành "● Đã hạ cánh" (màu xanh) khi tới nơi.
 - **Chữ:** *"Đang bay đến…"* (0.3s) rồi **"Tương lai"** bằng chữ serif nghiêng ánh vàng (2.0s), kèm tiếng chuông.
@@ -137,7 +138,7 @@ Bìa làm theo mẫu PNG đã duyệt: ảnh tràn bìa, masthead GRADUATE., cov
   1. *"Gửi {Tên khách},"* bằng chữ viết tay màu vàng đồng
   2. **Lời nhắn riêng** (trường `message` của khách), in nghiêng
   3. Đoạn chung: *"Sau những năm tháng miệt mài, mình sắp chính thức trở thành tân khoa. Ngày vui ấy sẽ trọn vẹn hơn rất nhiều nếu có {xưng hô} ở đó."*
-  4. **Chữ ký** (tên chủ nhân) được vẽ dần nét như viết tay
+  4. **Chữ ký thật** của chủ nhân (`public/images/signature.png`, mực navy) hiện dần **từ trái sang phải như đang ký**, kèm tiếng bút. Bên dưới là dòng "Trần Vũ Bão · MSSV · Class of 2026".
 - Nút **"🎓 Tung mũ ăn mừng"**.
 
 ## Cảnh 7b: Kỷ niệm (chỉ có với khách có ảnh)
