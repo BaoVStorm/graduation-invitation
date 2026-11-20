@@ -80,8 +80,12 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
     }
     fit()
     void document.fonts.ready.then(fit)
+    const late = setTimeout(fit, 1500) // phòng khi font hoặc ảnh tải chậm
     window.addEventListener('resize', fit)
-    return () => window.removeEventListener('resize', fit)
+    return () => {
+      clearTimeout(late)
+      window.removeEventListener('resize', fit)
+    }
   }, [])
 
   return (
@@ -118,7 +122,15 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
                 </p>
                 {event.signature ? (
                   <div className="sign-wrap">
-                    <img className="sign-img" src={asset(event.signature)} alt={`Chữ ký của ${hostName ?? 'tân khoa'}`} draggable={false} />
+                    <img
+                      className="sign-img"
+                      src={asset(event.signature)}
+                      alt={`Chữ ký của ${hostName ?? 'tân khoa'}`}
+                      width={867}
+                      height={288}
+                      draggable={false}
+                      onLoad={() => window.dispatchEvent(new Event('resize'))}
+                    />
                   </div>
                 ) : (
                   <svg className="sign" viewBox="0 0 400 90" aria-label={hostName ?? 'Tân khoa'}>
