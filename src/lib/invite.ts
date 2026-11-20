@@ -1,6 +1,7 @@
 import event from '../config/event.json'
 
-export type Guest = { honorific: string; name: string; message?: string; self?: string }
+export type Memory = { src: string; caption: string; w: number; h: number }
+export type Guest = { honorific: string; name: string; message?: string; self?: string; memories?: Memory[] }
 export type InviteData = {
   guest: Guest | null
   contact: { phone: string } | null
@@ -22,6 +23,8 @@ export function readInvite(): InviteData {
 }
 
 export const invite = readInvite()
+/** Ảnh kỷ niệm của khách này (rỗng nếu không có) */
+export const memories: Memory[] = invite.guest?.memories ?? []
 
 /** "Anh Minh" — dùng cho tiêu đề, phong bì, vé */
 export const guestName = (invite.guest ? [invite.guest.honorific, invite.guest.name].filter(Boolean).join(' ') : 'Bạn').normalize('NFC')

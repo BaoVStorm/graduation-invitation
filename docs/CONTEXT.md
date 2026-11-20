@@ -40,6 +40,8 @@ Bản ảnh tĩnh trước đó (nằm trong thư mục `thu-moi-tot-nghiep/` �
 - **Dữ liệu tách khỏi code:**
   - `src/config/event.json`: thông tin sự kiện và tên chủ nhân, dùng chung.
   - `data/guests.json`: danh sách khách `{ code, honorific, name, self?, message? }`.
+- **Ảnh kỷ niệm (20/11/2026):** khách đặc biệt có ảnh ở `public/memories/<path>/`, được tạo bằng `npm run memories` từ `memories-src/` (không commit). Khách không có ảnh thì luồng không đổi.
+- **Ảnh xem trước khi gửi link:** `public/images/og-cover.jpg`, ảnh tốt nghiệp nằm ở giữa. Đổi tên file mỗi lần thay ảnh.
 - **Kịch bản trải nghiệm:** [UI-SCRIPT.md](UI-SCRIPT.md), 10 cảnh, là nguồn sự thật cho `src/scenes/*` và `src/three/*`.
 - **Prerender từng khách lúc build:** script tạo `dist/<code>/index.html` với thẻ `<title>` và Open Graph riêng (ví dụ "Thư mời gửi Anh Minh"). Nhờ vậy link gửi qua Zalo/Messenger hiện preview đúng tên, và chạy được trên GitHub Pages mà không cần SPA fallback.
 - **Hosting:** GitHub Pages qua GitHub Actions (mặc định). Vercel là phương án dự phòng.

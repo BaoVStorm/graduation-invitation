@@ -2,7 +2,7 @@ import gsap from 'gsap'
 import { useLayoutEffect, useRef, type ReactNode } from 'react'
 import { WishForm } from '../components/WishForm'
 import { downloadIcs, googleCalendarUrl } from '../lib/calendar'
-import { dateLabel, event, formatPhone, guestName, hostName, invite, mapsHref, photoUrl, telHref, timeLabelLong, zaloHref } from '../lib/invite'
+import { asset, dateLabel, event, formatPhone, guestName, hostName, invite, mapsHref, memories, photoUrl, telHref, timeLabelLong, zaloHref } from '../lib/invite'
 
 function Card({ no, title, children }: { no: string; title: string; children: ReactNode }) {
   return (
@@ -85,8 +85,21 @@ export function Info({ onReplay }: { onReplay: () => void }) {
             </Card>
           )}
 
+          {memories.length > 0 && (
+            <Card no={String(invite.contact ? 5 : 4).padStart(2, '0')} title="Kỷ niệm">
+              <div className="mem-strip -mx-1">
+                {memories.map((m, i) => (
+                  <a key={m.src} href={asset(m.src)} target="_blank" rel="noreferrer">
+                    <img src={asset(m.src)} alt={m.caption || `Kỷ niệm ${i + 1}`} loading="lazy" />
+                    <span>{m.caption || ' '}</span>
+                  </a>
+                ))}
+              </div>
+            </Card>
+          )}
+
           {invite.wish && (
-            <Card no={invite.contact ? '05' : '04'} title="Gửi lời chúc">
+            <Card no={String(3 + (invite.contact ? 1 : 0) + (memories.length ? 1 : 0) + 1).padStart(2, '0')} title="Gửi lời chúc">
               <WishForm defaultName={invite.guest?.name ?? ''} />
             </Card>
           )}

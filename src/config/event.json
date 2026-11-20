@@ -15,5 +15,6 @@
     "mapsQuery": "Trường Đại học Công nghệ Thông tin - ĐHQG TP.HCM"
   },
   "photo": "images/graduate.webp",
-  "music": "audio/motivation.mp3"
+  "music": "audio/motivation.mp3",
+  "ogImage": "images/og-cover.jpg"
 }

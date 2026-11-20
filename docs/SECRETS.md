@@ -107,6 +107,42 @@ Có thể sửa trực tiếp `data/guests.json`:
 
 `code` là path. `self` bỏ trống nghĩa là "mình". Path trùng hoặc sai định dạng sẽ làm build dừng và báo lỗi.
 
+## Ảnh kỷ niệm cho khách đặc biệt
+
+Khách có ảnh sẽ có thêm cảnh **Kỷ niệm** (xấp ảnh polaroid, ngay sau thư ngỏ) và dải ảnh trong phần thông tin. Khách không có ảnh thì trải nghiệm giữ nguyên.
+
+1. Tạo thư mục theo **path của khách** rồi bỏ ảnh gốc vào. Ảnh chụp điện thoại để nguyên kích thước cũng được.
+   ```
+   memories-src/
+     thanhvinh/
+       01 - Đêm chạy đồ án.jpg
+       02 - Ngày bảo vệ khoá luận.jpg
+       03.jpg
+   ```
+   - Thứ tự ảnh theo tên file (01, 02, 03…), tối đa 12 ảnh mỗi khách.
+   - **Chú thích lấy từ tên file**, phần sau dấu `-`. File tên kiểu `IMG_2041.jpg` sẽ không có chú thích.
+2. Chạy:
+   ```bash
+   npm run memories
+   ```
+   Script sẽ xoay ảnh đúng chiều, thu về tối đa 1400px, nén WebP (khoảng 50–150 KB mỗi ảnh) và **xoá metadata**, gồm cả vị trí GPS và thông tin máy chụp. Kết quả ghi vào `public/memories/<path>/` và `data/memories.json`.
+3. Muốn sửa chú thích thì sửa `caption` trong `data/memories.json`. Chạy lại script vẫn giữ chú thích đã sửa.
+4. Commit và push:
+   ```bash
+   git add public/memories data/memories.json && git commit -m "Ảnh kỷ niệm" && git push
+   ```
+
+- `memories-src/` chứa ảnh gốc nên **không** được commit (đã có trong `.gitignore`).
+- Muốn xoá ảnh của một khách: để thư mục `memories-src/<path>/` trống rồi chạy lại `npm run memories`.
+- Ảnh đã nén nằm trong repo public và trên trang web, nên chỉ dùng ảnh mà người trong ảnh đồng ý chia sẻ.
+
+## Ảnh xem trước khi gửi link
+
+Khi dán link vào Zalo, Messenger hay Facebook, nền tảng sẽ hiện `public/images/og-cover.jpg` (1200×630): ảnh tốt nghiệp ở chính giữa (cắt vuông vẫn thấy rõ mặt), chữ "Lễ Tốt Nghiệp", tên tân khoa, ngày giờ. Tiêu đề hiển thị kèm ảnh là riêng cho từng khách (*"Thư mời tốt nghiệp · Gửi Anh Ngọc Thịnh"*).
+
+- Khi thay ảnh, **đổi tên file** (ví dụ `og-cover-2.jpg`) và cập nhật `ogImage` trong `src/config/event.json`, vì các nền tảng lưu đệm ảnh cũ theo đường dẫn.
+- Link đã gửi trước đó trên Facebook/Messenger có thể vẫn hiện ảnh cũ. Dùng [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) và bấm "Scrape Again" để làm mới.
+
 ## Chạy ở máy
 
 ```bash

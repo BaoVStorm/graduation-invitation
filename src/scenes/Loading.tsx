@@ -1,7 +1,7 @@
 import gsap from 'gsap'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { PlaneIcon } from '../components/ui'
-import { guestName, invite, photoUrl } from '../lib/invite'
+import { asset, guestName, invite, memories, photoUrl } from '../lib/invite'
 
 const FONTS = [
   '700 64px "Cormorant Garamond"',
@@ -22,8 +22,13 @@ async function preload(extra: Promise<unknown>[]) {
   const img = new Image()
   img.src = photoUrl
   const photo = img.decode().catch(() => null)
+  const mem = memories.slice(0, 4).map((m) => {
+    const im = new Image()
+    im.src = asset(m.src)
+    return im.decode().catch(() => null)
+  })
   const minimum = new Promise((r) => setTimeout(r, 1800))
-  await Promise.all([...fonts, photo, minimum, ...extra])
+  await Promise.all([...fonts, photo, minimum, ...mem, ...extra])
 }
 
 /** Cảnh 0 */

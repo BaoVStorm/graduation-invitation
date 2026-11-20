@@ -12,11 +12,25 @@ export const SECRET_KEYS = ['SECRET_PHONE', 'SECRET_WISH_EMAIL']
 
 const CODE_RE = /^[a-z0-9][a-z0-9-]{2,31}$/
 // Tên thư mục đã dùng trong dist/, không được làm mã khách
-const RESERVED = new Set(['assets', 'images', 'index', '404'])
+const RESERVED = new Set(['assets', 'images', 'audio', 'memories', 'index', '404'])
 
 const clean = (v) => (typeof v === 'string' && v.trim() ? v.trim() : null)
 
 export const GUESTS_FILE = path.join('data', 'guests.json')
+export const MEMORIES_FILE = path.join('data', 'memories.json')
+
+/** Ảnh kỷ niệm theo path khách (tạo bằng npm run memories) */
+function readMemories(root) {
+  const file = path.join(root, MEMORIES_FILE)
+  if (!fs.existsSync(file)) return {}
+  const data = JSON.parse(fs.readFileSync(file, 'utf8'))
+  for (const [code, list] of Object.entries(data)) {
+    for (const m of list) {
+      if (!fs.existsSync(path.join(root, 'public', m.src))) throw new Error(`${MEMORIES_FILE}: thiếu file public/${m.src} (khách "${code}"). Chạy lại npm run memories.`)
+    }
+  }
+  return data
+}
 
 export function readEvent(root = process.cwd()) {
   return JSON.parse(fs.readFileSync(path.join(root, 'src', 'config', 'event.json'), 'utf8'))
@@ -28,6 +42,7 @@ export function loadSecrets(env = process.env, root = process.cwd()) {
     phone: clean(env.SECRET_PHONE),
     wishEndpoint: wishEndpoint(clean(env.SECRET_WISH_EMAIL)),
     guests: fs.existsSync(file) ? parseGuests(fs.readFileSync(file, 'utf8')) : [],
+    memories: readMemories(root),
   }
 }
 
@@ -72,7 +87,8 @@ export function payloadFor(secrets, guest) {
   const wish = secrets.wishEndpoint ? { endpoint: secrets.wishEndpoint } : null
   if (!guest) return { guest: null, contact: null, wish }
   const { code, ...info } = guest
-  return { guest: info, contact: secrets.phone ? { phone: secrets.phone } : null, wish }
+  const memories = (secrets.memories?.[code] ?? []).map(({ src, caption, w, h }) => ({ src, caption, w, h }))
+  return { guest: { ...info, ...(memories.length && { memories }) }, contact: secrets.phone ? { phone: secrets.phone } : null, wish }
 }
 
 export function metaFor(guest, event) {
@@ -107,10 +123,18 @@ export function renderPage(template, { payload, title, description, url, image }
     `<meta property="og:title" content="${esc(title)}" />`,
     `<meta property="og:description" content="${esc(description)}" />`,
     url && `<meta property="og:url" content="${esc(url)}" />`,
+    `<meta property="og:site_name" content="Lễ Tốt Nghiệp 2026" />`,
     image && `<meta property="og:image" content="${esc(image)}" />`,
+    image && `<meta property="og:image:secure_url" content="${esc(image)}" />`,
+    image && `<meta property="og:image:type" content="image/jpeg" />`,
     image && `<meta property="og:image:width" content="1200" />`,
     image && `<meta property="og:image:height" content="630" />`,
+    image && `<meta property="og:image:alt" content="Ảnh tốt nghiệp của tân khoa" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:title" content="${esc(title)}" />`,
+    `<meta name="twitter:description" content="${esc(description)}" />`,
+    image && `<meta name="twitter:image" content="${esc(image)}" />`,
+    image && `<link rel="image_src" href="${esc(image)}" />`,
   ]
     .filter(Boolean)
     .join('\n    ')

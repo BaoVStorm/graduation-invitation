@@ -48,7 +48,7 @@ const who = (g) => [g.honorific, g.name].filter(Boolean).join(' ')
 
 function checkPath(code, list, except) {
   if (!/^[a-z0-9][a-z0-9-]{2,31}$/.test(code)) return 'Path chỉ gồm a-z, 0-9, dấu "-" và dài 3–32 ký tự'
-  if (['assets', 'images', 'index', '404'].includes(code)) return `"${code}" là tên hệ thống, chọn tên khác`
+  if (['assets', 'images', 'audio', 'memories', 'index', '404'].includes(code)) return `"${code}" là tên hệ thống, chọn tên khác`
   if (list.some((g) => g.code === code && g.code !== except)) return `Path "${code}" đã có người dùng`
   return null
 }
@@ -135,6 +135,7 @@ async function add(list) {
   list.push(g)
   save(list)
   console.log(c.green(`\n  ✓ Đã thêm. Link gửi khách: ${url(code)}`))
+  console.log(c.dim(`  Muốn có ảnh kỷ niệm: bỏ ảnh vào memories-src/${code}/ rồi chạy npm run memories`))
 }
 
 async function edit(list) {

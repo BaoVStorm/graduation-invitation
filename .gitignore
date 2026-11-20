@@ -16,3 +16,6 @@ Thumbs.db
 
 # Cấu hình công cụ cục bộ
 .claude/
+
+# Ảnh kỷ niệm gốc (to, còn metadata GPS) - chỉ commit bản đã nén trong public/memories
+memories-src/

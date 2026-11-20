@@ -14,7 +14,8 @@ const secrets = loadSecrets()
 
 // new URL() chuẩn hoá tên miền về chữ thường (BaoVStorm.github.io → baovstorm.github.io)
 const site = process.env.SITE_URL ? new URL(process.env.SITE_URL.replace(/\/?$/, '/')).href : ''
-const image = site ? `${site}images/og.jpg` : undefined
+// ảnh xem trước khi gửi link (Zalo, Messenger, Facebook…): đổi tên file khi thay ảnh để các nền tảng không dùng bản cũ đã lưu
+const image = site ? `${site}${event.ogImage}` : undefined
 
 function write(rel, html) {
   const file = path.join(dist, rel)
@@ -40,6 +41,6 @@ for (const guest of secrets.guests) {
 
 // Chỉ in trạng thái, KHÔNG in giá trị secret ra log CI
 const flag = (v) => (v ? 'đã cấu hình' : 'CHƯA cấu hình')
-console.log(`[prerender] ${secrets.guests.length} trang khách + trang chung`)
+console.log(`[prerender] ${secrets.guests.length} trang khách + trang chung · ${Object.keys(secrets.memories).length} khách có ảnh kỷ niệm`)
 console.log(`[prerender] SECRET_PHONE: ${flag(secrets.phone)} · SECRET_WISH_EMAIL: ${flag(secrets.wishEndpoint)}`)
 if (!site) console.log('[prerender] SITE_URL trống → bỏ qua og:url / og:image')

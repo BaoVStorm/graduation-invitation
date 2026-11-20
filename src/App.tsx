@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useMemo, useState } from 'react'
 import { SoundToggle } from './components/SoundToggle'
-import { guestName, invite } from './lib/invite'
+import { guestName, invite, memories } from './lib/invite'
 import { hasWebGL, prefersReducedMotion } from './lib/motion'
 import { Announcement } from './scenes/Announcement'
 import { Celebrate } from './scenes/Celebrate'
@@ -10,20 +10,25 @@ import { Info } from './scenes/Info'
 import { Intro } from './scenes/Intro'
 import { Loading } from './scenes/Loading'
 import { Magazine } from './scenes/Magazine'
+import { Memories } from './scenes/Memories'
 import { Ticket } from './scenes/Ticket'
 
-export type Phase = 'loading' | 'announce' | 'intro' | 'envelope' | 'opening' | 'ticket' | 'flight' | 'magazine' | 'letter' | 'celebrate' | 'info'
+export type Phase = 'loading' | 'announce' | 'intro' | 'envelope' | 'opening' | 'ticket' | 'flight' | 'magazine' | 'letter' | 'memories' | 'celebrate' | 'info'
 
 /** 7 chặng trên thanh tiến trình (xem docs/UI-SCRIPT.md) */
-const STEPS: { label: string; phases: Phase[] }[] = [
+const ALL_STEPS: { label: string; phases: Phase[] }[] = [
   { label: 'Thư', phases: ['intro', 'envelope', 'opening'] },
   { label: 'Vé', phases: ['ticket'] },
   { label: 'Bay', phases: ['flight'] },
   { label: 'Tạp chí', phases: ['magazine'] },
   { label: 'Thư ngỏ', phases: ['letter'] },
+  { label: 'Kỷ niệm', phases: ['memories'] },
   { label: 'Ăn mừng', phases: ['celebrate'] },
   { label: 'Thông tin', phases: ['info'] },
 ]
+
+/** khách không có ảnh kỷ niệm thì bỏ chặng Kỷ niệm */
+const STEPS = ALL_STEPS.filter((s) => s.label !== 'Kỷ niệm' || memories.length > 0)
 
 const webgl = hasWebGL()
 /** Có path khách → luồng thư mời 10 cảnh. Trang chính → chỉ thông báo tốt nghiệp. */
@@ -70,8 +75,9 @@ export default function App() {
         {phase === 'ticket' && <Ticket onBoard={() => go('flight')} />}
         {phase === 'flight' && <Flight onArrive={() => go('magazine')} />}
         {(phase === 'magazine' || phase === 'letter') && (
-          <Magazine stage={phase} onOpen={() => go('letter')} onDone={() => go('celebrate')} />
+          <Magazine stage={phase} onOpen={() => go('letter')} onDone={() => go(memories.length ? 'memories' : 'celebrate')} />
         )}
+        {phase === 'memories' && <Memories onDone={() => go('celebrate')} />}
         {phase === 'celebrate' && <Celebrate onNext={() => go('info')} />}
         {phase === 'info' && <Info onReplay={replay} />}
       </div>

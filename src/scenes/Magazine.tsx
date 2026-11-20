@@ -1,8 +1,8 @@
 import gsap from 'gsap'
 import { useLayoutEffect, useRef } from 'react'
 import { Cover } from '../components/Cover'
-import { CapIcon, GoldButton, useExit } from '../components/ui'
-import { dateLabel, event, guestName, guestPronoun, guestSelf, hostName, invite, studentId, timeLabelLong } from '../lib/invite'
+import { CameraIcon, CapIcon, GoldButton, useExit } from '../components/ui'
+import { dateLabel, event, guestName, guestPronoun, guestSelf, hostName, invite, memories, studentId, timeLabelLong } from '../lib/invite'
 import { sfx } from '../lib/audio'
 import { useTilt } from '../lib/motion'
 
@@ -111,7 +111,15 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
         </GoldButton>
       ) : (
         <GoldButton onClick={() => exit(onDone, { scale: 0.9 })} className="l-next">
-          <CapIcon /> Tung mũ ăn mừng
+          {memories.length ? (
+            <>
+              <CameraIcon /> Xem kỷ niệm
+            </>
+          ) : (
+            <>
+              <CapIcon /> Tung mũ ăn mừng
+            </>
+          )}
         </GoldButton>
       )}
     </div>

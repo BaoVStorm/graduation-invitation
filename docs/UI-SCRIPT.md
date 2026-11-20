@@ -140,6 +140,17 @@ Bìa làm theo mẫu PNG đã duyệt: ảnh tràn bìa, masthead GRADUATE., cov
   4. **Chữ ký** (tên chủ nhân) được vẽ dần nét như viết tay
 - Nút **"🎓 Tung mũ ăn mừng"**.
 
+## Cảnh 7b: Kỷ niệm (chỉ có với khách có ảnh)
+
+Nút cuối thư ngỏ đổi thành **"Xem kỷ niệm"**. Thanh tiến trình có thêm chặng "Kỷ niệm".
+
+| t | Sự kiện |
+|---|---|
+| 0.2s | *"KỶ NIỆM · N TẤM ẢNH"* và *"Những khoảnh khắc cùng {Tên khách}"* |
+| 0.3s+ | Các tấm **polaroid** (viền giấy, băng dính, chú thích viết nghiêng) rơi xuống bàn từng tấm, tấm dưới cùng trước, có tiếng giấy |
+| chờ khách | **Chạm hoặc vuốt** để ném tấm trên cùng sang bên. Có thể kéo theo tay. Bộ đếm "1/4". Xấp ảnh nghiêng 3D theo con trỏ hoặc độ nghiêng điện thoại. |
+| hết ảnh | Tất cả các tấm bay lại xếp thành **ảnh ghép**, tiêu đề đổi thành *"Cảm ơn vì tất cả"*, tiếng chuông, nút **"Tung mũ ăn mừng"** |
+
 ## Cảnh 8: Tung mũ
 
 - **3D:** 7 chiếc mũ tốt nghiệp bay lên từ dưới, xoay tròn rồi rơi xuống. Cùng lúc **pháo giấy 3D** nổ 2 đợt (300 mảnh màu vàng, xanh lá, trắng, navy) và rơi chậm, lật lả tả.

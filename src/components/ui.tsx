@@ -104,3 +104,10 @@ export const CapIcon = ({ className = '' }: { className?: string }) => (
     <path d="M12 3 1 8.5 12 14l9-4.5V16h2V8.5L12 3zm-6.5 9.3V16c0 1.9 2.9 3.5 6.5 3.5s6.5-1.6 6.5-3.5v-3.7L12 15.6l-6.5-3.3z" />
   </svg>
 )
+
+export const CameraIcon = ({ className = '' }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d="M4 8h3l1.6-2.2h6.8L17 8h3v11H4z" />
+    <circle cx="12" cy="13.2" r="3.4" />
+  </svg>
+)
