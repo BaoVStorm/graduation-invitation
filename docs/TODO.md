@@ -13,23 +13,23 @@
 
 - [ ] **Phát Huỳnh** (`/anh_mentor_ba_bros`): đang dùng lời nhắn mặc định, chờ nội dung
 - [ ] **Nguyễn Minh Nhựt** (`/anhnhutnguyen`): đang dùng lời nhắn mặc định, chờ nội dung
-- [ ] *(Tuỳ chọn)* Những khách đang dùng lời nhắn mặc định: Thuý Nguyễn, Đặng Linh, Lê Tiến Đạt, Vũ Nguyễn Duy Linh, Nguyên Phúc, Duy Tân, Thành Quý, Thiện Võ.
+- [x] *(Tuỳ chọn)* Giữ lời nhắn mặc định cho: Thuý Nguyễn, Đặng Linh, Lê Tiến Đạt, Vũ Nguyễn Duy Linh, Nguyên Phúc, Duy Tân, Thành Quý, Thiện Võ.
   Lời mặc định là *"Cảm ơn bạn vì đã là một phần trong hành trình của mình."*
 
 ## Cần xác nhận
 
 - [x] **Tiến Đỗ**: đã xác nhận tên đúng (20/11/2026)
-- [ ] **"nguyên phúc"** đang được ghi là **Nguyên Phúc**. Nếu là họ Nguyễn thì sửa thành "Nguyễn Phúc".
-- [ ] **"Ngọc Thịnh - zont"** hiển thị là **Bạn Ngọc Thịnh**, chữ "Zont" chỉ nằm trong lời nhắn. Có muốn hiện "Ngọc Thịnh (Zont)" không?
-- [ ] **Nguyên Phúc, Thành Quý, Thiện Võ** chưa ghi cách tự xưng nên đang để "mình".
-- [ ] **Thư gia đình** (`/giadinh`): đây là thư mình tự viết (xưng "con", gọi "cả nhà"). Đọc lại và sửa trong `data/guests.json` (trường `message` và `letter`).
-- [ ] Duyệt lại các lời nhắn đã được viết lại cho gọn (trường `message` trong `data/guests.json`).
+- [x] **Nguyên Phúc**: đã xác nhận tên đúng (20/11/2026)
+- [x] **Ngọc Thịnh** (`/ngocthinhzont`): giữ tên "Ngọc Thịnh", chữ "Zont" nằm trong lời nhắn
+- [x] **Nguyên Phúc, Thành Quý, Thiện Võ**: giữ tự xưng "mình"
+- [x] **Thư gia đình** (`/giadinh`): đã duyệt
+- [x] Các lời nhắn đã viết lại: đã duyệt
 
 ## Kỹ thuật
 
-- [ ] **Kích hoạt form lời chúc:** gửi thử một lời chúc → mở email *FormSubmit – Activate Form* → bấm Activate
+- [x] **Form lời chúc**: đã kích hoạt FormSubmit (20/11/2026)
 - [ ] *(Khuyên dùng)* Sau khi kích hoạt: đổi `SECRET_WISH_EMAIL` sang chuỗi ngẫu nhiên FormSubmit cấp để giấu email (xem [SECRETS.md](SECRETS.md))
-- [ ] Mở thử vài link trên **điện thoại thật** (iPhone + Android): độ mượt cảnh bay, âm thanh, nghiêng máy
+- [x] **Điện thoại thật**: đã thử (20/11/2026)
 - [ ] Dán thử 1 link vào Zalo/Messenger để xem ảnh xem trước. Nếu hiện ảnh cũ thì dùng Facebook Sharing Debugger.
 
 ## Đã xong gần đây
