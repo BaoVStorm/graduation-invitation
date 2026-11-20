@@ -18,7 +18,7 @@
 
 ## Cần xác nhận
 
-- [ ] **"Tiến Dỗ"** đang được ghi là **Tiến Đỗ** (nghi gõ nhầm). Nếu đúng là "Dỗ" thì sửa lại.
+- [x] **Tiến Đỗ**: đã xác nhận tên đúng (20/11/2026)
 - [ ] **"nguyên phúc"** đang được ghi là **Nguyên Phúc**. Nếu là họ Nguyễn thì sửa thành "Nguyễn Phúc".
 - [ ] **"Ngọc Thịnh - zont"** hiển thị là **Bạn Ngọc Thịnh**, chữ "Zont" chỉ nằm trong lời nhắn. Có muốn hiện "Ngọc Thịnh (Zont)" không?
 - [ ] **Nguyên Phúc, Thành Quý, Thiện Võ** chưa ghi cách tự xưng nên đang để "mình".
