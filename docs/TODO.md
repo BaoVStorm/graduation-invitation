@@ -11,8 +11,8 @@
 
 ## Lời nhắn còn thiếu
 
-- [ ] **Phát Huỳnh** (`/anh_mentor_ba_bros`): đang dùng lời nhắn mặc định, chờ nội dung
-- [ ] **Nguyễn Minh Nhựt** (`/anhnhutnguyen`): đang dùng lời nhắn mặc định, chờ nội dung
+- [x] **Huỳnh Hiệp Phát** (`/anh_mentor_ba_bros`): đã có tên đầy đủ và lời nhắn
+- [x] **Nguyễn Minh Nhựt** (`/anhnhutnguyen`): đã có lời nhắn
 - [x] *(Tuỳ chọn)* Giữ lời nhắn mặc định cho: Thuý Nguyễn, Đặng Linh, Lê Tiến Đạt, Vũ Nguyễn Duy Linh, Nguyên Phúc, Duy Tân, Thành Quý, Thiện Võ.
   Lời mặc định là *"Cảm ơn bạn vì đã là một phần trong hành trình của mình."*
 
