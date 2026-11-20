@@ -1,17 +1,128 @@
 {
   "guests": [
     {
-      "code": "thanhvinh",
-      "honorific": "Bạn",
-      "name": "Thành Vinh",
-      "message": "Cảm ơn Vinh vì những đêm cùng nhau chạy deadline đồ án. Không có ông chắc tui chưa ra trường nổi!"
+      "code": "caubecaulong",
+      "honorific": "Em",
+      "name": "Gia Huy",
+      "self": "anh",
+      "message": "Cảm ơn em đã đồng hành cùng anh suốt thời gian qua, và cả những trận cầu lông mướt mồ hôi mà vui hết nấc. Ra trường rồi vẫn phải hẹn nhau ra sân đó nha!"
     },
     {
-      "code": "ngocthinh",
+      "code": "top1wibuvn",
+      "honorific": "Bạn",
+      "name": "Lâm Wibu",
+      "message": "Từ hồi cấp 3 tới giờ vẫn là bro của nhau. Cảm ơn ông vì đã luôn ở đó, cùng cày game, cày anime và cày luôn cả thanh xuân. Thanks bro!"
+    },
+    {
+      "code": "minhtung",
+      "honorific": "Bạn",
+      "name": "Minh Tùng",
+      "message": "Cảm ơn fen đã đi cùng mình và hỗ trợ mình đủ thứ thời gian qua. Nhiều lúc gấp thông tin, tui gọi lúc nửa đêm fen vẫn bắt máy. Cảm ơn fen nhiều lắmm!"
+    },
+    {
+      "code": "thuynguyen",
+      "honorific": "Bạn",
+      "name": "Thuý Nguyễn"
+    },
+    {
+      "code": "antran",
+      "honorific": "Bạn",
+      "name": "An Trần",
+      "message": "Cảm ơn An vì những ngày đầu đại học cùng học, cùng làm bài và cùng chạy deadline. Những lần làm chung ấy là những kỷ niệm rất đẹp với mình."
+    },
+    {
+      "code": "anhhung",
       "honorific": "Anh",
-      "name": "Ngọc Thịnh",
+      "name": "Hùng Phạm",
       "self": "em",
-      "message": "Cảm ơn anh đã luôn là người dẫn đường cho em suốt những năm ở UIT."
+      "message": "Cảm ơn anh đã hỗ trợ em rất nhiều trong thời gian làm khoá luận. Dù mình chỉ thật sự quen nhau từ chuyến đi trip, em vẫn rất quý sự hoà đồng và dễ gần của anh."
+    },
+    {
+      "code": "ngocthinhzont",
+      "honorific": "Bạn",
+      "name": "Ngọc Thịnh",
+      "message": "Từ lần đầu gặp nhau hồi cấp 3, rồi thành team chiến game chung, tới giờ vẫn còn giữ liên lạc. Cảm ơn Zont vì những trận game và những năm tháng vui vẻ đó!"
+    },
+    {
+      "code": "thaibao",
+      "honorific": "Bạn",
+      "name": "Nguyễn Thái Bảo",
+      "message": "Cảm ơn Bảo vì những buổi học thực hành và những lần cà phê học nhóm thời đại học. Giờ tuy ít gặp, nhưng mấy kỷ niệm đó mình vẫn nhớ."
+    },
+    {
+      "code": "bancungphongtro",
+      "honorific": "Bạn",
+      "name": "Nguyễn Văn Hoà",
+      "message": "Một năm ở chung trọ, bao nhiêu bữa ăn và bao nhiêu trận cầu lông với cả nhóm, toàn là kỷ niệm vui. Ra trường rồi ít dịp gặp, nên ngày này nhất định phải có ông nha!"
+    },
+    {
+      "code": "danglinh",
+      "honorific": "Bạn",
+      "name": "Đặng Linh"
+    },
+    {
+      "code": "letiendat",
+      "honorific": "Bạn",
+      "name": "Lê Tiến Đạt"
+    },
+    {
+      "code": "thangbancap2",
+      "honorific": "Bạn",
+      "name": "Võ Tạ Đức Chánh",
+      "message": "Thằng bạn cấp 2 của mình! Lên cấp 3 rồi đại học tuy ít gặp lại, nhưng kỷ niệm hồi đó mình vẫn nhớ hoài. Lâu lắm rồi, gặp nhau một bữa nha!"
+    },
+    {
+      "code": "duylinhnguyen",
+      "honorific": "Bạn",
+      "name": "Vũ Nguyễn Duy Linh"
+    },
+    {
+      "code": "nguyenphuc",
+      "honorific": "Bạn",
+      "name": "Nguyên Phúc"
+    },
+    {
+      "code": "duytan",
+      "honorific": "Bạn",
+      "name": "Duy Tân"
+    },
+    {
+      "code": "anh_mentor_ba_bros",
+      "honorific": "Anh",
+      "name": "Phát Huỳnh",
+      "self": "em"
+    },
+    {
+      "code": "anhnhutnguyen",
+      "honorific": "Anh",
+      "name": "Nguyễn Minh Nhựt",
+      "self": "em"
+    },
+    {
+      "code": "anhtunglamchungintern",
+      "honorific": "Anh",
+      "name": "Tiến Đỗ",
+      "self": "em",
+      "message": "Cảm ơn anh vì đợt intern đáng nhớ, với rất nhiều trải nghiệm và niềm vui. Giờ mỗi người một hướng, nhưng em vẫn mong được gặp lại anh trong ngày vui này."
+    },
+    {
+      "code": "thanhquy",
+      "honorific": "Bạn",
+      "name": "Thành Quý"
+    },
+    {
+      "code": "thienvo",
+      "honorific": "Bạn",
+      "name": "Thiện Võ"
+    },
+    {
+      "code": "giadinh",
+      "honorific": "",
+      "name": "Ba, Mẹ và Em",
+      "self": "con",
+      "message": "Con đã làm được rồi! Cảm ơn Ba Mẹ đã luôn tin con, chờ con và lo cho con từng chút một.",
+      "you": "cả nhà",
+      "letter": "Tấm bằng này không chỉ của riêng con. Đó là những bữa cơm Mẹ để phần, những cuộc gọi Ba hỏi han, là tiếng cười của em gái mỗi lần con về nhà.\n\nNgày con chính thức trở thành tân khoa, điều con mong nhất là có cả nhà ở bên."
     }
   ]
 }

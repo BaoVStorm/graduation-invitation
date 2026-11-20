@@ -10,7 +10,7 @@ import path from 'node:path'
 
 export const SECRET_KEYS = ['SECRET_PHONE', 'SECRET_WISH_EMAIL']
 
-const CODE_RE = /^[a-z0-9][a-z0-9-]{2,31}$/
+const CODE_RE = /^[a-z0-9][a-z0-9_-]{2,31}$/
 // Tên thư mục đã dùng trong dist/, không được làm mã khách
 const RESERVED = new Set(['assets', 'images', 'audio', 'memories', 'index', '404'])
 
@@ -59,15 +59,23 @@ export function parseGuests(raw) {
   const seen = new Set()
   return list.map((g, i) => {
     const code = String(g?.code ?? '').trim().toLowerCase()
-    if (!CODE_RE.test(code)) throw new Error(`Khách #${i + 1}: mã "${g?.code ?? ''}" không hợp lệ (3–32 ký tự a-z, 0-9, dấu -)`)
+    if (!CODE_RE.test(code)) throw new Error(`Khách #${i + 1}: mã "${g?.code ?? ''}" không hợp lệ (3–32 ký tự a-z, 0-9, dấu - hoặc _)`)
     if (RESERVED.has(code)) throw new Error(`Khách #${i + 1}: mã "${code}" trùng tên thư mục hệ thống`)
     if (seen.has(code)) throw new Error(`Mã "${code}" bị trùng`)
     seen.add(code)
     const name = String(g?.name ?? '').trim()
     if (!name) throw new Error(`Khách "${code}": thiếu "name"`)
-    const message = String(g?.message ?? '').trim()
-    const self = String(g?.self ?? '').trim()
-    return { code, name, honorific: String(g?.honorific ?? '').trim(), ...(message && { message }), ...(self && { self }) }
+    const opt = (k) => String(g?.[k] ?? '').trim()
+    const [message, self, you, letter] = [opt('message'), opt('self'), opt('you'), opt('letter')]
+    return {
+      code,
+      name,
+      honorific: opt('honorific'),
+      ...(message && { message }),
+      ...(self && { self }),
+      ...(you && { you }), // cách gọi khách trong câu văn, ví dụ "cả nhà"
+      ...(letter && { letter }), // đoạn thư riêng thay cho đoạn chung (đoạn cách nhau bằng dòng trống)
+    }
   })
 }
 

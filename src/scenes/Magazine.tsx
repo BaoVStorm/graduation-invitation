@@ -54,6 +54,31 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
   const message =
     invite.guest?.message ??
     `Cảm ơn ${guestPronoun} vì đã là một phần trong hành trình của ${guestSelf}.`
+  // đoạn thư riêng (ví dụ thư gửi gia đình) thay cho đoạn chung
+  const custom = invite.guest?.letter
+    ?.split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+
+  // thư dài thì thu nhỏ chữ cho vừa trang (tối thiểu 72%)
+  const page = useRef<HTMLDivElement>(null)
+  useLayoutEffect(() => {
+    const el = page.current
+    if (!el) return
+    const fit = () => {
+      let s = 1
+      el.style.setProperty('--ls', '1')
+      const letter = el.querySelector<HTMLElement>('.letter')!
+      while (letter.scrollHeight > el.clientHeight && s > 0.72) {
+        s -= 0.04
+        el.style.setProperty('--ls', s.toFixed(2))
+      }
+    }
+    fit()
+    void document.fonts.ready.then(fit)
+    window.addEventListener('resize', fit)
+    return () => window.removeEventListener('resize', fit)
+  }, [])
 
   return (
     <div ref={root} className="scene flex-col gap-5">
@@ -61,15 +86,23 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
         <div ref={tilt} className="tilt">
           <div className="mag relative">
             {/* trang trong: thư ngỏ */}
-            <div className="page">
+            <div ref={page} className="page">
               <div className="page-shade" />
               <div className="letter">
                 <p className="l-hi">Gửi {guestName},</p>
                 <p className="l-msg">“{message}”</p>
-                <p className="l-body">
-                  Sau những năm tháng miệt mài cùng sách vở, đồ án và những đêm thức trắng, {guestSelf} sắp chính thức trở
-                  thành tân khoa. Ngày vui ấy sẽ trọn vẹn hơn rất nhiều nếu có {guestPronoun} ở đó.
-                </p>
+                {custom?.length ? (
+                  custom.map((p, i) => (
+                    <p key={i} className="l-body">
+                      {p}
+                    </p>
+                  ))
+                ) : (
+                  <p className="l-body">
+                    Sau những năm tháng miệt mài cùng sách vở, đồ án và những đêm thức trắng, {guestSelf} sắp chính thức trở
+                    thành tân khoa. Ngày vui ấy sẽ trọn vẹn hơn rất nhiều nếu có {guestPronoun} ở đó.
+                  </p>
+                )}
                 <p className="l-body">
                   Hẹn {guestPronoun} vào{' '}
                   <b>

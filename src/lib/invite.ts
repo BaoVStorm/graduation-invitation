@@ -1,7 +1,7 @@
 import event from '../config/event.json'
 
 export type Memory = { src: string; caption: string; w: number; h: number }
-export type Guest = { honorific: string; name: string; message?: string; self?: string; memories?: Memory[] }
+export type Guest = { honorific: string; name: string; message?: string; self?: string; you?: string; letter?: string; memories?: Memory[] }
 export type InviteData = {
   guest: Guest | null
   contact: { phone: string } | null
@@ -29,7 +29,7 @@ export const memories: Memory[] = invite.guest?.memories ?? []
 /** "Anh Minh" — dùng cho tiêu đề, phong bì, vé */
 export const guestName = (invite.guest ? [invite.guest.honorific, invite.guest.name].filter(Boolean).join(' ') : 'Bạn').normalize('NFC')
 /** Cách gọi ngắn trong câu văn: "anh", "bạn", "cô"… */
-export const guestPronoun = (invite.guest?.honorific || 'bạn').toLowerCase()
+export const guestPronoun = invite.guest?.you || (invite.guest?.honorific || 'bạn').toLowerCase()
 export const hostName: string | null = event.host?.name || null
 export const studentId: string | null = event.host?.studentId || null
 /** Cách chủ nhân tự xưng với khách này: "mình" (mặc định), "em", "con"… */

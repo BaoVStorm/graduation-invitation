@@ -23,12 +23,13 @@ function load() {
 }
 function save(list) {
   parseGuests(JSON.stringify(list)) // kiểm tra toàn bộ trước khi ghi
-  const clean = list.map(({ code, honorific, name, self, message }) => ({
+  const clean = list.map(({ code, honorific, name, self, message, ...rest }) => ({
     code,
     honorific,
     name,
     ...(self && self !== 'mình' && { self }),
     ...(message && { message }),
+    ...rest, // giữ các trường nâng cao (you, letter) nếu có
   }))
   fs.writeFileSync(GUESTS_FILE, JSON.stringify({ guests: clean }, null, 2) + '\n')
 }
@@ -43,11 +44,21 @@ function slugify(s) {
     .replace(/[^a-z0-9]+/g, '')
 }
 
+/** path gõ tay: bỏ dấu, chữ thường, giữ a-z 0-9 - _ */
+const cleanPath = (s) =>
+  s
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[đĐ]/g, 'd')
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9_-]/g, '')
+
 const url = (code) => `${SITE}${code}`
 const who = (g) => [g.honorific, g.name].filter(Boolean).join(' ')
 
 function checkPath(code, list, except) {
-  if (!/^[a-z0-9][a-z0-9-]{2,31}$/.test(code)) return 'Path chỉ gồm a-z, 0-9, dấu "-" và dài 3–32 ký tự'
+  if (!/^[a-z0-9][a-z0-9_-]{2,31}$/.test(code)) return 'Path chỉ gồm a-z, 0-9, dấu "-" hoặc "_" và dài 3–32 ký tự'
   if (['assets', 'images', 'audio', 'memories', 'index', '404'].includes(code)) return `"${code}" là tên hệ thống, chọn tên khác`
   if (list.some((g) => g.code === code && g.code !== except)) return `Path "${code}" đã có người dùng`
   return null
@@ -105,7 +116,7 @@ async function ask(label, def = '', { required = false } = {}) {
 }
 async function askPath(def, list, except) {
   for (;;) {
-    const code = slugify(await ask('Path (đường dẫn)', def, { required: true })) || def
+    const code = cleanPath(await ask('Path (đường dẫn)', def, { required: true })) || def
     const err = checkPath(code, list, except)
     if (!err) return code
     console.log(c.red(`  ✗ ${err}`))

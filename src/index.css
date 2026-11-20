@@ -447,22 +447,23 @@ body {
   pointer-events: none;
 }
 .letter {
+  --ls: inherit;
   position: relative;
-  padding: 10cqw 9cqw;
+  padding: calc(10cqw * var(--ls, 1)) 9cqw;
   display: flex;
   flex-direction: column;
-  gap: 4.4cqw;
+  gap: calc(4.4cqw * var(--ls, 1));
 }
 .l-hi {
-  font: 11cqw/1.1 "Great Vibes", cursive;
+  font: calc(11cqw * var(--ls, 1)) / 1.1 "Great Vibes", cursive;
   color: #b8892f;
 }
 .l-msg {
-  font: italic 700 5cqw/1.4 "Playfair Display", serif;
+  font: italic 700 calc(5cqw * var(--ls, 1)) / 1.4 "Playfair Display", serif;
   color: #13235e;
 }
 .l-body {
-  font-size: 3.9cqw;
+  font-size: calc(3.9cqw * var(--ls, 1));
   line-height: 1.65;
   color: #3b4160;
 }

@@ -105,7 +105,15 @@ Có thể sửa trực tiếp `data/guests.json`:
 }
 ```
 
-`code` là path. `self` bỏ trống nghĩa là "mình". Path trùng hoặc sai định dạng sẽ làm build dừng và báo lỗi.
+`code` là path (cho phép `a-z 0-9 - _`). `self` bỏ trống nghĩa là "mình".
+
+**Trường nâng cao** (sửa tay trong JSON, ví dụ cho thư gửi gia đình):
+- `you`: cách gọi khách trong câu văn, ví dụ `"cả nhà"`. Mặc định lấy theo xưng hô.
+- `letter`: đoạn thư riêng thay cho đoạn chung. Các đoạn cách nhau bằng một dòng trống (`
+
+`).
+
+Thư dài sẽ tự thu nhỏ chữ cho vừa trang. Path trùng hoặc sai định dạng sẽ làm build dừng và báo lỗi.
 
 ## Ảnh kỷ niệm cho khách đặc biệt
 

@@ -27,6 +27,7 @@ Trang chính `/` không phải thư mời: đó là trang **thông báo tốt ng
 | [docs/CONTEXT.md](docs/CONTEXT.md) | Bối cảnh, thông tin sự kiện, quyết định kỹ thuật, quyền riêng tư |
 | [docs/DESIGN-BRIEF.md](docs/DESIGN-BRIEF.md) | Prompt thiết kế, storyboard từng cảnh, checklist chất lượng |
 | [docs/RESOURCES.md](docs/RESOURCES.md) | Thư viện, tài sản 3D, nguồn cảm hứng, công cụ |
+| [docs/TODO.md](docs/TODO.md) | **Việc cần làm để hoàn thiện** (ảnh, lời nhắn còn thiếu, cần xác nhận) |
 | [docs/UI-SCRIPT.md](docs/UI-SCRIPT.md) | Kịch bản hiển thị 10 cảnh: thời lượng, chuyển động, cảm xúc |
 | [docs/SECRETS.md](docs/SECRETS.md) | Dữ liệu cá nhân, `SECRET_PHONE`, cách thêm khách |
 
