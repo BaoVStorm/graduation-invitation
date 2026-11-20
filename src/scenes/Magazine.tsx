@@ -2,7 +2,7 @@ import gsap from 'gsap'
 import { useLayoutEffect, useRef } from 'react'
 import { Cover } from '../components/Cover'
 import { CapIcon, GoldButton, useExit } from '../components/ui'
-import { dateLabel, event, guestName, guestPronoun, guestSelf, hostName, invite, studentId } from '../lib/invite'
+import { dateLabel, event, guestName, guestPronoun, guestSelf, hostName, invite, studentId, timeLabelLong } from '../lib/invite'
 import { sfx } from '../lib/audio'
 import { useTilt } from '../lib/motion'
 
@@ -71,7 +71,12 @@ export function Magazine({ stage, onOpen, onDone }: { stage: 'magazine' | 'lette
                   thành tân khoa. Ngày vui ấy sẽ trọn vẹn hơn rất nhiều nếu có {guestPronoun} ở đó.
                 </p>
                 <p className="l-body">
-                  Hẹn {guestPronoun} vào <b>{event.weekday}, {dateLabel}</b> tại {event.venue.name}.
+                  Hẹn {guestPronoun} vào{' '}
+                  <b>
+                    {timeLabelLong ? `${timeLabelLong}, ` : ''}
+                    {event.weekday}, {dateLabel}
+                  </b>{' '}
+                  tại {event.venue.name}.
                 </p>
                 <svg className="sign" viewBox="0 0 400 90" aria-label={hostName ?? 'Tân khoa'}>
                   <text x="0" y="66">

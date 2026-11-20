@@ -81,7 +81,6 @@ export function WishForm({ defaultName = '', onSent }: { defaultName?: string; o
           maxLength={80}
           required
           autoComplete="name"
-          placeholder="Ví dụ: Minh Anh"
         />
       </div>
       <div>
@@ -95,7 +94,6 @@ export function WishForm({ defaultName = '', onSent }: { defaultName?: string; o
           onChange={(e) => setMessage(e.target.value)}
           maxLength={1500}
           required
-          placeholder="Viết vài dòng gửi tân khoa…"
         />
       </div>
       {/* bẫy spam: người thật không thấy ô này */}

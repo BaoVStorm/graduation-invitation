@@ -2,95 +2,77 @@ import gsap from 'gsap'
 import { useLayoutEffect, useRef } from 'react'
 import { PlaneIcon } from '../components/ui'
 import { sfx } from '../lib/audio'
+import { event, eventDay } from '../lib/invite'
+import { FLIGHT_SECONDS } from '../lib/timing'
 
-const CLOUDS = Array.from({ length: 12 }, (_, i) => ({
-  top: (i * 37) % 90,
-  size: 120 + ((i * 53) % 160),
-  layer: i % 3,
-}))
+const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 
-/** Cảnh 5: chuyến bay SV → TK (tự chạy 3.2s) */
+/**
+ * Cảnh 5 (lớp DOM): bảng theo dõi chuyến bay như màn hình trên máy bay.
+ * Máy bay 3D, mây và vệt khói nằm ở three/FlightScene.tsx.
+ */
 export function Flight({ onArrive }: { onArrive: () => void }) {
   const root = useRef<HTMLDivElement>(null)
-  const path = useRef<SVGPathElement>(null)
-  const plane = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
-    const p = path.current!
-    const len = p.getTotalLength()
-    const progress = { t: 0 }
     const ctx = gsap.context(() => {
-      gsap.set(p, { attr: { 'stroke-dasharray': '6 8' } })
-      gsap.set('.mask-line', { attr: { 'stroke-dasharray': len, 'stroke-dashoffset': len } })
-      gsap.from(root.current, { autoAlpha: 0, duration: 0.4 })
-      document.querySelectorAll<HTMLElement>('.cloud').forEach((c) => {
-        const layer = Number(c.dataset.layer)
-        gsap.fromTo(c, { x: '110vw' }, { x: '-60vw', duration: 3.4 - layer * 0.8, ease: 'none', delay: -Math.random() * 2 })
-      })
       gsap
         .timeline({ onComplete: onArrive })
-        .to('.mask-line', { attr: { 'stroke-dashoffset': 0 }, duration: 2.2, ease: 'power1.inOut' }, 0.2)
-        .to(
-          progress,
-          {
-            t: 1,
-            duration: 2.2,
-            ease: 'power1.inOut',
-            onUpdate: () => {
-              const a = p.getPointAtLength(progress.t * len)
-              const b = p.getPointAtLength(Math.min(len, progress.t * len + 1))
-              const angle = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI
-              const svg = p.ownerSVGElement!.getBoundingClientRect()
-              const sx = svg.width / 400
-              const sy = svg.height / 300
-              gsap.set(plane.current, { x: a.x * sx, y: a.y * sy, rotate: angle + 90 })
-            },
-          },
-          0.2,
-        )
-        .call(() => sfx('plane'), [], 0.1)
-        .call(() => sfx('chime'), [], 1.9)
-        .from('.from', { autoAlpha: 0, y: 10, duration: 0.4 }, 0)
-        .from('.to', { autoAlpha: 0, y: 10, duration: 0.4 }, 1.8)
-        .to('.going', { autoAlpha: 0, duration: 0.3 }, 1.6)
-        .from('.future', { autoAlpha: 0, scale: 0.8, duration: 0.6, ease: 'back.out(2)' }, 1.9)
-        .to(root.current, { autoAlpha: 0, scale: 1.15, duration: 0.6, ease: 'power2.in' }, 2.7)
+        .call(() => sfx('plane'), [], 0.05)
+        .from('.tracker', { autoAlpha: 0, y: -16, duration: 0.6, ease: 'power2.out' }, 0)
+        .fromTo('.trk-fill', { scaleX: 0 }, { scaleX: 1, duration: FLIGHT_SECONDS, ease: 'power1.inOut' }, 0)
+        .fromTo('.trk-plane', { left: '0%' }, { left: '100%', duration: FLIGHT_SECONDS, ease: 'power1.inOut' }, 0)
+        .from('.going', { autoAlpha: 0, y: 12, duration: 0.6 }, 0.3)
+        .to('.going', { autoAlpha: 0, y: -10, duration: 0.4 }, 1.8)
+        .call(() => sfx('chime'), [], 2.0)
+        .from('.future', { autoAlpha: 0, scale: 0.85, filter: 'blur(8px)', duration: 0.8, ease: 'power3.out' }, 2.0)
+        .to('.trk-status', { color: '#3ddc84', duration: 0.3 }, FLIGHT_SECONDS - 0.2)
+        .set('.trk-status-text', { textContent: 'Đã hạ cánh' }, FLIGHT_SECONDS - 0.2)
+        .to(root.current, { autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, FLIGHT_SECONDS + 0.15)
     }, root)
     return () => ctx.revert()
   }, [onArrive])
 
   return (
-    <div ref={root} className="scene overflow-hidden bg-[radial-gradient(ellipse_at_50%_120%,#2a46b8_0%,transparent_60%)]">
-      {CLOUDS.map((c, i) => (
-        <div
-          key={i}
-          data-layer={c.layer}
-          className="cloud pointer-events-none absolute rounded-full bg-white blur-2xl"
-          style={{ top: `${c.top}%`, width: c.size * (1 + c.layer * 0.5), height: c.size * 0.45, opacity: 0.06 + c.layer * 0.05 }}
-        />
-      ))}
-      <div className="relative aspect-[4/3] w-[min(92vw,560px)]">
-        <svg viewBox="0 0 400 300" className="absolute inset-0 size-full overflow-visible">
-          <path ref={path} d="M40 250 C 120 240, 140 90, 230 110 S 330 60, 360 40" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
-          <path
-            className="mask-line"
-            d="M40 250 C 120 240, 140 90, 230 110 S 330 60, 360 40"
-            fill="none"
-            stroke="#ffcf33"
-            strokeWidth="2.5"
-          />
-          <circle cx="40" cy="250" r="6" fill="#ffcf33" />
-          <circle cx="360" cy="40" r="6" fill="#1e9a52" />
-        </svg>
-        <div ref={plane} className="absolute top-0 left-0 -mt-4 -ml-4 text-gold drop-shadow-[0_0_12px_rgba(255,207,51,.8)]">
-          <PlaneIcon className="size-8" />
+    <div
+      ref={root}
+      className="pointer-events-none absolute inset-0 flex flex-col items-center justify-between px-5 pt-[calc(max(14px,env(safe-area-inset-top))+44px)] pb-[12svh]"
+    >
+      <div className="tracker w-full max-w-sm">
+        <div className="flex items-end justify-between">
+          <div>
+            <div className="font-condensed text-3xl leading-none font-bold">SV</div>
+            <div className="trk-sub">Sinh viên</div>
+          </div>
+          <div className="trk-sub pb-1 text-center">
+            GA {event.classOf} · {String(eventDay.day).padStart(2, '0')} {MONTHS[eventDay.month - 1]}
+          </div>
+          <div className="text-right">
+            <div className="font-condensed text-3xl leading-none font-bold text-green">TK</div>
+            <div className="trk-sub">Tân khoa</div>
+          </div>
         </div>
-        <div className="from absolute bottom-[2%] left-[2%] font-condensed text-lg font-bold tracking-widest">SINH VIÊN</div>
-        <div className="to absolute top-[-4%] right-[0%] font-condensed text-lg font-bold tracking-widest text-green">TÂN KHOA</div>
-        <div className="absolute inset-x-0 top-[46%] grid place-items-center text-center">
-          <p className="going col-start-1 row-start-1 font-display text-2xl italic text-white/80">Đang bay đến…</p>
-          <p className="future col-start-1 row-start-1 font-display text-5xl font-black text-gold">Tương lai ✦</p>
+        <div className="relative mt-4 h-px bg-white/20">
+          <div className="trk-fill absolute inset-0 origin-left bg-gold" />
+          <div className="trk-plane absolute top-1/2 -translate-x-1/2 -translate-y-1/2 text-gold">
+            <PlaneIcon className="size-5 rotate-90" />
+          </div>
         </div>
+        <div className="mt-3 flex items-center justify-between">
+          <span className="trk-sub">Khởi hành {event.time}</span>
+          <span className="trk-status trk-sub flex items-center gap-1.5 text-gold">
+            <i className="inline-block size-1.5 rounded-full bg-current" />
+            <span className="trk-status-text">Đang bay</span>
+          </span>
+          <span className="trk-sub">Hạ cánh {event.endTime}</span>
+        </div>
+      </div>
+
+      <div className="grid place-items-center text-center">
+        <p className="going col-start-1 row-start-1 font-name text-2xl text-white/85 italic">Đang bay đến…</p>
+        <p className="future col-start-1 row-start-1 font-name text-6xl leading-none italic">
+          <span className="gold-text">Tương lai</span>
+        </p>
       </div>
     </div>
   )

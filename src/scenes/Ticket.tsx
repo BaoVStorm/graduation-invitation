@@ -78,7 +78,9 @@ export function Ticket({ onBoard }: { onBoard: () => void }) {
                 </div>
               </div>
               <div className="t-pax reveal">
-                <div className="t-lbl">HÀNH KHÁCH ĐƯỢC MỜI · PASSENGER</div>
+                <div className="t-lbl">
+                  HÀNH KHÁCH ĐƯỢC MỜI · <span className="text-green">GHẾ VIP</span>
+                </div>
                 <div className="t-name pname">
                   <Split text={guestName} />
                   <span className="caret" />
@@ -96,8 +98,8 @@ export function Ticket({ onBoard }: { onBoard: () => void }) {
                   <div className="t-val">{event.time ?? event.weekday.toUpperCase()}</div>
                 </div>
                 <div>
-                  <div className="t-lbl">GHẾ</div>
-                  <div className="t-val text-green">VIP</div>
+                  <div className="t-lbl">HẠ CÁNH</div>
+                  <div className="t-val">{event.endTime ?? '—'}</div>
                 </div>
                 {hostName && (
                   <div className="col-span-3">

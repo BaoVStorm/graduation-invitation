@@ -2,7 +2,7 @@ import gsap from 'gsap'
 import { useLayoutEffect, useRef, type ReactNode } from 'react'
 import { WishForm } from '../components/WishForm'
 import { downloadIcs, googleCalendarUrl } from '../lib/calendar'
-import { dateLabel, event, formatPhone, guestName, hostName, invite, mapsHref, photoUrl, telHref, zaloHref } from '../lib/invite'
+import { dateLabel, event, formatPhone, guestName, hostName, invite, mapsHref, photoUrl, telHref, timeLabelLong, zaloHref } from '../lib/invite'
 
 function Card({ no, title, children }: { no: string; title: string; children: ReactNode }) {
   return (
@@ -46,7 +46,7 @@ export function Info({ onReplay }: { onReplay: () => void }) {
             <p className="font-display text-2xl font-bold">
               {event.weekday}, {dateLabel}
             </p>
-            <p className="mt-1 text-white/70">{event.time ? `Bắt đầu lúc ${event.time}` : 'Giờ cụ thể sẽ báo sau'}</p>
+            <p className="mt-2 font-condensed text-3xl tracking-wide text-gold">{timeLabelLong ?? 'Giờ cụ thể sẽ báo sau'}</p>
           </Card>
 
           <Card no="02" title="Địa điểm">

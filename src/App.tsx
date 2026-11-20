@@ -59,6 +59,9 @@ export default function App() {
         </Suspense>
       )}
 
+      <div className="vignette pointer-events-none absolute inset-0 z-[5]" aria-hidden />
+      <div className="grain pointer-events-none absolute inset-0 z-40" aria-hidden />
+
       <div key={run} className="absolute inset-0 z-10">
         {phase === 'loading' && <Loading onDone={afterLoading} extra={extra} />}
         {phase === 'announce' && <Announcement onBurst={fireBurst} />}

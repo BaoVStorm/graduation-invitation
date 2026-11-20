@@ -12,6 +12,7 @@ function inviteDevData(mode: string, base: string): Plugin {
     name: 'invite-dev-data',
     apply: 'serve',
     transformIndexHtml(html, ctx) {
+      if (!html.includes('<!--app-data-->')) return html // trang thử trong dev/
       const env = loadEnv(mode, process.cwd(), 'SECRET_')
       const secrets = loadSecrets({ ...process.env, ...env })
       const code = codeFromUrl(ctx.originalUrl ?? ctx.path, base)

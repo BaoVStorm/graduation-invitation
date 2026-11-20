@@ -2,7 +2,7 @@ import gsap from 'gsap'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { GoldButton, GuestName, useExit } from '../components/ui'
 import { sfx } from '../lib/audio'
-import { dateLabel, event, eventStart } from '../lib/invite'
+import { dateLabel, event, eventStart, timeLabel } from '../lib/invite'
 
 function remaining() {
   const ms = Math.max(0, eventStart().getTime() - Date.now())
@@ -68,7 +68,8 @@ export function Celebrate({ onNext }: { onNext: () => void }) {
         </span>
       </h2>
       <p className="c-sub mt-3 text-white/80">
-        tại {event.title} · {event.weekday}, {dateLabel}
+        tại {event.title} · {timeLabel ? `${timeLabel}, ` : ''}
+        {event.weekday}, {dateLabel}
       </p>
       {t.done ? (
         <p className="mt-8 font-display text-2xl italic">Cảm ơn vì đã đến chung vui! 💛</p>

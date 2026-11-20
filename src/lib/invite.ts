@@ -45,10 +45,16 @@ const [Y, M, D] = event.date.split('-').map(Number)
 export const eventDay = { year: Y, month: M, day: D }
 export const dateLabel = `${String(D).padStart(2, '0')}.${String(M).padStart(2, '0')}.${Y}`
 
-/** Thời điểm bắt đầu theo giờ Việt Nam (UTC+7). Chưa có giờ thì lấy 07:00. */
-export function eventStart(): Date {
-  const [h, m] = (event.time ?? '07:00').split(':').map(Number)
+const atVN = (hhmm: string) => {
+  const [h, m] = hhmm.split(':').map(Number)
   return new Date(Date.UTC(Y, M - 1, D, h - 7, m))
 }
+/** Thời điểm bắt đầu / kết thúc theo giờ Việt Nam (UTC+7) */
+export const eventStart = () => atVN(event.time || '07:00')
+export const eventEnd = () => atVN(event.endTime || event.time || '10:00')
+/** "10:00 – 12:00" */
+export const timeLabel = event.time ? (event.endTime ? `${event.time} – ${event.endTime}` : event.time) : null
+/** "10:00 – 12:00 sáng" */
+export const timeLabelLong = timeLabel ? `${timeLabel} ${Number(event.time.split(':')[0]) < 12 ? 'sáng' : 'chiều'}` : null
 
 export { event }

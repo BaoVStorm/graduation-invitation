@@ -14,7 +14,7 @@ Tiêu chí chất lượng: **chuẩn chỉ, chuyên nghiệp, có hiệu ứng 
 |---|---|
 | Sự kiện | Lễ Tốt Nghiệp |
 | Ngày | Thứ Sáu, 27/11/2026 |
-| Giờ | *Chưa có, chờ chủ nhân cung cấp* |
+| Giờ | 10:00 – 12:00 sáng |
 | Địa điểm | Trường Đại học Công nghệ Thông tin – ĐHQG TP.HCM |
 | Liên hệ | *Đặt trong file cấu hình, không viết cứng vào code* |
 | Ảnh chính | Ảnh chân dung mặc lễ phục (đã có bản làm sáng mặt `anh-sang.jpg`) |

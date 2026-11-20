@@ -108,12 +108,13 @@ Vé được làm theo mẫu PNG đã duyệt: header navy, ảnh tân khoa, tuy
 - Vé luôn **nghiêng 3D** theo tay hoặc con quay hồi chuyển. Lớp **foil hologram** cầu vồng chạy theo góc nghiêng.
 - Dòng gợi ý nhỏ: *"Nghiêng điện thoại để thấy ánh hologram"*.
 
-## Cảnh 5: Chuyến bay (tự chạy 3.2s)
+## Cảnh 5: Chuyến bay (tự chạy 3.3s)
 
-- Vé thu nhỏ và trượt sang trái, nền chuyển thành bầu trời đêm có **mây trôi qua theo 3 lớp parallax** với tốc độ khác nhau.
-- **Đường bay nét đứt** vẽ dần từ **SINH VIÊN** đến **TÂN KHOA**, máy bay chạy theo đường cong.
-- Chữ giữa màn hình: *"Đang bay đến…"* rồi đổi thành **"Tương lai ✦"**.
-- Hết cảnh, mây tản ra để lộ bìa tạp chí.
+- **3D (`three/FlightScene.tsx`):** máy bay chở khách **Graduation Air** dựng bằng code (`three/Airplane.tsx`): thân trắng, bụng navy, viền vàng, 2 hàng cửa sổ, kính buồng lái, 2 động cơ viền vàng, đuôi navy có logo mũ tốt nghiệp, đèn hàng hải đỏ/xanh và đèn chớp trắng.
+- **Đường bay:** máy bay xuất hiện **sát camera ở góc dưới trái**, nghiêng cánh lượn lên rồi **xa dần** về phía một **quầng sáng vàng** ("Tương lai") ở góc trên phải. Camera bám nhẹ theo máy bay.
+- **Không khí:** mây đêm trôi qua theo nhiều lớp độ sâu, có vài đám mây sát ống kính tạo cảm giác tốc độ. Hai vệt khói từ động cơ nhạt dần sau 0.5s.
+- **DOM (`scenes/Flight.tsx`):** **bảng theo dõi chuyến bay** như màn hình trên máy bay: SV → TK, "GA 2026 · 27 NOV", thanh tiến trình có biểu tượng máy bay chạy theo, "Khởi hành 10:00 / Hạ cánh 12:00". Trạng thái "● Đang bay" đổi thành "● Đã hạ cánh" (màu xanh) khi tới nơi.
+- **Chữ:** *"Đang bay đến…"* (0.3s) rồi **"Tương lai"** bằng chữ serif nghiêng ánh vàng (2.0s), kèm tiếng chuông.
 
 ## Cảnh 6: Bìa tạp chí GRADUATE.
 

@@ -1,4 +1,4 @@
-import { event, eventDay, eventStart } from './invite'
+import { event, eventDay, eventEnd, eventStart } from './invite'
 
 const pad = (n: number) => String(n).padStart(2, '0')
 const utcStamp = (d: Date) =>
@@ -11,7 +11,7 @@ const location = `${event.venue.name} – ${event.venue.short}`
 function range() {
   if (event.time) {
     const start = eventStart()
-    const end = new Date(start.getTime() + 3 * 3600_000)
+    const end = event.endTime ? eventEnd() : new Date(start.getTime() + 2 * 3600_000)
     return { start: utcStamp(start), end: utcStamp(end), allDay: false }
   }
   const { year, month, day } = eventDay
