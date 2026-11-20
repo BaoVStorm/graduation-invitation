@@ -117,10 +117,7 @@ export function Ticket({ onBoard }: { onBoard: () => void }) {
                   </div>
                 </div>
               </div>
-              <div className="t-perf">
-                <i />
-                <i />
-              </div>
+              <div className="t-perf" />
               <div className="t-stub reveal">
                 <p className="t-msg">Sự có mặt của bạn là món quà ý nghĩa nhất.</p>
                 <div className="t-bc">

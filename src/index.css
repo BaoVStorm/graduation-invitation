@@ -151,10 +151,11 @@ body {
 .ticket {
   container-type: inline-size;
   position: relative;
-  width: min(88vw, 360px, 38svh);
+  --tw: min(88vw, 360px, 38svh);
+  width: var(--tw);
   background: #fff;
   color: #141a33;
-  border-radius: 6cqw;
+  border-radius: 20px; /* cố định, không đổi theo kích thước màn hình */
   overflow: hidden;
   box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
@@ -389,12 +390,16 @@ body {
   padding: 0 6.5cqw 6cqw;
 }
 .t-msg {
+  flex: 1;
+  min-width: 0;
   font: italic 700 3.5cqw/1.35 "Playfair Display", serif;
   color: #13235e;
 }
 .t-bc {
   height: 12cqw;
+  width: 40cqw;
   flex-shrink: 0;
+  overflow: hidden;
 }
 /* foil hologram chạy theo góc nghiêng */
 .foil {
@@ -951,7 +956,7 @@ textarea.field {
   top: 50%;
   width: var(--pw);
   margin: 0;
-  padding: 5cqw 5cqw 0;
+  padding: calc(var(--pw) * 0.05) calc(var(--pw) * 0.05) 0;
   background: #fbf8f1;
   border-radius: 2px;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 18px 36px -10px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.25);
