@@ -29,7 +29,7 @@
 
 - [ ] Xoá khách thử `kiemtra` (dùng để test form lời chúc) khi không cần nữa: `npm run guests` → 3 Xoá
 
-- [x] **Form lời chúc**: đã kích hoạt FormSubmit (20/11/2026)
+- [x] **Form lời chúc**: đã kích hoạt FormSubmit, gửi thật từ /kiemtra thành công (21/11/2026)
 - [ ] *(Khuyên dùng)* Sau khi kích hoạt: đổi `SECRET_WISH_EMAIL` sang chuỗi ngẫu nhiên FormSubmit cấp để giấu email (xem [SECRETS.md](SECRETS.md))
 - [x] **Điện thoại thật**: đã thử (20/11/2026)
 - [ ] Dán thử 1 link vào Zalo/Messenger để xem ảnh xem trước. Nếu hiện ảnh cũ thì dùng Facebook Sharing Debugger.
