@@ -3,7 +3,7 @@ import { sfx } from '../lib/audio'
 import { invite } from '../lib/invite'
 import { GoldButton } from './ui'
 
-type Status = 'idle' | 'sending' | 'sent' | 'error'
+type Status = 'idle' | 'sending' | 'sent' | 'error' | 'inactive'
 
 /**
  * Gửi lời chúc thẳng vào email của tân khoa.
@@ -38,8 +38,13 @@ export function WishForm({ defaultName = '', onSent }: { defaultName?: string; o
           _honey: honey,
         }),
       })
-      const data = (await res.json().catch(() => ({}))) as { success?: string | boolean }
-      if (!res.ok || String(data.success) !== 'true') throw new Error('send failed')
+      const data = (await res.json().catch(() => ({}))) as { success?: string | boolean; message?: string }
+      if (!res.ok || String(data.success) !== 'true') {
+        console.warn('[WishForm] gửi không thành công', res.status, data)
+        // FormSubmit trả lỗi này cho tới khi chủ hộp thư bấm "Activate Form" trong email xác nhận
+        if (/activat/i.test(data.message ?? '')) return setStatus('inactive')
+        throw new Error('send failed')
+      }
       setStatus('sent')
       sfx('confetti')
       onSent?.()
@@ -105,6 +110,9 @@ export function WishForm({ defaultName = '', onSent }: { defaultName?: string; o
         </GoldButton>
       </div>
       {status === 'error' && <p className="text-sm text-[#ff9b9b]">Chưa gửi được, bạn thử lại sau ít phút nhé.</p>}
+      {status === 'inactive' && (
+        <p className="text-sm text-[#ffd98a]">Hộp thư nhận lời chúc đang chờ kích hoạt, bạn thử lại sau một lát nhé.</p>
+      )}
     </form>
   )
 }
