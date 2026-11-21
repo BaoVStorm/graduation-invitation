@@ -125,6 +125,12 @@
       "message": "Con đã làm được rồi! Cảm ơn Ba Mẹ đã luôn tin con, chờ con và lo cho con từng chút một.",
       "you": "cả nhà",
       "letter": "Tấm bằng này không chỉ của riêng con. Đó là những bữa cơm Mẹ để phần, những cuộc gọi Ba hỏi han, là tiếng cười của em gái mỗi lần con về nhà.\n\nNgày con chính thức trở thành tân khoa, điều con mong nhất là có cả nhà ở bên."
+    },
+    {
+      "code": "kiemtra",
+      "honorific": "Bạn",
+      "name": "Kiểm Tra",
+      "message": "Trang thử nghiệm để kiểm tra form gửi lời chúc. Xoá trước khi gửi link."
     }
   ]
 }
